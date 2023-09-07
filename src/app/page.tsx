@@ -8,42 +8,26 @@ import { categories } from "@/constants/index";
 import Header from "@/components/shared/Header";
 import MobileNavbar from "@/components/shared/MobileNavbar";
 import { useToggleNav } from "@/context/ToggleNavContext";
-import SortByDiv from "@/components/shared/SortByDiv";
+import SortByDiv from "@/components/ui/SortByDiv";
+import FeedbackCard from "@/components/ui/FeedbackCard";
+import NoFeedbackCard from "@/components/ui/NoFeedbackCard";
 
 export default function Home() {
   return (
-    <>
+    <div className="min-h-screen overflow-scroll">
       <Header />
-      <main className="main-body relative">
-        {/* <SortPopup ArrayData={categories} popupProps="" hoverProps="" />
-
-        <SortPopup ArrayData={categories} popupProps="" hoverProps="" /> */}
-
-        <SortByDiv />
-        {/* <SortPopup ArrayData={categories} /> */}
+      <div className=" relative">
         <MobileNavbar />
+        <SortByDiv />
+      </div>
+      <main className="py-[3.2rem] px-[2.4rem] main-body w-full flex flex-col gap-[1.6rem] overflow-scroll">
+        <FeedbackCard />
+        <FeedbackCard />
 
-        {/* <SortPopup>
+        <FeedbackCard />
 
-
-        <SortButton
-          borderR="rounded-tr-2xl"
-          border="border-b border-[rgba(58, 67, 116, 0.15)] "
-        >
-          Feature
-        </SortButton>
-        <SortButton border="border-b border-[rgba(58, 67, 116, 0.15)] ">
-          UI
-        </SortButton>
-        <SortButton border="border-b border-[rgba(58, 67, 116, 0.15)] ">
-          UX
-        </SortButton>
-        <SortButton border="border-b border-[rgba(58, 67, 116, 0.15)] ">
-          Enhancement
-        </SortButton>
-        <SortButton borderR="rounded-br-2xl">Bug</SortButton>
-      </SortPopup> */}
+        <NoFeedbackCard />
       </main>
-    </>
+    </div>
   );
 }

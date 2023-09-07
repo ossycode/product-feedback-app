@@ -57,6 +57,6 @@ ul {
     @apply text-heading1;
   }
   .main-body {
-    @apply text-body1 bg-ghost-white-100 text-dark-grayish-400 overflow-hidden min-h-screen;
+    @apply text-body1 bg-ghost-white-100 text-dark-grayish-400 min-h-screen;
   }
 }

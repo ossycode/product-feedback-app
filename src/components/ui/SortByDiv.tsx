@@ -1,6 +1,6 @@
 import { suggestionsSortOptions } from "@/constants";
-import SortPopup from "../ui/sortPopup";
-import Button from "../ui/button";
+import SortPopup from "./sortPopup";
+import Button from "./button";
 
 const SortByDiv = () => {
   return (
