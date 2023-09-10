@@ -11,6 +11,7 @@ import { useToggleNav } from "@/context/ToggleNavContext";
 import SortByDiv from "@/components/ui/SortByDiv";
 import FeedbackCard from "@/components/ui/FeedbackCard";
 import NoFeedbackCard from "@/components/ui/NoFeedbackCard";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -18,6 +19,12 @@ export default function Home() {
       <Header />
       <div className=" relative">
         <MobileNavbar />
+        <ul>
+          <li>
+            <Link href="/login">Login</Link>
+          </li>
+        </ul>
+
         <SortByDiv />
       </div>
       <main className="py-[3.2rem] px-[2.4rem] main-body w-full flex flex-col gap-[1.6rem] overflow-scroll">
