@@ -9,12 +9,25 @@ interface Params {
   name: string;
   username: string;
   password: string;
+  email: string;
   avatar: string | undefined;
 }
 
-export async function createUser({ name, username, password, avatar }: Params) {
+export async function createUser({
+  name,
+  username,
+  password,
+  avatar,
+  email,
+}: Params) {
   try {
     connectToDB();
+
+    console.log("connected to DB");
+
+    // const checkUsername = await User.findOne({ username: username });
+
+    // if (checkUsername.username) return;
 
     const hashedPassword = await bcrypt.hash(password, 5);
 
@@ -29,10 +42,12 @@ export async function createUser({ name, username, password, avatar }: Params) {
       name,
       username,
       hashedPassword,
+      email,
       avatar,
     });
 
     await newUser.save();
+
     // return new NextResponse("User has been created", { status: 201 });
   } catch (error: any) {
     throw new Error(`Failed to create user: ${error.message}`);

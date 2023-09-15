@@ -4,7 +4,7 @@ import { categoriesList } from "@/constants";
 
 const Categories = () => {
   return (
-    <div className="bg-clr-white min-w-[22.3rem] min-h-[17.8rem] rounded-2xl grid grid-cols-3  p-[2.3rem] gap-y-[1.3rem] gap-x-[0.5rem]">
+    <div className="bg-clr-white min-w-[22.3rem] min-h-[17.8rem] rounded-2xl grid grid-cols-3  p-[2.3rem] gap-y-[1.3rem] gap-x-[0.5rem] lg:w-[25.5rem] lg:h-[17rem]">
       {categoriesList.map((category) => (
         <Button
           key={category.id}

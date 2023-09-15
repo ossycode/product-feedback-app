@@ -12,16 +12,35 @@ import SortByDiv from "@/components/ui/SortByDiv";
 import FeedbackCard from "@/components/ui/FeedbackCard";
 import NoFeedbackCard from "@/components/ui/NoFeedbackCard";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import useUser from "@/hooks/useUser";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
+  const { data: session } = useSession();
+  const email = session?.user?.email;
+  const { user } = useUser(email!);
+
+  const { push } = useRouter();
+  useEffect(() => {
+    push("/dashboard");
+  }, [push]);
   return (
     <div className="min-h-screen overflow-scroll">
       <Header />
       <div className=" relative">
         <MobileNavbar />
+
         <ul>
           <li>
             <Link href="/login">Login</Link>
+          </li>
+          <li>
+            <Link href="/login" onClick={() => signOut()}>
+              Logout
+            </Link>
           </li>
         </ul>
 

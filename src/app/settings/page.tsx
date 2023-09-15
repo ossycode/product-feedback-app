@@ -3,17 +3,36 @@
 import Button from "@/components/ui/button";
 import Image from "next/image";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import useUser from "@/hooks/useUser";
+import { formatDateString } from "@/lib/utils";
 
 const Settings = () => {
   const [file, setFile] = useState<File>();
+  const { data: session } = useSession();
+
+  const email = session?.user?.email!;
+
+  const { user, isLoading } = useUser(email);
+
+  // const { user } =
+
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+  const currentUser = user[0];
+
+  // const date = new Date(currentUser.createdAt);
+
+  const currentDateString = formatDateString(currentUser?.createdAt);
 
   return (
     <div className="w-full h-screen bg-light-purple-100 p-24 flex  items-center gap-24 justify-center">
       <section className="bg-clr-white text-dark-grayish-400 p-16 flex flex-col gap-10 items-center rounded-lg">
-        <h1 className="text-heading1">Jamed Allan</h1>
-        <p className="text-heading4 mt-[-2.45rem]">@james</p>
+        <h1 className="text-heading1">{currentUser?.name}</h1>
+        <p className="text-heading4 mt-[-2.45rem]">@{currentUser?.username}</p>
         <Image
-          src="/assets/user-images/image-anne.jpg"
+          src={currentUser.avatar || "/assets/default-user.jpg"}
           alt="profile photo"
           width={100}
           height={100}
@@ -21,7 +40,7 @@ const Settings = () => {
         />
 
         <div className="relative cursor-pointer ">
-          <Button btnProps="bg-light-orange-500 py-4 px-4 font-bold  w-[25.5rem] text-ghost-white-100 text-[1.5rem]  py-3.5 px-10 font-bold w-max text-ghost-white-100 text-[1.5rem] ">
+          <Button btnProps="bg-[#D73737] py-4 px-4 font-bold  w-[25.5rem] text-ghost-white-100 text-[1.5rem]  py-3.5 px-10 font-bold w-max text-ghost-white-100 text-[1.5rem] ">
             {file?.name ? file.name : "Change Picture"}
           </Button>
           <input
@@ -36,11 +55,12 @@ const Settings = () => {
         <p className="bg-light-purple-100 rounded-lg p-6 shadow-inner text-center">
           Upload a new avatar
           <br />
-          Maximum upload size is <b>1 MB</b>
+          Maximum upload size is <b>4 MB</b>
         </p>
 
         <p>
-          Member Since: <span className="font-semibold">29 September 2022</span>
+          Member Since:{" "}
+          <span className="font-semibold">{currentDateString}</span>
         </p>
       </section>
       <section className="bg-clr-white text-dark-grayish-400 flex flex-col gap-10 items-center rounded-lg">
@@ -63,7 +83,7 @@ const Settings = () => {
             </label>
             <input
               id="fullName"
-              value={"James"}
+              defaultValue={currentUser?.name}
               type="text"
               className="min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem] 
             font-normal  py-[1.3rem] px-[2.4rem] border active:border-solid	active:border-dark-blue"
@@ -79,10 +99,11 @@ const Settings = () => {
             </label>
             <input
               id="username"
-              value={"Allan"}
+              defaultValue={currentUser?.username}
               type="text"
               className="min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem] 
             font-normal  py-[1.3rem] px-[2.4rem] border active:border-solid	active:border-dark-blue"
+              disabled
             />
           </div>
           <div>
@@ -94,7 +115,7 @@ const Settings = () => {
             </label>
             <input
               id="password"
-              value={"password"}
+              defaultValue={currentUser?.password}
               type="password"
               className="min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem]
              font-normal py-[1.3rem] px-[2.4rem] border active:border-solid	active:border-dark-blue"
@@ -110,7 +131,7 @@ const Settings = () => {
             </label>
             <input
               id="confirmPassword"
-              value={"password"}
+              defaultValue={currentUser?.password}
               type="password"
               className="min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem]
              font-normal py-[1.3rem] px-[2.4rem] border active:border-solid	active:border-dark-blue"
@@ -126,13 +147,14 @@ const Settings = () => {
             </label>
             <input
               id="email"
-              value={"example@example.com"}
+              defaultValue={currentUser?.email}
               type="email"
               className="min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem]
              font-normal py-[1.3rem] px-[2.4rem] border active:border-solid	active:border-dark-blue"
+              disabled
             />
           </div>
-          <Button btnProps=" bg-light-orange-500  px-4 font-bold  w-[25.5rem] text-ghost-white-100 text-[1.5rem] block ">
+          <Button btnProps=" bg-[#D73737] px-4 font-bold  w-[25.5rem] text-ghost-white-100 text-[1.5rem] block ">
             Update Info
           </Button>
         </form>

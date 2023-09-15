@@ -62,10 +62,10 @@ const SortPopup = (props: Props) => {
       <div className="w-full text-inherit rounded-lg ">
         <button
           onClick={handleListOpen}
-          className={`flex w-full px-9 py-5 hover:border-xl ${props.hoverProps}`}
+          className={`flex w-full  py-5 hover:border-xl ${props.hoverProps}`}
         >
-          <span>Sort by : </span>&nbsp;
-          <span className="font-bold flex items-center justify-between gap-2 ">
+          <span className="text-center block">Sort by : </span>&nbsp;
+          <span className="font-bold flex items-center justify-between gap-2 shrink-0 ">
             {" "}
             {title}
             {isListOpen ? (

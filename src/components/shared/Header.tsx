@@ -8,8 +8,8 @@ const Header = () => {
 
   return (
     <header
-      className="flex items-center justify-between px-9 py-5
-     mobileHeader"
+      className="flex items-center justify-between px-6 py-4 sm:px-9 sm:py-5
+     mobileHeader md:hidden w-full"
     >
       <div>
         <h1 className="text-clr-white tracking-[-0.0187rem] text-[1.5rem]">

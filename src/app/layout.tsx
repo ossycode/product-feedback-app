@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Jost } from "next/font/google";
 import { ToggleNavProvider } from "@/context/ToggleNavContext";
+import AuthProvider from "@/context/AuthProvider";
 
 const jost = Jost({ subsets: ["latin"] });
 
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${jost.className}`}>
-        <ToggleNavProvider>{children}</ToggleNavProvider>
+        <ToggleNavProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </ToggleNavProvider>
       </body>
     </html>
   );
