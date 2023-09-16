@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import Button from "./button";
+import Link from "next/link";
 
 const NoFeedbackCard = () => {
   return (
@@ -19,9 +20,12 @@ const NoFeedbackCard = () => {
         Got a suggestion? Found a bug that needs to be squashed? <br /> We love
         hearing about new ideas to improve our app.
       </p>
-      <Button btnProps=" bg-light-purple-500 py-4 px-4 font-bold  w-max text-light-purple-100 text-[1.3rem] mt-6 lg:px-8 lg:text-[1.4rem] ">
+      <Link
+        className=" bg-light-purple-500 py-4 px-4 font-bold  w-max text-light-purple-100 text-[1.3rem] mt-6 lg:px-8 lg:text-[1.4rem] rounded-2xl"
+        href={"/dashboard/feedback/new"}
+      >
         + Add Feedback
-      </Button>
+      </Link>
     </div>
   );
 };

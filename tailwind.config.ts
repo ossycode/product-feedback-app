@@ -56,6 +56,13 @@ const config: Config = {
           fontWeight: "700",
         },
       ],
+      heading5: [
+        "1.3rem",
+        {
+          letterSpacing: "-0.0181rem",
+          fontWeight: "700",
+        },
+      ],
       buttonText: [
         "1.4rem",
         {

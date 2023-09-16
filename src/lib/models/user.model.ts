@@ -8,6 +8,12 @@ const userSchema = new mongoose.Schema(
     password: { type: String, require: true },
     email: { type: String, require: true, unique: true },
     avatar: { type: String },
+    feedbacks: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Feedback",
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -2,6 +2,7 @@ import { suggestionsSortOptions } from "@/constants";
 import SortPopup from "./sortPopup";
 import Button from "./button";
 import Image from "next/image";
+import Link from "next/link";
 
 const SortByDiv = () => {
   return (
@@ -26,14 +27,19 @@ const SortByDiv = () => {
         <SortPopup
           ArrayData={suggestionsSortOptions}
           popupProps="text 	"
-          hoverProps=""
+          titleProps="gap-1 sm:gap-4 py-5"
           imageSize={10}
+          sortbyProps=""
+          titleDivProps=""
         />
       </div>
 
-      <Button btnProps=" bg-light-purple-500 p-2.5 sm:p-4 md:py-4.5 md:px-6 font-bold w-max ">
+      <Link
+        className=" bg-light-purple-500 p-2.5 sm:p-4 md:py-4.5 md:px-6 font-bold w-max rounded-2xl"
+        href={"/dashboard/feedback/new"}
+      >
         + Add Feedback
-      </Button>
+      </Link>
     </div>
   );
 };

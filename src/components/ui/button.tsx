@@ -1,6 +1,7 @@
 // const btnColour: {
 //     color:
 // }
+"use client";
 
 const Button = ({ children, btnProps }: any) => {
   return (

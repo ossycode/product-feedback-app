@@ -39,6 +39,10 @@ ul {
   /* list-style: none; */
 }
 
+.box-shadow {
+  box-shadow: 40px 40px 40px -7px rgba(55, 63, 104, 0.35);
+}
+
 .mobileHeader {
   background: radial-gradient(
     166.82% 166.82% at 103.9% -10.39%,
@@ -60,11 +64,15 @@ ul {
     @apply text-body1 bg-ghost-white-100 text-dark-grayish-400;
   }
   .signupform-input {
-    @apply min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem] 
-    font-normal  py-[1.3rem] px-[2.4rem] border focus:outline-none focus:border-dark-blue;
+    @apply sm:min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem] 
+    font-normal  py-[1.3rem] px-[2.4rem] border border-ghost-white-100 focus:outline-none focus:border-dark-blue;
   }
   .roadmapNub {
     @apply float-right font-bold md:text-[1.6rem];
+  }
+
+  .new-form-btn {
+    @apply text-[#F2F4FE] p-4 text-heading5 leading-normal md:px-9 md:py-5 md:text-[1.4rem] rounded-2xl;
   }
 }
 

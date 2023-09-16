@@ -10,7 +10,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
-import { isBase64Image } from "@/lib/utils";
 import "@uploadthing/react/styles.css";
 import { useUploadThing } from "@/lib/uploadthing";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
