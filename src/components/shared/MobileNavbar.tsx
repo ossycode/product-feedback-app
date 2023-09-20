@@ -1,3 +1,5 @@
+"use client";
+
 import { useToggleNav } from "@/context/ToggleNavContext";
 import Categories from "../ui/Categories";
 import Roadmap from "../ui/Roadmap";

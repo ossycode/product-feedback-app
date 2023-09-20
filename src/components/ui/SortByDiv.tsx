@@ -1,10 +1,22 @@
+"use client";
+
 import { suggestionsSortOptions } from "@/constants";
 import SortPopup from "./sortPopup";
 import Button from "./button";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
-const SortByDiv = () => {
+interface Props {
+  totalSuggestion: number;
+}
+
+const SortByDiv = ({ totalSuggestion }: Props) => {
+  const [filterOption, setFilterOption] = useState<string>();
+
+  const getSelectedfilterOption = (currentCat: string): void => {
+    setFilterOption(currentCat);
+  };
   return (
     <div
       className="bg-[#373F68] text-light-purple-100 flex items-center
@@ -20,8 +32,10 @@ const SortByDiv = () => {
             className="object-contain"
           />
           <div>
-            <span className="text-heading3">0</span>{" "}
-            <span className="text-heading3">Suggestion</span>
+            <span className="text-heading3">{totalSuggestion}</span>{" "}
+            <span className="text-heading3">
+              {totalSuggestion > 1 ? "Suggestions" : "Suggestion"}
+            </span>
           </div>
         </div>
         <SortPopup
@@ -31,6 +45,8 @@ const SortByDiv = () => {
           imageSize={10}
           sortbyProps=""
           titleDivProps=""
+          handleSelected={getSelectedfilterOption}
+          defaultValue={"Most Upvotes"}
         />
       </div>
 

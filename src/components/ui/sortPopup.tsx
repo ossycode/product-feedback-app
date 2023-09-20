@@ -18,29 +18,35 @@ type Props = {
   sortbyProps: string;
   titleDivProps: string;
   imageSize: number;
+  defaultValue: string | null;
+  handleSelected: (cat: string) => void;
 };
 
-const SortPopup = (props: Props) => {
-  const [listData, setListData] = useState<Array<Items>>(props.ArrayData);
+const SortPopup = ({
+  ArrayData,
+  popupProps,
+  titleProps,
+  titleDivProps,
+  sortbyProps,
+  imageSize,
+  handleSelected,
+  defaultValue = null,
+}: Props) => {
+  const [title, setTitle] = useState<string>();
+  const [listData, setListData] = useState<Array<Items>>();
   const [isListOpen, setIsListOpen] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>(getTitle());
 
-  // const [cat, setCat] = useState<string>();
-  const { setCurentCategory } = useCurrentCategory();
+  // const { setCurentCategory } = useCurrentCategory();
 
   const ref = useRef<HTMLDivElement | null>(null);
 
-  function getTitle(): string {
-    let title: string = "";
-    listData.forEach((element) => {
-      if (element.selected === true) title = element.title;
-    });
-    return title;
-  }
+  useEffect(() => {
+    handleDefaultValue();
+  }, []);
 
   useEffect(() => {
-    setCurentCategory(title);
-  }, [setCurentCategory, title]);
+    handleSelected(title!);
+  }, [title, handleSelected]);
 
   useEffect(() => {
     window.addEventListener("click", (e) => {
@@ -52,6 +58,27 @@ const SortPopup = (props: Props) => {
     });
   });
 
+  function handleDefaultValue() {
+    const temp = [...ArrayData];
+    temp.forEach((element) => {
+      element.selected = false;
+      if (element.title === defaultValue) {
+        element.selected = true;
+        setTitle(element.title);
+      }
+    });
+
+    setListData(temp);
+  }
+
+  // function getTitle(): string {
+  //   let title: string = "";
+  //   listData.forEach((element) => {
+  //     if (element.selected === true) title = element.title;
+  //   });
+  //   return title;
+  // }
+
   function handleListOpen(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     e.stopPropagation();
@@ -60,39 +87,37 @@ const SortPopup = (props: Props) => {
 
   function handleSelect(item: Items) {
     const { title, id } = item;
-
     setTitle(title);
-    const temp = [...props.ArrayData];
-
+    const temp = [...ArrayData];
     temp.forEach((element) => (element.selected = false));
     temp[id].selected = true;
     setListData(temp);
   }
   return (
-    <div className={` rounded-2xl popup-wrapper ${props.popupProps}`} ref={ref}>
-      <div className={`w-full text-inherit rounded-lg ${props.titleDivProps}`}>
+    <div className={` rounded-2xl popup-wrapper ${popupProps}`} ref={ref}>
+      <div className={`w-full text-inherit rounded-lg ${titleDivProps}`}>
         <button
           onClick={handleListOpen}
-          className={`flex w-full hover:border-xl items-center ${props.titleProps}`}
+          className={`flex w-full hover:border-xl items-center text-[1.5rem] ${titleProps}`}
         >
-          <span className={`text-center block ${props.sortbyProps}`}>
-            Sort by :
-          </span>
+          <span className={`text-center block ${sortbyProps}`}>Sort by :</span>
 
           <span className=" flex items-center shrink-0 ">{title}</span>
           {isListOpen ? (
             <Image
               src="/assets/shared/icon-arrow-up.svg"
               alt="arrow up"
-              width={props.imageSize}
-              height={props.imageSize}
+              width={imageSize}
+              height={imageSize}
+              className="aspect-auto w-auto h-auto"
             />
           ) : (
             <Image
               src="/assets/shared/icon-arrow-down.svg"
               alt="arrow down"
-              width={props.imageSize}
-              height={props.imageSize}
+              width={imageSize}
+              height={imageSize}
+              className="aspect-auto w-auto h-auto"
             />
           )}
         </button>
@@ -100,21 +125,20 @@ const SortPopup = (props: Props) => {
       {isListOpen && (
         <div role="list" className="rounded-2xl relative ">
           <div className="absolute rounded-2xl divide-y divide-rgba(58, 67, 116, 0.15) inset-y-0 right-0 w-full box-shadow top-1">
-            {listData.map((item) => (
+            {listData!.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleSelect(item)}
-                className={`text-light-gray-200  flex item-center justify-between bg-ghost-white-100 px-6 py-5  text-sortButtonBorder font-normal w-full first-of-type:rounded-t-2xl last-of-type:rounded-b-2xl hover:text-light-purple-500 gap-4 `}
-                value={item.title}
+                className="text-light-gray-200  flex item-center justify-between bg-ghost-white-100 px-10 py-5  md:text-[1.6rem] font-normal w-full first-of-type:rounded-t-2xl last-of-type:rounded-b-2xl hover:text-light-purple-500 gap-4"
               >
                 {item.title}
                 {item.selected && (
                   <Image
                     src="/assets/shared/icon-check.svg"
                     alt="check mark"
-                    width={props.imageSize}
-                    height={props.imageSize}
-                    className="mt-2"
+                    width={10}
+                    height={10}
+                    className="mt-2 aspect-auto w-auto h-auto"
                   />
                 )}
               </button>

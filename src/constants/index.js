@@ -2,7 +2,7 @@ export const categories = [
   {
     id: 0,
     title: "Feature",
-    selected: true,
+    selected: false,
     key: "categories",
   },
   {
@@ -67,7 +67,7 @@ export const suggestionsSortOptions = [
   {
     id: 0,
     title: "Most Upvotes",
-    selected: true,
+    selected: false,
     key: "suggestionsSortOptions",
   },
   {
@@ -87,5 +87,32 @@ export const suggestionsSortOptions = [
     title: "Least Comments",
     selected: false,
     key: "suggestionsSortOptions",
+  },
+];
+
+export const RoadMapStatus = [
+  {
+    id: 0,
+    title: "Suggestion",
+    selected: false,
+    key: "roadmap",
+  },
+  {
+    id: 1,
+    title: "Planned",
+    selected: false,
+    key: "roadmap",
+  },
+  {
+    id: 2,
+    title: "In-Progress ",
+    selected: false,
+    key: "roadmap",
+  },
+  {
+    id: 3,
+    title: "Live",
+    selected: false,
+    key: "roadmap",
   },
 ];

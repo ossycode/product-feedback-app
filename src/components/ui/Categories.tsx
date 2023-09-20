@@ -6,9 +6,9 @@ const Categories = () => {
   return (
     <div className="bg-clr-white min-w-[22.3rem] min-h-[17.8rem] rounded-2xl grid grid-cols-3  p-[2.3rem] gap-y-[1.3rem] gap-x-[0.5rem] lg:w-[25.5rem] lg:h-[17rem]">
       {categoriesList.map((category) => (
-        <Button
+        <button
           key={category.id}
-          btnProps={`w-min h-min px-[1.6rem] py-[0.5rem] text-[1.3rem] font-semibold	 ${
+          className={`rounded-2xl w-min h-min px-[1.6rem] py-[0.5rem] text-[1.3rem] font-semibold	 ${
             category.title === "Enhancement" ? "col-span-2  mr-8" : ""
           } ${
             category.selected
@@ -17,7 +17,7 @@ const Categories = () => {
           }`}
         >
           {category.title}
-        </Button>
+        </button>
       ))}
     </div>
   );

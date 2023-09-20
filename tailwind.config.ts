@@ -110,6 +110,7 @@ const config: Config = {
         "light-orange-500": "rgb(244, 159, 133)",
         "light-blue-500": "rgb(98, 188, 250)",
         "nav-opc": "rgba(0, 0, 0, 0.5)",
+        "comment-divide": "rgba(140,146,179, 0.25)",
       },
       fontFamily: {
         sans: ["Jost", "sans-serif"],

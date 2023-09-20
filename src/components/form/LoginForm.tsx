@@ -6,10 +6,12 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Button from "../ui/button";
 import Image from "next/image";
+import MiniSpinner from "../ui/MiniSpinner";
 
 const LoginForm = () => {
   const [username, setUserName] = useState<string>();
   const [password, setPassword] = useState<string>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
   const session = useSession();
   const router = useRouter();
@@ -24,6 +26,7 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       const res = await signIn("credentials", {
         username,
         password,
@@ -35,6 +38,7 @@ const LoginForm = () => {
         return;
       }
       router.replace("dashboard");
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -76,9 +80,12 @@ const LoginForm = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <Button btnProps=" bg-dark-grayish-400 py-4 px-4 font-bold  w-[25.5rem] text-ghost-white-100 text-[1.5rem] block mt-16">
-            Login
-          </Button>
+          <button
+            className=" bg-dark-grayish-400 py-4 px-4 font-bold  w-[25.5rem] text-ghost-white-100 text-[1.5rem] block mt-16 rounded-2xl"
+            disabled={isLoading}
+          >
+            {isLoading ? <MiniSpinner /> : " Login"}
+          </button>
         </form>
         <p className="text-dark-grayish-400  text-[1.6rem] font-normal ">
           Don&apos;t have an account yet?{" "}

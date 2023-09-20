@@ -17,6 +17,7 @@ const BackBtn = () => {
         alt="arrow back"
         width={8}
         height={8}
+        className="aspect-auto w-auto h-auto"
       />
       <span className="text-[1.3rem] xl:text-heading4 font-bold text-light-gray-200">
         Go Back

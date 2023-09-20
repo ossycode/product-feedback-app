@@ -1,11 +1,14 @@
 import { any } from "zod";
 import FeedbackCard from "../ui/FeedbackCard";
 import NoFeedbackCard from "../ui/NoFeedbackCard";
-
-const feedbacks: [] = [];
+import { getFeedbacks } from "@/hooks/useFeedbacks";
+import { use } from "react";
+// import { getData } from "@/hooks/useFeedbacks";
 
 const Main = () => {
-  if (feedbacks.length === 0) {
+  const { feedbacksSuggestions } = use(getFeedbacks());
+
+  if (feedbacksSuggestions.length === 0) {
     return (
       <main className="bg-ghost-white-100 h-full mt-1 pt-8 pb-36 px-4 md:px-0">
         <NoFeedbackCard />
@@ -15,10 +18,18 @@ const Main = () => {
 
   return (
     <main className="main-body flex flex-col gap-[1.6rem] overflow-scroll sm:px-[2.4rem] px-4 pt-[2.4rem] md:px-0  ">
-      {feedbacks.map((feedback) => (
-        <FeedbackCard key={feedback} />
+      {feedbacksSuggestions.map((feedback: any) => (
+        <FeedbackCard
+          key={feedback._id}
+          id={feedback._id}
+          title={feedback.title}
+          description={feedback.description}
+          category={feedback.category}
+          upvotes={feedback.upvotes}
+          totalComments={feedback.comments.length}
+        />
       ))}
-      {/* <FeedbackCard /> */}
+      {/* <FeedbackCard id="1234" /> */}
     </main>
   );
 };

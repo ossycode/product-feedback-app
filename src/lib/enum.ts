@@ -1,6 +1,6 @@
 export enum Status {
-  Suggestion = "suggestion",
-  Planned = "planned",
-  Inprogress = "in-progress",
-  Live = "live",
+  Suggestion = "Suggestion",
+  Planned = "Planned",
+  Inprogress = "In-progress",
+  Live = "Live",
 }

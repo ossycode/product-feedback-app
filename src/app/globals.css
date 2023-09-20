@@ -52,6 +52,10 @@ ul {
   );
 }
 
+.custom-divide:not(:last-child) {
+  margin-top: 2rem;
+}
+
 /* img {
   max-width: 100%;
 } */
@@ -72,7 +76,7 @@ ul {
   }
 
   .new-form-btn {
-    @apply text-[#F2F4FE] p-4 text-heading5 leading-normal md:px-9 md:py-5 md:text-[1.4rem] rounded-2xl;
+    @apply text-[#F2F4FE] py-3 px-5 text-heading5 leading-normal md:px-9 md:py-5 md:text-[1.4rem] rounded-2xl;
   }
 }
 

@@ -1,98 +1,98 @@
 "use client";
 
+import { useState, useCallback } from "react";
+import MiniSpinner from "../ui/MiniSpinner";
 import Image from "next/image";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import SortPopup from "../ui/sortPopup";
 import { categories } from "@/constants";
-import { useCallback, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
-import { FeedbackValidation } from "@/lib/validations/feedback";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
-import { useCurrentCategory } from "@/context/CategoryContext";
-import { Status } from "@/lib/enum";
-import useUserSession from "@/hooks/useUserSession";
+import { RoadMapStatus } from "@/constants";
+import {
+  useRouter,
+  usePathname,
+  useSearchParams,
+  useParams,
+} from "next/navigation";
 import toast from "react-hot-toast";
-import MiniSpinner from "../ui/MiniSpinner";
 
-const AddFeedbackForm = () => {
+interface Props {
+  title: string;
+  description: string;
+  category: string;
+  status: string;
+}
+
+const EditFeedbackForm = ({ title, description, category, status }: Props) => {
   const [currentCat, setCurrentCat] = useState<string>();
+  const [roadmapStatus, setRoadmapStatus] = useState<string>();
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const pathname = usePathname();
+  const params = useParams();
+  const router = useRouter();
 
   const getSelectedCategory = (currentCat: string): void => {
     setCurrentCat(currentCat);
   };
-
-  // console.log(currentCat);
-  type FeedbackValidationSchemaType = z.infer<typeof FeedbackValidation>;
-  // const [category, setCategory] = useState<string>();
-  const router = useRouter();
-  const currentUser = useUserSession();
-  const pathname = usePathname();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<FeedbackValidationSchemaType>({
-    resolver: zodResolver(FeedbackValidation),
-    defaultValues: {
-      title: "",
-      // accountId: userId,
-      description: "",
-    },
-  });
 
   function handleCancel(e: React.FormEvent<HTMLButtonElement>) {
     e.preventDefault();
     router.back();
   }
 
-  const onHandleSubmit: SubmitHandler<FeedbackValidationSchemaType> = async (
-    data
-  ) => {
+  const getSelectedRoadMapStatus = (roadmapStatus: string): void => {
+    setRoadmapStatus(roadmapStatus);
+  };
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
+
+  if (!params.id) {
+    console.log("No Feedback Id");
+  }
+
+  const onHandleSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      setIsLoading(true);
-      const res = await fetch("/api/feedbacks/", {
-        method: "POST",
+      const res = await fetch(`/api/feedbacks/${params.id}`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           title: data.title,
           description: data.description,
-          upvotes: 0,
+          status: roadmapStatus,
           category: currentCat,
-          status: Status.Suggestion,
           path: pathname,
-          author: currentUser._id,
         }),
       });
       if (res.ok) {
         toast.success("Feedback created successfully");
-        router.push("/dashboard");
+        router.push(`/dashboard/feedback/${params.id}`);
       } else {
         toast.error("Something went wrong!");
-        console.log("Feedback creation failed");
+        console.log("Feedback update failed");
       }
     } catch (err: Error | any) {
-      console.log(`${err.code}: Error Feedback creation`);
+      console.log(`${err.code}: Error update creation`);
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 
   return (
     <div className="bg-clr-white px-9 pb-16 md:px-16 text-dark-grayish-400 rounded-2xl ">
       <Image
-        src={"/assets/shared/icon-new-feedback.svg"}
+        src={"/assets/shared/icon-edit-feedback.svg"}
         alt="edit"
         width={40}
         height={40}
         className="translate-y-[-2rem]	"
       />
       <h1 className="text-heading3 xl:text-heading1 mb-9 md:mb-16">
-        Create New Feedback
+        Editing &apos;{title}&apos;
       </h1>
       <form
         className="flex flex-col gap-10"
@@ -109,6 +109,7 @@ const AddFeedbackForm = () => {
           <input
             id="feedbackTitle"
             type="text"
+            defaultValue={title}
             className={`signupform-input 	mt-6  min-w-full  ${
               errors.title?.message && "border-red-600"
             }`}
@@ -117,7 +118,7 @@ const AddFeedbackForm = () => {
           <span>
             {errors.title?.message && (
               <span className="text-[#D73737] text-[1.4rem]">
-                {errors.title.message}
+                {/* {errors.title.message} */}
               </span>
             )}
           </span>
@@ -139,8 +140,27 @@ const AddFeedbackForm = () => {
             sortbyProps="hidden"
             titleDivProps="signupform-input mt-6  min-w-full "
             handleSelected={getSelectedCategory}
-            defaultValue={"Feature"}
+            defaultValue={category}
           />
+          <label
+            htmlFor="feedbackStatus"
+            className="block text-heading5 xl:text-heading4"
+          >
+            Update Status
+            <span className="block font-normal leading-normal	text-light-gray-200 mt-1">
+              Change feature state
+            </span>
+            <SortPopup
+              ArrayData={RoadMapStatus}
+              popupProps="text 	"
+              titleProps="font-normal justify-between text-[1.3rem]"
+              imageSize={10}
+              sortbyProps="hidden"
+              titleDivProps="signupform-input mt-6  min-w-full "
+              handleSelected={getSelectedRoadMapStatus}
+              defaultValue={status}
+            />
+          </label>
         </label>
 
         <label
@@ -156,30 +176,40 @@ const AddFeedbackForm = () => {
             className={`signupform-input	mt-6 min-w-full min-h-[12rem] ${
               errors.description?.message && "border border-red-600"
             }`}
+            defaultValue={description}
             {...register("description")}
           />
           <span>
             {errors.description?.message && (
               <span className="text-[#D73737] text-[1.4rem]">
-                {errors.description.message}
+                {/* {errors.description.message} */}
               </span>
             )}
           </span>
         </label>
 
-        <div className="flex flex-col gap-6 mt-9 md:flex-row-reverse ">
+        <div className="flex items-center flex-row-reverse justify-between">
+          <div className="flex flex-col gap-6 md:flex-row-reverse ">
+            <button
+              className="bg-light-purple-500 new-form-btn "
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? <MiniSpinner /> : "Add Feedback"}
+            </button>
+            <button
+              className="bg-dark-grayish-400 new-form-btn  "
+              onClick={(e) => handleCancel(e)}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </button>
+          </div>
           <button
-            className="bg-light-purple-500 new-form-btn "
-            disabled={isLoading}
+            className="bg-light-orange-500 new-form-btn  "
+            // onClick={(e) => handleCancel(e)}
+            disabled={isSubmitting}
           >
-            {isLoading ? <MiniSpinner /> : "Add Feedback"}
-          </button>
-          <button
-            className="bg-dark-grayish-400 new-form-btn  "
-            onClick={(e) => handleCancel(e)}
-            disabled={isLoading}
-          >
-            Cancel
+            Delete
           </button>
         </div>
       </form>
@@ -187,4 +217,4 @@ const AddFeedbackForm = () => {
   );
 };
 
-export default AddFeedbackForm;
+export default EditFeedbackForm;
