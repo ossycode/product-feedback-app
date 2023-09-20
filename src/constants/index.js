@@ -105,7 +105,7 @@ export const RoadMapStatus = [
   },
   {
     id: 2,
-    title: "In-Progress ",
+    title: "In-Progress",
     selected: false,
     key: "roadmap",
   },

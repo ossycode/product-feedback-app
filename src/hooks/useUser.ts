@@ -2,21 +2,23 @@
 
 import { useEffect } from "react";
 import useSWR, { preload } from "swr";
+import useUserSession from "./useUserSession";
 
 const fetcher = (...args: Parameters<typeof fetch>) =>
   fetch(...args).then((res) => res.json());
 
-function useUser(email: string) {
-  useEffect(() => {
-    preload(`/api/users?email=${email}`, fetcher);
-  }, [email]);
+function useUser() {
+  const user = useUserSession();
 
-  const { data, mutate, error, isLoading } = useSWR(
-    `/api/users?email=${email}`,
-    fetcher
-  );
+  const email = user?.email;
 
-  return { user: data, isLoading, mutate, isError: error };
+  // useEffect(() => {
+  //   preload(`/api/users?email=${email}`, fetcher);
+  // }, [email]);
+
+  const { data, isLoading } = useSWR(`/api/users?email=${email}`, fetcher);
+
+  return { user: data, isLoading };
 }
 
 export default useUser;

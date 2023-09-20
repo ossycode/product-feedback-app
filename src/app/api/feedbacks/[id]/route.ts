@@ -96,3 +96,29 @@ export const PATCH = async (
     );
   }
 };
+
+export const DELETE = async ({ params }: { params: { id: string } }) => {
+  const { id } = params;
+  try {
+    connectToDB();
+
+    // find main feedback to delete
+    const mainFeedback = await Feedback.findById(id).populate("author");
+
+    if (!mainFeedback) {
+      throw new Error("Feedback not found");
+    }
+
+    // fetch all comments/replies and their descendands recursively
+
+    return NextResponse.json(
+      { message: "Feedback deleted successfully" },
+      { status: 201 }
+    );
+  } catch (err) {
+    return NextResponse.json(
+      { message: "An error occurred while deleting feedback" },
+      { status: 500 }
+    );
+  }
+};

@@ -7,23 +7,18 @@ import { useSession } from "next-auth/react";
 import useUser from "@/hooks/useUser";
 import { formatDateString } from "@/lib/utils";
 import BackBtn from "@/components/ui/BackBtn";
+import Spinner from "@/components/ui/Spinner";
 
 const Settings = () => {
   const [file, setFile] = useState<File>();
-  const { data: session } = useSession();
 
-  const email = session?.user?.email!;
+  const { user, isLoading } = useUser();
 
-  const { user, isLoading } = useUser(email);
-
-  // const { user } =
-
-  if (isLoading) {
-    return <h1>Loading...</h1>;
-  }
   const currentUser = user[0];
 
-  // const date = new Date(currentUser.createdAt);
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   const currentDateString = formatDateString(currentUser?.createdAt);
 

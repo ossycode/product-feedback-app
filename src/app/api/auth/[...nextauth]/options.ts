@@ -1,4 +1,4 @@
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions, Session } from "next-auth";
 import GitHubProviders from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDB } from "@/lib/mongoose";
@@ -17,9 +17,6 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         username: {},
         password: {},
-        id: {},
-        email: {},
-        avatar: {},
       },
 
       async authorize(credentials, req) {
@@ -46,20 +43,17 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  // callbacks: {
-  //   async jwt({ token, user }) {
-  //     if (user?.id) {
-  //       token.id = user.id;
-  //     }
+  callbacks: {
+    async session({ session }): Promise<Session> {
+      // store the user id from MongoDB to session
+      const sessionUser = await User.findOne({ email: session.user?.email });
+      session.user.id = sessionUser._id.toString();
+      session.user.username = sessionUser.username.toString();
 
-  //     return token;
-  //   },
-  //   // async session({session, token}) {
-  //   //     session.user. = token.id;
-  //   //     session.username = token.username;
-  //   //     return session;
-  //   // }
-  // },
+      return session;
+    },
+  },
+
   pages: {
     signIn: "/login",
     newUser: "/register",

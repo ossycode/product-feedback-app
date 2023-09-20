@@ -14,6 +14,7 @@ import {
   useParams,
 } from "next/navigation";
 import toast from "react-hot-toast";
+import useAuthor from "@/hooks/useAuthor";
 
 interface Props {
   title: string;
@@ -52,6 +53,9 @@ const EditFeedbackForm = ({ title, description, category, status }: Props) => {
   if (!params.id) {
     console.log("No Feedback Id");
   }
+  // const id = params.id.toString();
+
+  // const isAuthor = useAuthor(id);
 
   const onHandleSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {

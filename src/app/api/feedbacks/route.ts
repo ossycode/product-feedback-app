@@ -41,6 +41,21 @@ export const GET = async (pageNumber = 1, pageSize = 10) => {
       status: "Suggestion",
     });
 
+    const totalLiveCount = await Feedback.countDocuments({
+      parentId: { $in: [null, undefined] },
+      status: "Live",
+    });
+
+    const totalPlannedCount = await Feedback.countDocuments({
+      parentId: { $in: [null, undefined] },
+      status: "Planned",
+    });
+
+    const totalInProgressCount = await Feedback.countDocuments({
+      parentId: { $in: [null, undefined] },
+      status: "In-Progress",
+    });
+
     const feedbacksSuggestions = await feedbacksQuery.exec();
 
     const isNext =
@@ -52,7 +67,14 @@ export const GET = async (pageNumber = 1, pageSize = 10) => {
     // console.log(feedbacksSuggestions);
     // return { feedbacksSuggestions, isNext, totalSuggestionCount };
     return new NextResponse(
-      JSON.stringify({ feedbacksSuggestions, isNext, totalSuggestionCount }),
+      JSON.stringify({
+        feedbacksSuggestions,
+        isNext,
+        totalSuggestionCount,
+        totalInProgressCount,
+        totalPlannedCount,
+        totalLiveCount,
+      }),
       {
         status: 200,
       }

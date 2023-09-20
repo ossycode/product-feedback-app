@@ -23,10 +23,12 @@ export default function Home() {
   const email = session?.user?.email;
   const { user } = useUser(email!);
 
-  const { push } = useRouter();
+  const router = useRouter();
+
   useEffect(() => {
-    push("/dashboard");
-  }, [push]);
+    router.push("/dashboard");
+  }, [router]);
+
   return (
     <div className="min-h-screen overflow-scroll">
       <Header />

@@ -9,16 +9,21 @@ import CommentCard from "@/components/ui/CommentCard";
 import useSWR from "swr";
 import Spinner from "@/components/ui/Spinner";
 import useFeedback from "@/hooks/useFeedback";
+import useUserSession from "@/hooks/useUserSession";
+import useAuthor from "@/hooks/useAuthor";
 
 const FeedbackDetails = ({ params }: { params: { id: string } }) => {
   const [showReplies, setShowReplies] = useState<boolean>(false);
 
   const { data, isLoading } = useFeedback(params.id);
-  // const feedback = data;
+
+  const isAuthor = useAuthor(params.id);
+
+  console.log(isAuthor);
 
   const totalComents = data?.comments?.length;
 
-  if (!params.id) return null;
+  if (!params.id) return;
 
   if (isLoading) {
     return <Spinner />;
@@ -28,12 +33,14 @@ const FeedbackDetails = ({ params }: { params: { id: string } }) => {
     <div className="p-[2.4rem] bg-ghost-white-100 min-h-screen flex flex-col gap-[2.4rem] md:py-[5.6rem] md:px-[3.9rem]">
       <div className="flex items-center justify-between">
         <BackBtn />
-        <Link
-          href={`/dashboard/feedback/${params.id}/edit`}
-          className="new-form-btn bg-dark-blue"
-        >
-          Edit Feedback
-        </Link>
+        {isAuthor && (
+          <Link
+            href={`/dashboard/feedback/${params.id}/edit`}
+            className="new-form-btn bg-dark-blue"
+          >
+            Edit Feedback
+          </Link>
+        )}
       </div>
       <FeedbackCard
         id={data._id}

@@ -10,7 +10,7 @@ import { use } from "react";
 const Dashboard = () => {
   const { totalSuggestionCount } = use(getFeedbacks());
 
-  console.log(totalSuggestionCount);
+  // console.log(totalSuggestionCount);
 
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-7 lg:py-[9.4rem] bg-ghost-white-100  xl:px-[10.5rem] lg:px-[3rem] ">
