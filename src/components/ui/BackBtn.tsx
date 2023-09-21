@@ -9,7 +9,7 @@ const BackBtn = () => {
 
   return (
     <button
-      className="flex items-center gap-6 rounded-2xl w-max"
+      className="flex items-center gap-6 rounded-2xl w-max hover:underline hover:underline-offset-2 hover:decoration-[#647196]"
       onClick={() => router.back()}
     >
       <Image

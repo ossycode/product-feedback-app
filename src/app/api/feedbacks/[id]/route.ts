@@ -1,3 +1,4 @@
+import Comment from "@/lib/models/comment.model";
 import Feedback from "@/lib/models/feedback.model";
 import User from "@/lib/models/user.model";
 import { connectToDB } from "@/lib/mongoose";
@@ -19,26 +20,39 @@ export const GET = async (
         select: "_id  id name avatar username",
       })
       .populate({
-        path: "comments.author",
-        model: User,
-        select: "_id name parentId avatar username",
+        path: "comments",
+        model: Comment,
+        select: "_id content",
         populate: [
-          //   {
-          //     path: "author",
-          //     model: User,
-          //     select: "_id name parentId avatar username",
-          //   },
           {
-            path: "comments",
-            model: Feedback,
-            populate: {
-              path: "author",
-              model: User,
-              select: "_id name parentId avatar username",
-            },
+            path: "author",
+            model: User,
+            select: "_id  id name avatar username",
           },
         ],
       })
+      // .populate({
+      //   path: "comments.author",
+      //   model: User,
+      //   select: "_id name parentId avatar username",
+      //   // populate: [
+      //   //   //   {
+      //   //   //     path: "author",
+      //   //   //     model: User,
+      //   //   //     select: "_id name parentId avatar username",
+      //   //   //   },
+      //   //   {
+      //   //     path: "comments",
+      //   //     model: Comment,
+      //   //     select: "_id content",
+      //   //     populate: {
+      //   //       path: "author",
+      //   //       model: User,
+      //   //       select: "_id name avatar username",
+      //   //     },
+      //   //   },
+      //   // ],
+      // })
       .exec();
 
     //   path: "comments.author",

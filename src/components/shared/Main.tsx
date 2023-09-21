@@ -1,9 +1,7 @@
-import { any } from "zod";
 import FeedbackCard from "../ui/FeedbackCard";
 import NoFeedbackCard from "../ui/NoFeedbackCard";
 import { getFeedbacks } from "@/hooks/useFeedbacks";
 import { use } from "react";
-// import { getData } from "@/hooks/useFeedbacks";
 
 const Main = () => {
   const { feedbacksSuggestions } = use(getFeedbacks());
@@ -29,7 +27,6 @@ const Main = () => {
           totalComments={feedback.comments.length}
         />
       ))}
-      {/* <FeedbackCard id="1234" /> */}
     </main>
   );
 };

@@ -2,7 +2,7 @@
 
 import useUserSession from "@/hooks/useUserSession";
 import { useParams, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const AddCommentForm = () => {
   const params = useParams();
