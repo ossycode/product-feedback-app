@@ -1,24 +1,44 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import AddReplyForm from "../form/AddReplyForm";
+import Link from "next/link";
 
-const Comment = () => {
+interface Props {
+  content: string;
+  username: string;
+  name: string;
+  userImage: string;
+  commentId: string;
+  replyingTo: string;
+}
+
+const Comment = ({
+  content,
+  username,
+  name,
+  userImage,
+  commentId,
+  replyingTo,
+}: Props) => {
   const [openReply, setOpenReply] = useState<boolean>(false);
 
   return (
     <div className="flex flex-col gap-[1.6rem] py-12">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-6">
-          <Image
-            src={"/assets/default-user.jpg"}
-            alt="user prorfile"
-            width={40}
-            height={40}
-          />
+          <Link href={""} className="relative h-16 w-16">
+            <Image
+              src={userImage}
+              alt="user prorfile"
+              width={40}
+              height={40}
+              className="cursor-pointer rounded-full"
+            />
+          </Link>
           <p className="text-heading5 text-dark-grayish-400 ">
-            Elijah Moss
+            {name}
             <span className="block font-normal text-light-gray-200">
-              @hexago.bestagon
+              @{username}
             </span>
           </p>
         </div>
@@ -29,13 +49,13 @@ const Comment = () => {
           Reply
         </button>
       </div>
-      <p className="text-light-gray-200 text-[1.3rem]">
-        Also, please allow styles to be applied based on system preferences. I
-        would love to be able to browse Frontend Mentor in the evening after my
-        device’s dark mode turns on without the bright background it currently
-        has.
+      <p className="text-light-gray-200 text-[1.3rem] md:text-[1.5rem]">
+        <span className="text-light-purple-500 font-bold">@{replyingTo}</span>
+        {""} {content}
       </p>
-      {openReply && <AddReplyForm />}
+      {openReply && (
+        <AddReplyForm commentId={commentId} commentAuthor={username} />
+      )}
     </div>
   );
 };

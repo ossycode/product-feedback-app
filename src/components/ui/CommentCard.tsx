@@ -1,28 +1,40 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddReplyForm from "../form/AddReplyForm";
 import Image from "next/image";
 import Link from "next/link";
 import Comment from "./Comment";
 import ReplyCard from "./ReplyCard";
+import useComment from "@/hooks/useComment";
 
 interface Props {
-  showReplies: boolean;
   content: string;
   username: string;
   name: string;
   userImage: string;
+  commentId: string;
 }
 
 const CommentCard = ({
-  showReplies,
   content,
   username,
   name,
   userImage,
+  commentId,
 }: Props) => {
   const [openReply, setOpenReply] = useState<boolean>(false);
+  const [showReplies, setShowReplies] = useState<boolean>(false);
+
+  const { data, isLoading } = useComment(commentId);
+
+  useEffect(() => {
+    if (data?.replies.length > 0) {
+      setShowReplies(true);
+    } else {
+      setShowReplies(false);
+    }
+  }, [data?.replies.length]);
 
   return (
     <div className="flex  w-full flex-1 gap-[3.2rem] py-12 ">
@@ -47,7 +59,7 @@ const CommentCard = ({
           <p className="text-heading5 md:text-heading4 text-dark-grayish-400 ">
             {name}
             <span className="block font-normal text-light-gray-200 md:text-[1.4rem]">
-              {username}
+              @{username}
             </span>
           </p>
 
@@ -61,8 +73,22 @@ const CommentCard = ({
         <p className="  text-light-gray-200 text-[1.3rem] md:text-[1.5rem]">
           {content}
         </p>
-        {openReply && <AddReplyForm />}
-        {/* <ReplyCard /> */}
+        {openReply && (
+          <AddReplyForm commentAuthor={username} commentId={commentId} />
+        )}
+
+        {data?.replies.length > 0 &&
+          data?.replies.map((element: any) => (
+            <Comment
+              key={element._id}
+              content={element.content}
+              username={element.author.username}
+              name={element.author.name}
+              userImage={element.author.avatar}
+              commentId={commentId}
+              replyingTo={element.replyingTo}
+            />
+          ))}
       </div>
     </div>
   );

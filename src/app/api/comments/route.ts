@@ -1,29 +1,11 @@
 import Comment from "@/lib/models/comment.model";
 import Feedback from "@/lib/models/feedback.model";
+import Reply from "@/lib/models/reply.model";
+import User from "@/lib/models/user.model";
 import { connectToDB } from "@/lib/mongoose";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 
-// export const GET = async (request: Request) => {
-//   const { parentId } = await request.json();
-//   await connectToDB();
-
-// //   try {
-// //     const feedback = await Feedback.find({ id: parentId }).sort({
-// //       createdAt: "desc",
-// //     }).populate;
-
-//     // const descendantFeedbacks = []
-//     // for(const childFeedback of childFeedbacks) {
-//     //     const descendants = await
-//     // }
-//   } catch (err) {
-//     return NextResponse.json(
-//       { message: "An error occurred while fetching comment" },
-//       { status: 500 }
-//     );
-//   }
-// };
 export const POST = async (request: Request) => {
   const { content, author, path, parentId } = await request.json();
   await connectToDB();

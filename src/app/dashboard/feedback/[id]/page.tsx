@@ -21,8 +21,6 @@ interface Props {
 }
 
 const FeedbackDetails = ({ params }: { params: { id: string } }) => {
-  const [showReplies, setShowReplies] = useState<boolean>(false);
-
   const { data, isLoading } = useFeedback(params.id);
 
   const isAuthor = useAuthor(params.id);
@@ -66,11 +64,11 @@ const FeedbackDetails = ({ params }: { params: { id: string } }) => {
             {data.comments.map((comment: Props) => (
               <CommentCard
                 key={comment._id}
-                showReplies={showReplies}
                 content={comment.content}
                 username={comment.author.username}
                 name={comment.author.name}
                 userImage={comment.author.avatar}
+                commentId={comment._id}
               />
             ))}
           </div>
