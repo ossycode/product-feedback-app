@@ -9,9 +9,19 @@ import ReplyCard from "./ReplyCard";
 
 interface Props {
   showReplies: boolean;
+  content: string;
+  username: string;
+  name: string;
+  userImage: string;
 }
 
-const CommentCard = ({ showReplies }: Props) => {
+const CommentCard = ({
+  showReplies,
+  content,
+  username,
+  name,
+  userImage,
+}: Props) => {
   const [openReply, setOpenReply] = useState<boolean>(false);
 
   return (
@@ -20,7 +30,7 @@ const CommentCard = ({ showReplies }: Props) => {
         <div className="flex flex-col items-center">
           <Link href={""} className="relative h-16 w-16">
             <Image
-              src={"/assets/default-user.jpg"}
+              src={userImage}
               alt="user prorfile"
               width={40}
               height={40}
@@ -36,9 +46,9 @@ const CommentCard = ({ showReplies }: Props) => {
         <div className="flex flex-col gap-[1.6rem]">
           <div className="flex items-center justify-between">
             <p className="text-heading5 md:text-heading4 text-dark-grayish-400 ">
-              Elijah Moss
+              {name}
               <span className="block font-normal text-light-gray-200 md:text-[1.4rem]">
-                @hexago.bestagon
+                {username}
               </span>
             </p>
             <button
@@ -49,13 +59,10 @@ const CommentCard = ({ showReplies }: Props) => {
             </button>
           </div>
           <p className="  text-light-gray-200 text-[1.3rem] md:text-[1.5rem]">
-            Also, please allow styles to be applied based on system preferences.
-            I would love to be able to browse Frontend Mentor in the evening
-            after my device’s dark mode turns on without the bright background
-            it currently has.
+            {content}
           </p>
           {openReply && <AddReplyForm />}
-          <ReplyCard />
+          {/* <ReplyCard /> */}
         </div>
       </div>
     </div>

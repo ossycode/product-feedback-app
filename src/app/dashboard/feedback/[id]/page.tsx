@@ -19,8 +19,6 @@ const FeedbackDetails = ({ params }: { params: { id: string } }) => {
 
   const isAuthor = useAuthor(params.id);
 
-  console.log(isAuthor);
-
   const totalComents = data?.comments?.length;
 
   if (!params.id) return;
@@ -56,13 +54,13 @@ const FeedbackDetails = ({ params }: { params: { id: string } }) => {
           {totalComents} {totalComents > 1 ? "Comments" : "Comment"}
         </h1>
         <div className="hidden divide-y-[0.1rem] divide-comment-divide md:flex flex-col  items-center">
-          <CommentCard showReplies={false} />
+          {/* <CommentCard showReplies={false} />
 
-          <CommentCard showReplies={true} />
+          <CommentCard showReplies={true} /> */}
         </div>
         <div className="md:hidden divide-y-[0.1rem] divide-comment-divide flex flex-col  items-center">
-          <MobileCommentCard />
-          <MobileCommentCard />
+          {/* <MobileCommentCard />
+          <MobileCommentCard /> */}
         </div>
       </div>
 
