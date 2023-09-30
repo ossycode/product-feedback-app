@@ -10,9 +10,9 @@ const EditFeedbackPage = async ({ params }: { params: { id: string } }) => {
 
   const feedback = await getFeedback(params.id);
 
-  // if (isLoading) {
-  //   return <Spinner />;
-  // }
+  if (feedback === undefined) {
+    return <Spinner />;
+  }
 
   return (
     <div className="bg-ghost-white-100 px-[2.4rem] py-[3.4rem] min-h-screen flex flex-col gap-20 md:px-[11.4rem] md:py-[5.6rem] lg:px-[25rem] lg:py-[11rem] xl:px-[45rem] xl:py-[18rem]">
@@ -22,6 +22,7 @@ const EditFeedbackPage = async ({ params }: { params: { id: string } }) => {
         description={feedback?.description}
         status={feedback.status}
         category={feedback.category}
+        feedbackid={feedback._id}
       />
     </div>
   );

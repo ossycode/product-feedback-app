@@ -116,3 +116,32 @@ export const RoadMapStatus = [
     key: "roadmap",
   },
 ];
+export const RoadMapTabs = [
+  {
+    id: 0,
+    title: "Planned",
+    selected: false,
+    description: "Ideas prioritized for research",
+    key: "roadmap",
+    svgColor: "#F49F85",
+    borderToColor: "border-light-orange-500",
+  },
+  {
+    id: 1,
+    title: "In-Progress",
+    description: "Features currently being developed",
+    selected: false,
+    key: "roadmap",
+    svgColor: "#AD1FEA",
+    borderToColor: "border-light-purple-500",
+  },
+  {
+    id: 2,
+    title: "Live",
+    description: "Released features",
+    selected: false,
+    key: "roadmap",
+    svgColor: "#62BCFA",
+    borderToColor: "border-light-blue-500",
+  },
+];

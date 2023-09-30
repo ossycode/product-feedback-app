@@ -1,5 +1,6 @@
 import Comment from "@/lib/models/comment.model";
 import Feedback from "@/lib/models/feedback.model";
+import Reply from "@/lib/models/reply.model";
 import User from "@/lib/models/user.model";
 import { connectToDB } from "@/lib/mongoose";
 import { revalidatePath } from "next/cache";
@@ -28,6 +29,18 @@ export const GET = async (
             path: "author",
             model: User,
             select: "_id  id name avatar username",
+          },
+          {
+            path: "replies",
+            model: Reply,
+            select: "_id content replyingTo parentId",
+            populate: [
+              {
+                path: "author",
+                model: User,
+                select: "_id  id name avatar username",
+              },
+            ],
           },
         ],
       })
@@ -111,19 +124,65 @@ export const PATCH = async (
   }
 };
 
-export const DELETE = async ({ params }: { params: { id: string } }) => {
-  const { id } = params;
+export const DELETE = async (
+  request: Request,
+  { params }: { params: { id: string } }
+) => {
+  await connectToDB();
   try {
-    connectToDB();
+    const { id } = params;
+    // console.log(id);
 
     // find main feedback to delete
-    const mainFeedback = await Feedback.findById(id).populate("author");
+    const mainFeedback = await Feedback.findById(id);
 
     if (!mainFeedback) {
       throw new Error("Feedback not found");
     }
 
-    // fetch all comments/replies and their descendands recursively
+    // Fetch all child comment/replies from main feedback
+    const { childComments, childRepliesArray } = await fetchAllChildFeedback(
+      id
+    );
+
+    // Extract the ids from each comment/reply object
+    const childCommentsIds = childComments.map((comment) => comment._id);
+    const childRepliesArrayIds = childRepliesArray.map((reply) => reply._id);
+
+    // Extract the authors id to update the user model
+    const commentUniqueAuthorIds = new Set(
+      [
+        ...childComments.map((comment) => comment.author?._id?.toString()),
+      ].filter((id) => id !== undefined)
+    );
+    const replyUniqueAuthorIds = new Set(
+      [
+        ...childRepliesArray.map((reply) => reply.author?._id?.toString()),
+      ].filter((id) => id !== undefined)
+    );
+
+    const mainFeedbackAuthorId = mainFeedback?.author?._id.toString();
+
+    // Delete main feedback
+    await Feedback.findByIdAndDelete(id);
+    // Recursively delete child comment/reply
+    await Comment.deleteMany({ _id: { $in: childCommentsIds } });
+    await Reply.deleteMany({ _id: { $in: childRepliesArrayIds } });
+
+    //Update user model
+    await User.updateMany(
+      { _id: { $in: Array.from(commentUniqueAuthorIds) } },
+      { $pull: { comments: { $in: childCommentsIds } } }
+    );
+    await User.updateMany(
+      { _id: { $in: Array.from(replyUniqueAuthorIds) } },
+      { $pull: { replies: { $in: childRepliesArrayIds } } }
+    );
+
+    await User.updateOne(
+      { _id: mainFeedbackAuthorId },
+      { $pull: { feedbacks: id } }
+    );
 
     return NextResponse.json(
       { message: "Feedback deleted successfully" },
@@ -136,3 +195,25 @@ export const DELETE = async ({ params }: { params: { id: string } }) => {
     );
   }
 };
+
+async function fetchAllChildFeedback(feedbackId: string) {
+  const childFeedbacks = await Comment.find({ parentId: feedbackId });
+
+  const childComments = [];
+  const childRepliesArray = [];
+  for (const childFeedback of childFeedbacks) {
+    childComments.push(childFeedback);
+    const childReplies = await Reply.find({ parentId: childFeedback._id });
+    for (const childReply of childReplies) {
+      childRepliesArray.push(childReply);
+    }
+
+    // const descendants = await fetchAllChildFeedback(childFeedback._id);
+    // descendantFeedbacks.push(childFeedback, ...descendants);
+  }
+
+  // console.log("Comments:", childComments);
+  // console.log("Replies:", childRepliesArray);
+
+  return { childComments, childRepliesArray };
+}

@@ -111,6 +111,7 @@ const config: Config = {
         "light-blue-500": "rgb(98, 188, 250)",
         "nav-opc": "rgba(0, 0, 0, 0.5)",
         "comment-divide": "rgba(140,146,179, 0.25)",
+        "roadmap-list": "rgba(58, 67, 116, 0.4)",
       },
       fontFamily: {
         sans: ["Jost", "sans-serif"],

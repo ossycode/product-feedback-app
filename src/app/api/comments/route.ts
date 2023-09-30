@@ -26,6 +26,10 @@ export const POST = async (request: Request) => {
 
     const savedCommentFeedback = await commentFeedback.save();
 
+    await User.findByIdAndUpdate(author, {
+      $push: { comments: savedCommentFeedback._id },
+    });
+
     originalFeedback.comments.push(savedCommentFeedback._id);
 
     await originalFeedback.save();

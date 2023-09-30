@@ -1,10 +1,9 @@
 "use client";
 
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import Button from "../ui/button";
 import Image from "next/image";
 import MiniSpinner from "../ui/MiniSpinner";
 
@@ -13,20 +12,19 @@ const LoginForm = () => {
   const [password, setPassword] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>();
-  const session = useSession();
-  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (session.status === "authenticated") {
-  //     router.push("/dashboard");
-  //   }
-  // }, [session.status, router]);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
       setIsLoading(true);
+      if (username === undefined || password === undefined) {
+        setError("Username and password are required");
+        return;
+      }
+
       const res = await signIn("credentials", {
         username,
         password,
@@ -38,9 +36,10 @@ const LoginForm = () => {
         return;
       }
       router.replace("dashboard");
-      setIsLoading(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -60,8 +59,9 @@ const LoginForm = () => {
             id="username"
             placeholder="Username..."
             type="text"
-            className="min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem] 
-              font-normal  py-[1.3rem] px-[2.4rem] border active:border-solid	active:border-dark-blue"
+            // className="min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem]
+            //   font-normal  py-[1.3rem] px-[2.4rem] border active:border-solid	active:border-dark-blue"
+            className={`signupform-input ${error && "border-red-600"} `}
             onChange={(e) => setUserName(e.target.value)}
           />
 
@@ -75,10 +75,14 @@ const LoginForm = () => {
             id="password"
             placeholder="Password..."
             type="password"
-            className="min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem]
-               font-normal py-[1.3rem] px-[2.4rem] border active:border-solid	active:border-dark-blue"
+            // className="min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem]
+            //    font-normal py-[1.3rem] px-[2.4rem] border active:border-solid	active:border-dark-blue"
+            className={`signupform-input ${error && "border-red-600"} `}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {error && (
+            <span className="text-[#D73737] text-[1.4rem] block">{error}</span>
+          )}
 
           <button
             className=" bg-dark-grayish-400 py-4 px-4 font-bold  w-[25.5rem] text-ghost-white-100 text-[1.5rem] block mt-16 rounded-2xl"

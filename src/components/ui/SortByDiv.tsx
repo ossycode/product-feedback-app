@@ -2,21 +2,46 @@
 
 import { suggestionsSortOptions } from "@/constants";
 import SortPopup from "./sortPopup";
-import Button from "./button";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import useCustomRouter from "@/hooks/useCustomRouter";
+import { useSortBy } from "@/context/sortByContext";
 
 interface Props {
   totalSuggestion: number;
 }
 
 const SortByDiv = ({ totalSuggestion }: Props) => {
-  const [filterOption, setFilterOption] = useState<string>();
+  const { pushQuery, query } = useCustomRouter();
+  const { sortBy, setSortBy } = useSortBy();
+
+  // const testdata = query.sort === undefined ? "Most UpVotes"
+
+  const [filterOption, setFilterOption] = useState<string>(
+    query.sort || "Most Upvotes"
+  );
+
+  // value = {query.sort || 'createdAt'=
+  //     // // onChange={e => pushQuery({sort: e.target.value})}
+  //   )
+
+  useEffect(() => {
+    setSortBy(filterOption);
+    pushQuery({ sort: filterOption });
+  }, [pushQuery, setSortBy, filterOption, sortBy, query]);
+
+  // setSortBy(filterOption);
+  // pushQuery({ sort: sortBy });
 
   const getSelectedfilterOption = (currentCat: string): void => {
     setFilterOption(currentCat);
+    // pushQuery({ sort: currentCat });
   };
+  // useEffect(() => {
+  //   pushQuery({ sort: filterOption });
+  // }, []);
+
   return (
     <div
       className="bg-[#373F68] text-light-purple-100 flex items-center

@@ -1,34 +1,39 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
-import { useCategory } from "@/hooks/useCategory";
-// import useCategory from "@/hooks/useCategory";
+import { createContext, useCallback, useContext, useState } from "react";
+// import { useNavbarCategory } from "@/hooks/useCategory";
 
 export interface CatContextType {
   category: string;
-  setCurentCategory: (title: string) => void;
+  setCategory: (title: string) => void;
 }
 
 export const CAT_DEFAULT_VALUES = {
-  category: "",
-  setCurentCategory: () => {},
+  category: "All",
+  setCategory: () => {},
 };
 
-export const CategoryContext =
+export const NavbarCategoryContext =
   createContext<CatContextType>(CAT_DEFAULT_VALUES);
 
-function CategoryProvider({ children }: any) {
-  const { category, setCurentCategory } = useCategory();
+function NavbarCategoryProvider({ children }: any) {
+  const [category, setCategory] = useState<string>("");
+
+  // const setCurentCategory = useCallback((currentCategory: string): void => {
+  //   setCategory(currentCategory);
+  // }, []);
+
+  // const { category, setCurentCategory } = useNavbarCategory();
 
   return (
-    <CategoryContext.Provider value={{ category, setCurentCategory }}>
+    <NavbarCategoryContext.Provider value={{ category, setCategory }}>
       {children}
-    </CategoryContext.Provider>
+    </NavbarCategoryContext.Provider>
   );
 }
 
-function useCurrentCategory() {
-  const context = useContext(CategoryContext);
+function useCurrentNavbarCategory() {
+  const context = useContext(NavbarCategoryContext);
 
   if (context === undefined)
     throw new Error("CategoryContext was used outside of CategoryProvider");
@@ -36,4 +41,4 @@ function useCurrentCategory() {
   return context;
 }
 
-export { CategoryProvider, useCurrentCategory };
+export { NavbarCategoryProvider, useCurrentNavbarCategory };

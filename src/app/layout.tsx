@@ -3,8 +3,9 @@ import type { Metadata } from "next";
 import { Jost } from "next/font/google";
 import { ToggleNavProvider } from "@/context/ToggleNavContext";
 import AuthProvider from "@/context/AuthProvider";
-import { CategoryProvider } from "@/context/CategoryContext";
+import { NavbarCategoryProvider } from "@/context/CategoryContext";
 import { Toaster } from "react-hot-toast";
+import { SortByProvider } from "@/context/sortByContext";
 
 const jost = Jost({ subsets: ["latin"] });
 
@@ -21,33 +22,35 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${jost.className}`}>
-        <CategoryProvider>
-          <ToggleNavProvider>
-            <AuthProvider>
-              <Toaster
-                position="top-center"
-                gutter={12}
-                containerStyle={{ margin: "8px" }}
-                toastOptions={{
-                  success: {
-                    duration: 3000,
-                  },
-                  error: {
-                    duration: 5000,
-                  },
-                  style: {
-                    fontSize: "16px",
-                    maxWidth: "500px",
-                    padding: "16px 24px",
-                    backgroundColor: "rgb(100, 113, 150)",
-                    color: "rgb(247, 248, 253)",
-                  },
-                }}
-              />
-              {children}
-            </AuthProvider>
-          </ToggleNavProvider>
-        </CategoryProvider>
+        <NavbarCategoryProvider>
+          <SortByProvider>
+            <ToggleNavProvider>
+              <AuthProvider>
+                <Toaster
+                  position="top-center"
+                  gutter={12}
+                  containerStyle={{ margin: "8px" }}
+                  toastOptions={{
+                    success: {
+                      duration: 3000,
+                    },
+                    error: {
+                      duration: 5000,
+                    },
+                    style: {
+                      fontSize: "16px",
+                      maxWidth: "500px",
+                      padding: "16px 24px",
+                      backgroundColor: "rgb(100, 113, 150)",
+                      color: "rgb(247, 248, 253)",
+                    },
+                  }}
+                />
+                {children}
+              </AuthProvider>
+            </ToggleNavProvider>
+          </SortByProvider>
+        </NavbarCategoryProvider>
       </body>
     </html>
   );

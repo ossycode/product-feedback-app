@@ -23,6 +23,7 @@ const Navbar = () => {
         </div>
       </div>
       <Categories />
+
       <Roadmap />
     </nav>
   );

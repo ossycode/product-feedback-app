@@ -1,10 +1,18 @@
 "use client";
 
-import Button from "./button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import BackBtnSVG from "./BckBtnSVG";
 
-const BackBtn = () => {
+// interface Props {
+//   btnColor: string;
+//   arrowColor: string;
+// }
+
+const BackBtn = ({
+  btnColor = "text-light-gray-200",
+  arrowColor = "#4661E6",
+}) => {
   const router = useRouter();
 
   return (
@@ -12,14 +20,8 @@ const BackBtn = () => {
       className="flex items-center gap-6 rounded-2xl w-max hover:underline hover:underline-offset-2 hover:decoration-[#647196]"
       onClick={() => router.back()}
     >
-      <Image
-        src={"/assets/shared/icon-arrow-left.svg"}
-        alt="arrow back"
-        width={8}
-        height={8}
-        className="aspect-auto w-auto h-auto"
-      />
-      <span className="text-[1.3rem] xl:text-heading4 font-bold text-light-gray-200">
+      <BackBtnSVG stroke={arrowColor} />
+      <span className={`text-[1.3rem] lg:text-heading4 font-bold ${btnColor}`}>
         Go Back
       </span>
     </button>

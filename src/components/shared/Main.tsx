@@ -1,32 +1,41 @@
+"use client";
+
+import { calculateTotalComment } from "@/lib/utils";
 import FeedbackCard from "../ui/FeedbackCard";
 import NoFeedbackCard from "../ui/NoFeedbackCard";
 import { getFeedbacks } from "@/hooks/useFeedbacks";
-import { use } from "react";
+import { use, useState } from "react";
+import SortByDiv from "../ui/SortByDiv";
+import { useCurrentNavbarCategory } from "@/context/CategoryContext";
+import useAllFeedbacks from "@/hooks/useAllFeedbacks";
+import Spinner from "../ui/Spinner";
+import SuggestionsList from "../ui/SuggestionsList";
 
-const Main = () => {
-  const { feedbacksSuggestions } = use(getFeedbacks());
+interface Props {
+  allFeedbacks: any[];
+}
 
-  if (feedbacksSuggestions.length === 0) {
-    return (
-      <main className="bg-ghost-white-100 h-full mt-1 pt-8 pb-36 px-4 md:px-0">
-        <NoFeedbackCard />
-      </main>
-    );
+const Main = ({ allFeedbacks }: Props) => {
+  const { category } = useCurrentNavbarCategory();
+
+  let totalSuggestionCount;
+
+  if (category === "All") {
+    totalSuggestionCount = allFeedbacks.filter(
+      (feedback: any) => feedback.status === "Suggestion"
+    ).length;
+  } else {
+    totalSuggestionCount = allFeedbacks.filter(
+      (feedback: any) =>
+        feedback.status === "Suggestion" && feedback.category === category
+    ).length;
   }
 
   return (
-    <main className="main-body flex flex-col gap-[1.6rem] overflow-scroll sm:px-[2.4rem] px-4 pt-[2.4rem] md:px-0  ">
-      {feedbacksSuggestions.map((feedback: any) => (
-        <FeedbackCard
-          key={feedback._id}
-          id={feedback._id}
-          title={feedback.title}
-          description={feedback.description}
-          category={feedback.category}
-          upvotes={feedback.upvotes}
-          totalComments={feedback.comments.length}
-        />
-      ))}
+    <main className=" ">
+      <SortByDiv totalSuggestion={totalSuggestionCount} />
+
+      <SuggestionsList />
     </main>
   );
 };

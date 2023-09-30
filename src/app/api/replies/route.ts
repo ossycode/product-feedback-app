@@ -1,5 +1,6 @@
 import Comment from "@/lib/models/comment.model";
 import Reply from "@/lib/models/reply.model";
+import User from "@/lib/models/user.model";
 import { connectToDB } from "@/lib/mongoose";
 import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
@@ -24,6 +25,10 @@ export const POST = async (request: Request) => {
     });
 
     const savedReplyToComment = await replyToComment.save();
+
+    await User.findByIdAndUpdate(author, {
+      $push: { comments: savedReplyToComment._id },
+    });
 
     originalComment.replies.push(savedReplyToComment._id);
 

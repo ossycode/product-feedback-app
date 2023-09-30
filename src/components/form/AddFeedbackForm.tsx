@@ -3,14 +3,12 @@
 import Image from "next/image";
 import SortPopup from "../ui/sortPopup";
 import { categories } from "@/constants";
-import { useCallback, useState } from "react";
+import { startTransition, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { FeedbackValidation } from "@/lib/validations/feedback";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname, useRouter } from "next/navigation";
-import { useCurrentCategory } from "@/context/CategoryContext";
-import { Status } from "@/lib/enum";
 import useUserSession from "@/hooks/useUserSession";
 import toast from "react-hot-toast";
 import MiniSpinner from "../ui/MiniSpinner";
@@ -22,9 +20,7 @@ const AddFeedbackForm = () => {
     setCurrentCat(currentCat);
   };
 
-  // console.log(currentCat);
   type FeedbackValidationSchemaType = z.infer<typeof FeedbackValidation>;
-  // const [category, setCategory] = useState<string>();
   const router = useRouter();
   const currentUser = useUserSession();
   const pathname = usePathname();
@@ -63,14 +59,15 @@ const AddFeedbackForm = () => {
           description: data.description,
           upvotes: 0,
           category: currentCat,
-          status: Status.Suggestion,
+          status: "Suggestion",
           path: pathname,
-          author: currentUser._id,
+          author: currentUser?.id,
         }),
       });
       if (res.ok) {
         toast.success("Feedback created successfully");
-        router.push("/dashboard");
+        startTransition(() => router.push("/dashboard"));
+        startTransition(() => router.refresh());
       } else {
         toast.error("Something went wrong!");
         console.log("Feedback creation failed");

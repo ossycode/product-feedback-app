@@ -1,6 +1,5 @@
 import AddFeedbackForm from "@/components/form/AddFeedbackForm";
 import BackBtn from "@/components/ui/BackBtn";
-import Button from "@/components/ui/button";
 import useUser from "@/hooks/useUser";
 import Image from "next/image";
 import useUserSession from "@/hooks/useUserSession";

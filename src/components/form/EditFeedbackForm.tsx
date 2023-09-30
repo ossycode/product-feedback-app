@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, startTransition } from "react";
 import MiniSpinner from "../ui/MiniSpinner";
 import Image from "next/image";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -21,9 +21,16 @@ interface Props {
   description: string;
   category: string;
   status: string;
+  feedbackid: string;
 }
 
-const EditFeedbackForm = ({ title, description, category, status }: Props) => {
+const EditFeedbackForm = ({
+  title,
+  description,
+  category,
+  status,
+  feedbackid,
+}: Props) => {
   const [currentCat, setCurrentCat] = useState<string>();
   const [roadmapStatus, setRoadmapStatus] = useState<string>();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -83,6 +90,27 @@ const EditFeedbackForm = ({ title, description, category, status }: Props) => {
       console.log(`${err.code}: Error update creation`);
     } finally {
       // setIsLoading(false);
+    }
+  };
+
+  const handleDelete = async (
+    e: React.FormEvent<HTMLButtonElement>,
+    id: string
+  ) => {
+    try {
+      e.preventDefault();
+      // setIsSubmitting(true);
+      alert("You want to delete?");
+      const res = await fetch(`/api/feedbacks/${id}`, {
+        method: "DELETE",
+      });
+
+      startTransition(() => router.push("/dashboard"));
+      startTransition(() => router.refresh());
+    } catch (err: Error | any) {
+      console.log(`${err.code}: Error deleting feedback`);
+    } finally {
+      // setIsSubmitting(false);
     }
   };
 
@@ -210,7 +238,7 @@ const EditFeedbackForm = ({ title, description, category, status }: Props) => {
           </div>
           <button
             className="bg-light-orange-500 new-form-btn  "
-            // onClick={(e) => handleCancel(e)}
+            onClick={(e) => handleDelete(e, feedbackid)}
             disabled={isSubmitting}
           >
             Delete

@@ -1,6 +1,5 @@
 "use client";
 
-import Button from "@/components/ui/button";
 import Image from "next/image";
 import { useState } from "react";
 import { useSession } from "next-auth/react";
@@ -14,12 +13,10 @@ const Settings = () => {
 
   const { user, isLoading } = useUser();
 
-  const currentUser = user[0];
-
-  if (isLoading) {
+  if (isLoading || user === undefined) {
     return <Spinner />;
   }
-
+  const currentUser = user?.[0];
   const currentDateString = formatDateString(currentUser?.createdAt);
 
   return (
@@ -34,17 +31,17 @@ const Settings = () => {
             @{currentUser?.username}
           </p>
           <Image
-            src={currentUser.avatar || "/assets/default-user.jpg"}
+            src={currentUser?.avatar || "/assets/default-user.jpg"}
             alt="profile photo"
             width={100}
             height={100}
             className="rounded-full aspect-[1] object-center	object-cover"
           />
-
+          {/* w-[25.5rem]  */}
           <div className="relative cursor-pointer ">
-            <Button btnProps="bg-[#D73737] py-4 px-4 font-bold  w-[25.5rem] text-ghost-white-100 text-[1.5rem]  py-3.5 px-10 font-bold w-max text-ghost-white-100 text-[1.5rem] ">
+            <button className="bg-[#D73737] py-4 px-4  md:py-3.5 md:px-10 font-bold w-max text-ghost-white-100 text-[1.5rem] ">
               {file?.name ? file.name : "Change Picture"}
-            </Button>
+            </button>
             <input
               type="file"
               name="file"
@@ -156,12 +153,11 @@ const Settings = () => {
                 disabled
               />
             </div>
-            <Button btnProps=" bg-[#D73737] px-4 font-bold  w-[25.5rem] text-ghost-white-100 text-[1.5rem] block ">
+            <button className=" bg-[#D73737] px-4 font-bold  w-[25.5rem] text-ghost-white-100 text-[1.5rem] block ">
               Update Info
-            </Button>
+            </button>
           </form>
         </section>
-        B di
       </div>
     </div>
   );

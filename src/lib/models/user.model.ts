@@ -14,6 +14,18 @@ const userSchema = new mongoose.Schema(
         ref: "Feedback",
       },
     ],
+    comments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
+    replies: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Reply",
+      },
+    ],
   },
   { timestamps: true }
 );

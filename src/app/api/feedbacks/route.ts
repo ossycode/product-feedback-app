@@ -1,39 +1,96 @@
+import Comment from "@/lib/models/comment.model";
 import Feedback from "@/lib/models/feedback.model";
+import Reply from "@/lib/models/reply.model";
 import User from "@/lib/models/user.model";
 import { connectToDB } from "@/lib/mongoose";
 import { revalidatePath } from "next/cache";
-import { NextResponse } from "next/server";
+import { useSearchParams } from "next/navigation";
+import { NextRequest, NextResponse } from "next/server";
+// import sortProps from "./sortProps";
+// import { useSortBy } from "@/context/sortByContext";
 
-export const GET = async (pageNumber = 1, pageSize = 10) => {
+export const GET = async (
+  request: NextRequest,
+  pageNumber = 1,
+  pageSize = 10
+) => {
+  const url = new URL(request.url);
+  const urlSortProp = url.searchParams.get("sort");
+  // console.log(url.searchParams.get("sort"));
+
   connectToDB();
 
   // Calculate the number of posts to skip based on the page number and page size
   const skipAmount = (pageNumber - 1) * pageSize;
+
   try {
+    const sortProps = getSortbyProps(urlSortProp);
+    // const urlParams = useSearchParams();
+
     // find feedback that have not parent ( top-level feedback), a feedback that is not a comment/reply
     const feedbacksQuery = Feedback.find({
       parentId: { $in: [null, undefined] },
-      status: "Suggestion",
+      // status: "Suggestion",
     })
-      .sort({ createdAt: "desc" })
+      .sort(sortProps)
       .skip(skipAmount)
       .limit(pageSize)
-      .populate({
-        path: "author",
-        model: User,
-      })
-      .populate({
-        path: "comments.author",
-        model: User,
-        select: "_id name parentId avatar username",
-        // model: Feedback,
-        // populate: {
-        //   path: "author",
-        //   model: User,
-        //   select: "_id",
-        //   // select: "_id name parentId avatar",
-        // },
-      });
+      .populate([
+        {
+          path: "author",
+          model: User,
+        },
+        {
+          path: "comments",
+          model: Comment,
+
+          populate: {
+            path: "replies",
+            model: Reply,
+            select: "_id content replyingTo parentId",
+            populate: [
+              {
+                path: "author",
+                model: User,
+                select: "_id  id name avatar username",
+              },
+            ],
+          },
+        },
+      ]);
+    // .populate({
+    //   path: "comments",
+    //   populate: [
+    //     {
+    //       path: "author",
+    //       model: User,
+    //       select: "_id  id name avatar username",
+    //     },
+    //     {
+    //       path: "replies",
+    //       model: Comment,
+    //       populate: [
+    //         {
+    //           path: "author",
+    //           model: User,
+    //           select: "_id  id name avatar username",
+    //         },
+    //       ],
+    //     },
+    //   ],
+    // });
+    // .populate({
+    //   path: "comments.author",
+    //   model: User,
+    //   select: "_id name parentId avatar username",
+    //   //   // model: Feedback,
+    //   //   // populate: {
+    //   //   //   path: "author",
+    //   //   //   model: User,
+    //   //   //   select: "_id",
+    //   //   //   // select: "_id name parentId avatar",
+    //   //   // },
+    // });
 
     // Count the total number of top-level feedbacks that are suggestions
     const totalSuggestionCount = await Feedback.countDocuments({
@@ -56,10 +113,9 @@ export const GET = async (pageNumber = 1, pageSize = 10) => {
       status: "In-Progress",
     });
 
-    const feedbacksSuggestions = await feedbacksQuery.exec();
+    const allFeedbacks = await feedbacksQuery.exec();
 
-    const isNext =
-      totalSuggestionCount > skipAmount + feedbacksSuggestions.length;
+    const isNext = totalSuggestionCount > skipAmount + allFeedbacks.length;
 
     // return { feedbacksSuggestions, totalSuggestionCount, isNext };
     // return NextResponse.json({ feedbacksSuggestions }, { status: 201 });
@@ -68,7 +124,7 @@ export const GET = async (pageNumber = 1, pageSize = 10) => {
     // return { feedbacksSuggestions, isNext, totalSuggestionCount };
     return new NextResponse(
       JSON.stringify({
-        feedbacksSuggestions,
+        allFeedbacks,
         isNext,
         totalSuggestionCount,
         totalInProgressCount,
@@ -123,3 +179,23 @@ export const POST = async (request: Request) => {
     );
   }
 };
+
+function getSortbyProps(sortParam: string | null) {
+  let sortProp = {};
+  if (sortParam === "Most Upvotes") {
+    sortProp = { upvotes: "desc" };
+  }
+  if (sortParam === "Least Upvotes") {
+    sortProp = { upvotes: "asc" };
+  }
+  if (sortParam === "Most Comments") {
+    sortProp = { comments: "desc" };
+  }
+  if (sortParam === "Least Comments") {
+    sortProp = { comments: "asc" };
+  }
+
+  return sortProp;
+}
+
+// const sort = getSortbyProps();

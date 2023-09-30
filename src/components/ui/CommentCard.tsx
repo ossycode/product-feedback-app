@@ -5,7 +5,6 @@ import AddReplyForm from "../form/AddReplyForm";
 import Image from "next/image";
 import Link from "next/link";
 import Comment from "./Comment";
-import ReplyCard from "./ReplyCard";
 import useComment from "@/hooks/useComment";
 
 interface Props {

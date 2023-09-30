@@ -2,7 +2,7 @@ import React from "react";
 
 const MiniSpinner = () => {
   return (
-    <div role="status" className="flex">
+    <div role="status" className="flex items-center justify-center">
       <svg
         aria-hidden="true"
         className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-yellow-600"

@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Button from "./button";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useParams, usePathname } from "next/navigation";
@@ -57,7 +56,7 @@ const FeedbackCard = ({
         className="flex flex-col items-start col-span-2 md:col-start-2 md:col-end-7 md:min-w-[70%]"
         href={`/dashboard/feedback/${id}`}
       >
-        <h1 className="text-dark-grayish-400 tracking-[-0.0181rem] font-bold text-[1.3rem] md:text-heading3">
+        <h1 className="text-dark-grayish-400 tracking-[-0.0181rem] font-bold text-[1.3rem] md:text-heading3 hover:text-dark-blue">
           {title}
         </h1>
         <p className="text-[1.3rem] text-light-gray-200 md:text-body1 mt-[0.4rem]">
@@ -69,7 +68,7 @@ const FeedbackCard = ({
       </Link>
 
       <button
-        className="flex items-center gap-2 md:gap-4 bg-light-purple-100 font-bold text-[1.3rem] py-[0.6rem] px-[1.6rem] w-max md:order-first md:flex-col md:justify-center md:h-max md:w-[4rem] md:min-h-[5.3rem] md:py-[1rem] rounded-2xl hover:bg-[#CFD7FF]"
+        className="flex items-center gap-4 md:gap-4 bg-light-purple-100 font-bold text-[1.3rem] py-[0.6rem] px-[1.6rem] w-max md:order-first md:flex-col md:justify-center md:h-max md:w-[4rem] md:min-h-[5.3rem] md:py-[1rem] rounded-2xl hover:bg-[#CFD7FF]"
         onClick={() => {
           setTotalVotes((totalVotes) => totalVotes + 1);
         }}

@@ -9,6 +9,7 @@ import CommentCard from "@/components/ui/CommentCard";
 import Spinner from "@/components/ui/Spinner";
 import useFeedback from "@/hooks/useFeedback";
 import useAuthor from "@/hooks/useAuthor";
+import { calculateTotalComment } from "@/lib/utils";
 
 interface Props {
   _id: string;
@@ -25,16 +26,16 @@ const FeedbackDetails = ({ params }: { params: { id: string } }) => {
 
   const isAuthor = useAuthor(params.id);
 
-  const totalComments = data?.comments?.length;
-
   if (!params.id) return;
 
-  if (isLoading) {
+  if (isLoading && data === undefined) {
     return <Spinner />;
   }
 
+  const totalComments: number = calculateTotalComment(data?.comments);
+
   return (
-    <div className="p-[2.4rem] bg-ghost-white-100 min-h-screen flex flex-col gap-[2.4rem] md:py-[5.6rem] md:px-[3.9rem] lg:px-[35.5rem] lg:py-[8rem]">
+    <div className="p-[2.4rem] bg-ghost-white-100 min-h-screen flex flex-col gap-[2.4rem] md:py-[5.6rem] md:px-[3.9rem] lg:px-[18rem]  xl:px-[35.5rem] xl:py-[8rem]">
       <div className="flex items-center justify-between">
         <BackBtn />
         {isAuthor && (
@@ -52,7 +53,7 @@ const FeedbackDetails = ({ params }: { params: { id: string } }) => {
         description={data.description}
         category={data.category}
         upvotes={data.upvotes}
-        totalComments={data.comments.length}
+        totalComments={totalComments}
       />
       <div className="bg-clr-white p-[2.4rem] md:px-[3.2rem] flex flex-col items-start gap-8">
         <h1 className="text-heading3 text-dark-grayish-400 ">

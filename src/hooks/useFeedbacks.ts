@@ -1,9 +1,11 @@
 // import useSWR from "swr";
 
+import { useSearchParams } from "next/navigation";
 import { cache } from "react";
 
 export const getFeedbacks = cache(async () => {
-  const res = await fetch("http://localhost:3000/api/feedbacks", {
+  // ?sort=${sortby}
+  const res = await fetch(`http://localhost:3000/api/feedbacks`, {
     cache: "no-store",
   });
   if (!res.ok) {
