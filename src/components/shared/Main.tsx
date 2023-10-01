@@ -8,7 +8,6 @@ import { use, useState } from "react";
 import SortByDiv from "../ui/SortByDiv";
 import { useCurrentNavbarCategory } from "@/context/CategoryContext";
 import useAllFeedbacks from "@/hooks/useAllFeedbacks";
-import Spinner from "../ui/Spinner";
 import SuggestionsList from "../ui/SuggestionsList";
 
 interface Props {

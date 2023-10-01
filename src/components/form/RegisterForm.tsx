@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-import Button from "../ui/button";
 import FormRow from "../ui/FormRow";
 import { UserValidation } from "@/lib/validations/user";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,7 +11,6 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import "@uploadthing/react/styles.css";
 import { useUploadThing } from "@/lib/uploadthing";
-import { ourFileRouter } from "@/app/api/uploadthing/core";
 
 const RegisterForm = () => {
   type UserValidationSchemaType = z.infer<typeof UserValidation>;
@@ -157,27 +155,10 @@ const RegisterForm = () => {
               // {...register("avatar")}
             />
           </FormRow>
-          {/* 
-          <FormRow label="Profile picture" error={""}>
-            <div className="signupform-input">
-              <UploadButton
-                endpoint="imageUploader"
-                onClientUploadComplete={(res) => {
-                  // Do something with the response
-                  console.log("Files: ", res);
-                  alert("Upload Completed");
-                }}
-                onUploadError={(error: Error) => {
-                  // Do something with the error.
-                  alert(`ERROR! ${error.message}`);
-                }}
-              />
-            </div>
-          </FormRow> */}
 
-          <Button btnProps=" bg-dark-grayish-400 py-4 px-4 font-bold  w-[25.5rem] text-ghost-white-100 text-[1.5rem] block">
+          <button className=" bg-dark-grayish-400 py-4 px-4 font-bold  w-[25.5rem] text-ghost-white-100 text-[1.5rem] block">
             Sign up
-          </Button>
+          </button>
         </form>
         <p className="text-dark-grayish-400  text-[1.6rem] font-normal ">
           Have an account?{" "}
@@ -194,10 +175,6 @@ const RegisterForm = () => {
           width={200}
           height={200}
         />
-      </div>
-
-      <div>
-        {/* <Image src={file} alt="test" width={200} height={200} /> */}
       </div>
     </div>
   );

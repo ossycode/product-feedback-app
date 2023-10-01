@@ -1,9 +1,7 @@
-const Loader = () => {
-  return (
-    <div className="wrapper">
-      <div className="loader"></div>
-    </div>
-  );
+import Spinner from "@/components/ui/Spinner";
+
+const loading = () => {
+  return <Spinner />;
 };
 
-export default Loader;
+export default loading;

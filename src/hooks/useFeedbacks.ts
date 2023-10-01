@@ -1,6 +1,5 @@
 // import useSWR from "swr";
 
-import { useSearchParams } from "next/navigation";
 import { cache } from "react";
 
 export const getFeedbacks = cache(async () => {

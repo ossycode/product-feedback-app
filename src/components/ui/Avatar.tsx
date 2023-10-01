@@ -1,23 +1,12 @@
-"use client";
-
 import useUser from "@/hooks/useUser";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
-const Avatar = () => {
-  const { data: session } = useSession();
-
-  const email = session?.user?.email!;
-
-  const { user, isLoading } = useUser(email);
-
-  const currentUser = user?.[0];
-
+const Avatar = ({ user }: any) => {
   return (
-    <Link href={"/settings"} className="self-center ">
+    <Link href={`/dashboard/users/${user?.username}`} className="self-center ">
       <Image
-        src={currentUser?.avatar || "/assets/default-user.jpg"}
+        src={user?.avatar || "/assets/default-user.jpg"}
         alt="profile image"
         width={50}
         height={50}

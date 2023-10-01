@@ -4,7 +4,7 @@ import { useToggleNav } from "@/context/ToggleNavContext";
 import Image from "next/image";
 
 const Header = () => {
-  const { isNavOpen, toggleDarkMode } = useToggleNav();
+  const { isNavOpen, toggleNavbar } = useToggleNav();
 
   return (
     <header
@@ -20,7 +20,7 @@ const Header = () => {
         </h2>
       </div>
 
-      <button onClick={toggleDarkMode}>
+      <button onClick={toggleNavbar}>
         {!isNavOpen ? (
           <Image
             src={"/assets/shared/mobile/icon-hamburger.svg"}

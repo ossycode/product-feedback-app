@@ -1,3 +1,5 @@
+"use client";
+
 export function calculateTotalComment(arr: any[]) {
   let totalLength = arr.length;
 

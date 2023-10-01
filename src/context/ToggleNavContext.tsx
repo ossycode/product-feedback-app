@@ -8,19 +8,19 @@ import { createContext, useContext, useState } from "react";
 // }
 type NavContextType = {
   isNavOpen: boolean;
-  toggleDarkMode: () => void;
+  toggleNavbar: () => void;
 };
 const ToggleNavContext = createContext<NavContextType | null>(null);
 
 function ToggleNavProvider({ children }: any) {
   const [isNavOpen, setIsNavOpen] = useState<boolean>(false);
 
-  function toggleDarkMode() {
+  function toggleNavbar() {
     setIsNavOpen((isNavOpen) => !isNavOpen);
   }
 
   return (
-    <ToggleNavContext.Provider value={{ isNavOpen, toggleDarkMode }}>
+    <ToggleNavContext.Provider value={{ isNavOpen, toggleNavbar }}>
       {children}
     </ToggleNavContext.Provider>
   );

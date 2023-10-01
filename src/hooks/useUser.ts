@@ -10,13 +10,16 @@ const fetcher = (...args: Parameters<typeof fetch>) =>
 function useUser() {
   const user = useUserSession();
 
-  const email = user?.email;
+  const username = user?.username;
 
-  // useEffect(() => {
-  //   preload(`/api/users?email=${email}`, fetcher);
-  // }, [email]);
+  useEffect(() => {
+    preload(`/api/users?username=${username}`, fetcher);
+  }, [username]);
 
-  const { data, isLoading } = useSWR(`/api/users?email=${email}`, fetcher);
+  const { data, isLoading } = useSWR(
+    `/api/users?username=${username}`,
+    fetcher
+  );
 
   return { user: data, isLoading };
 }
