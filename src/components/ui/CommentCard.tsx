@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Comment from "./Comment";
 import useComment from "@/hooks/useComment";
+import Replies from "./Replies";
 
 interface Props {
   content: string;
@@ -35,26 +36,21 @@ const CommentCard = ({
     }
   }, [data?.replies.length]);
 
+  // gap-[3.2rem]
   return (
-    <div className="flex  w-full flex-1 gap-[3.2rem] py-12 ">
-      <div className="flex flex-col items-center">
-        <Link href={""} className="relative h-16 w-16">
-          <Image
-            src={userImage}
-            alt="user prorfile"
-            width={40}
-            height={40}
-            className="cursor-pointer rounded-full"
-          />
-        </Link>
-        <div
-          className={`  mt-9 w-0.5 max-h-[70%] grow rounded-2xl bg-comment-divide ${
-            !showReplies && "hidden"
-          }`}
-        />
-      </div>
-      <div className="flex flex-col gap-[1.6rem] w-full">
-        <div className="flex items-center  justify-between w-full">
+    <div className="flex  w-full flex-col  py-12 ">
+      <div className="flex items-center  justify-between w-full">
+        <div className="flex gap-[1.9rem] items-center md:gap-[3.2rem]">
+          <Link href={""} className="relative h-16 w-16">
+            <Image
+              src={userImage}
+              alt="user prorfile"
+              width={40}
+              height={40}
+              className="cursor-pointer rounded-full"
+            />
+          </Link>
+
           <p className="text-heading5 md:text-heading4 text-dark-grayish-400 ">
             {name}
             <span className="block font-normal text-light-gray-200 md:text-[1.4rem]">
@@ -62,35 +58,57 @@ const CommentCard = ({
             </span>
           </p>
 
-          <button
-            className="text-dark-blue border-none font-semibold text-[1.3rem] hover:underline hover:underline-offset-2 hover:decoration-1"
-            onClick={() => setOpenReply((openReply) => !openReply)}
-          >
-            Reply
-          </button>
+          {/* <div
+          className={`  mt-9 w-0.5 max-h-[70%] grow rounded-2xl bg-comment-divide ${
+            !showReplies && "hidden"
+          }`}
+        /> */}
+          {/* <div
+          className={`  mt-9 w-0.5 max-h-[70%] grow rounded-2xl bg-comment-divide
+            hidden
+          `}
+        /> */}
         </div>
-        <p className="  text-light-gray-200 text-[1.3rem] md:text-[1.5rem]">
-          {content}
-        </p>
+        <button
+          className="text-dark-blue border-none font-semibold text-[1.3rem] hover:underline hover:underline-offset-2 hover:decoration-1"
+          onClick={() => setOpenReply((openReply) => !openReply)}
+        >
+          Reply
+        </button>
+      </div>
+      <p className="  text-light-gray-200 text-[1.3rem] md:text-[1.5rem] mt-[1.6rem] md:pl-[7.2rem]">
+        {content}
+      </p>
+
+      <div className="mt-[1.6rem] md:pl-[7.2rem]">
         {openReply && (
           <AddReplyForm commentAuthor={username} commentId={commentId} />
         )}
-
-        {data?.replies.length > 0 &&
-          data?.replies.map((element: any) => (
-            <Comment
-              key={element._id}
-              content={element.content}
-              username={element.author.username}
-              name={element.author.name}
-              userImage={element.author.avatar}
-              commentId={commentId}
-              replyingTo={element.replyingTo}
-            />
-          ))}
       </div>
+
+      {/* {data?.replies.length > 0 && (
+        <div className="flex items-start gap-9  w-full mt-[1.6rem]">
+          <div className="rounded-2xl bg-comment-divide w-0.5 h-[21.6rem]"></div>
+
+          <div className="flex items-start flex-col gap-[2.6rem] grow">
+            {data?.replies.map((element: any) => (
+              <Comment
+                key={element._id}
+                content={element.content}
+                username={element.author.username}
+                name={element.author.name}
+                userImage={element.author.avatar}
+                commentId={commentId}
+                replyingTo={element.replyingTo}
+              />
+            ))}
+          </div>
+        </div>
+      )} */}
+      <Replies data={data} commentId={commentId} />
     </div>
   );
 };
-
+{
+}
 export default CommentCard;

@@ -23,9 +23,9 @@ const Comment = ({
   const [openReply, setOpenReply] = useState<boolean>(false);
 
   return (
-    <div className="flex flex-col gap-[1.6rem] py-12">
+    <div className="flex flex-col gap-[1.6rem] w-full md:gap-[1.2rem]">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 md:gap-12">
           <Link href={""} className="relative h-16 w-16">
             <Image
               src={userImage}
@@ -49,13 +49,15 @@ const Comment = ({
           Reply
         </button>
       </div>
-      <p className="text-light-gray-200 text-[1.3rem] md:text-[1.5rem]">
+      <p className="text-light-gray-200 text-[1.3rem] md:text-[1.5rem] md:pl-[6.8rem]">
         <span className="text-light-purple-500 font-bold">@{replyingTo}</span>
         {""} {content}
       </p>
-      {openReply && (
-        <AddReplyForm commentId={commentId} commentAuthor={username} />
-      )}
+      <div className="md:pl-[6.6rem]">
+        {openReply && (
+          <AddReplyForm commentId={commentId} commentAuthor={username} />
+        )}
+      </div>
     </div>
   );
 };

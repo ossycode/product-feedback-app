@@ -82,6 +82,7 @@ const EditFeedbackForm = ({
       if (res.ok) {
         toast.success("Feedback created successfully");
         router.push(`/dashboard/feedback/${params.id}`);
+        startTransition(() => router.refresh());
       } else {
         toast.error("Something went wrong!");
         console.log("Feedback update failed");

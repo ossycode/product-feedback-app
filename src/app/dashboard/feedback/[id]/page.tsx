@@ -55,13 +55,13 @@ const FeedbackDetails = ({ params }: { params: { id: string } }) => {
         upvotes={data.upvotes}
         totalComments={totalComments}
       />
-      <div className="bg-clr-white p-[2.4rem] md:px-[3.2rem] flex flex-col items-start gap-8">
+      <div className="bg-clr-white p-[2.4rem] md:px-[3.2rem] flex flex-col items-start gap-8 rounded-xl">
         <h1 className="text-heading3 text-dark-grayish-400 ">
           {" "}
           {totalComments} {totalComments > 1 ? "Comments" : "Comment"}
         </h1>
         {totalComments > 0 && (
-          <div className="hidden divide-y-[0.1rem] divide-comment-divide md:flex flex-col  w-full">
+          <div className=" divide-y-[0.1rem] divide-comment-divide md:flex flex-col  w-full">
             {data.comments.map((comment: Props) => (
               <CommentCard
                 key={comment._id}
@@ -74,10 +74,10 @@ const FeedbackDetails = ({ params }: { params: { id: string } }) => {
             ))}
           </div>
         )}
-        <div className="md:hidden divide-y-[0.1rem] divide-comment-divide flex flex-col  items-center">
-          {/* <MobileCommentCard />
-          <MobileCommentCard /> */}
-        </div>
+        {/* <div className="md:hidden divide-y-[0.1rem] divide-comment-divide flex flex-col  items-center">
+          <MobileCommentCard />
+          <MobileCommentCard />
+        </div> */}
       </div>
 
       <AddCommentForm />

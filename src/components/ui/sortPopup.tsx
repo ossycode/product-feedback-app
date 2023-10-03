@@ -208,7 +208,7 @@ const SortPopup = ({
         }
       }
     });
-  }, []);
+  });
 
   function handleDefaultValue() {
     const temp = [...ArrayData];

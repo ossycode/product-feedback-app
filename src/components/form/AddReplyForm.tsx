@@ -1,8 +1,8 @@
 "use client";
 
 import useUserSession from "@/hooks/useUserSession";
-import { useParams, usePathname } from "next/navigation";
-import { useState } from "react";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { startTransition, useState } from "react";
 
 interface Props {
   commentAuthor: string;
@@ -14,6 +14,7 @@ const AddReplyForm = ({ commentAuthor, commentId }: Props) => {
   const params = useParams();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   const user = useUserSession();
 
@@ -37,6 +38,9 @@ const AddReplyForm = ({ commentAuthor, commentId }: Props) => {
           replyingTo: commentAuthor,
         }),
       });
+      if (res.ok) {
+        startTransition(() => router.refresh());
+      }
     } catch (err: Error | any) {
       console.log(`${err.code}: Error update creation`);
     } finally {
@@ -64,7 +68,7 @@ const AddReplyForm = ({ commentAuthor, commentId }: Props) => {
       </label>
 
       <button
-        className="bg-light-purple-500 new-form-btn py-3 sm:px-3 text-heading5 leading-normal md:px-9 md:py-5  "
+        className="bg-light-purple-500 new-form-btn py-3 sm:px-3 text-heading5 leading-normal md:px-6 md:py-4  "
         disabled={isSubmitting}
       >
         Post Reply

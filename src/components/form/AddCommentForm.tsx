@@ -1,8 +1,8 @@
 "use client";
 
 import useUserSession from "@/hooks/useUserSession";
-import { useParams, usePathname } from "next/navigation";
-import { useState } from "react";
+import { useParams, usePathname, useRouter } from "next/navigation";
+import { startTransition, useState } from "react";
 
 const AddCommentForm = () => {
   const params = useParams();
@@ -10,6 +10,7 @@ const AddCommentForm = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const pathname = usePathname();
   const MAX_LENGTH = 250;
+  const router = useRouter();
 
   const user = useUserSession();
 
@@ -31,6 +32,7 @@ const AddCommentForm = () => {
           path: pathname,
         }),
       });
+      startTransition(() => router.refresh());
     } catch (err: Error | any) {
       console.log(`${err.code}: Error update creation`);
     } finally {
@@ -40,7 +42,7 @@ const AddCommentForm = () => {
   }
 
   return (
-    <div className="p-[2.4rem] bg-clr-white">
+    <div className="p-[2.4rem] bg-clr-white rounded-2xl">
       <form onSubmit={(e) => handleSubmit(e)}>
         <label
           htmlFor="comment"
