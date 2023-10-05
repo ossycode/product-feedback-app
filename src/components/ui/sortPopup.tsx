@@ -194,7 +194,7 @@ const SortPopup = ({
 
   useEffect(() => {
     handleDefaultValue();
-  }, []);
+  });
 
   useEffect(() => {
     handleSelected(title!);
