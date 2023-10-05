@@ -6,12 +6,15 @@ import useAllFeedbacks from "@/hooks/useAllFeedbacks";
 import Spinner from "./Spinner";
 
 const RoadmapDetails = () => {
-  const { data: allFeedbacks, isLoading, mutate } = useAllFeedbacks();
+  const { data, isLoading, mutate } = useAllFeedbacks();
   const [activeTab, setActiveTab] = useState<number>(0);
 
   if (isLoading) {
     return <Spinner />;
   }
+
+  const { allFeedbacks } = data;
+  console.log(allFeedbacks);
 
   const plannedFeedbacks = allFeedbacks.filter(
     (feedback: any) => feedback.status === "Planned"

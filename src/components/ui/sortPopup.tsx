@@ -193,8 +193,20 @@ const SortPopup = ({
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    function handleDefaultValue() {
+      const temp = [...ArrayData];
+      temp.forEach((element) => {
+        element.selected = false;
+        if (element.title === defaultValue) {
+          element.selected = true;
+          setTitle(element.title);
+        }
+      });
+
+      setListData(temp);
+    }
     handleDefaultValue();
-  });
+  }, [ArrayData, defaultValue]);
 
   useEffect(() => {
     handleSelected(title!);
@@ -209,19 +221,6 @@ const SortPopup = ({
       }
     });
   });
-
-  function handleDefaultValue() {
-    const temp = [...ArrayData];
-    temp.forEach((element) => {
-      element.selected = false;
-      if (element.title === defaultValue) {
-        element.selected = true;
-        setTitle(element.title);
-      }
-    });
-
-    setListData(temp);
-  }
 
   // function getTitle(): string {
   //   let title: string = "";

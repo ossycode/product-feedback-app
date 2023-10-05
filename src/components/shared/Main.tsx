@@ -18,11 +18,13 @@ import Spinner from "../ui/Spinner";
 const Main = () => {
   const { category } = useCurrentNavbarCategory();
 
-  const { data: allFeedbacks, isLoading } = useAllFeedbacks();
+  const { data, isLoading } = useAllFeedbacks();
 
   if (isLoading) {
     return <Spinner />;
   }
+
+  const { allFeedbacks } = data;
 
   let totalSuggestionCount;
 
