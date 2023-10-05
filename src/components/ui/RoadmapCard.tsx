@@ -1,5 +1,6 @@
 "use client";
 
+import useAllFeedbacks from "@/hooks/useAllFeedbacks";
 import { calculateTotalComment } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -31,6 +32,7 @@ const RoadmapCard = ({
   const totalComments = calculateTotalComment(comments);
   const [totalVotes, setTotalVotes] = useState<number>(upvotes);
   const pathname = usePathname();
+  const { mutate } = useAllFeedbacks();
 
   useEffect(() => {
     async function handleUpvotes() {
@@ -45,12 +47,13 @@ const RoadmapCard = ({
             path: pathname,
           }),
         });
+        mutate();
       } catch (err: Error | any) {
         console.log(`${err.code}: ${err}`);
       }
     }
     handleUpvotes();
-  }, [id, pathname, upvotes, totalVotes]);
+  }, [id, pathname, upvotes, totalVotes, mutate]);
   return (
     // sm:min-w-[32.7rem]
     <div

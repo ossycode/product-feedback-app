@@ -4,7 +4,6 @@ import Spinner from "@/components/ui/Spinner";
 import { getFeedbacks } from "@/hooks/useFeedbacks";
 import { Metadata } from "next";
 import Link from "next/link";
-import { use } from "react";
 
 export const metadata: Metadata = {
   title: "Roadmap - Product Feedback App ",
@@ -12,11 +11,11 @@ export const metadata: Metadata = {
 };
 
 const RoadmapPage = () => {
-  const { allFeedbacks } = use(getFeedbacks());
+  // const { allFeedbacks } = await getFeedbacks();
 
-  if (allFeedbacks === undefined) {
-    return <Spinner />;
-  }
+  // if (allFeedbacks === undefined) {
+  //   return <Spinner />;
+  // }
   return (
     <div className="bg-ghost-white-100 w-full min-h-screen md:py-[5.6rem] md:px-16 md:flex md:flex-col md:gap-[3.2rem] lg:gap-[4.8rem]  lg:px-28 xl:py-[7.8rem] xl:px-[16.5rem]">
       <div className="bg-[#373F68] w-full py-10 sm:py-12 px-9 flex items-center justify-between md:rounded-2xl ">
@@ -32,7 +31,7 @@ const RoadmapPage = () => {
         </Link>
       </div>
 
-      <RoadmapDetails allFeedbacks={allFeedbacks} />
+      <RoadmapDetails />
     </div>
   );
 };

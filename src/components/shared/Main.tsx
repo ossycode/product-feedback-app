@@ -9,13 +9,20 @@ import SortByDiv from "../ui/SortByDiv";
 import { useCurrentNavbarCategory } from "@/context/CategoryContext";
 import useAllFeedbacks from "@/hooks/useAllFeedbacks";
 import SuggestionsList from "../ui/SuggestionsList";
+import Spinner from "../ui/Spinner";
 
-interface Props {
-  allFeedbacks: any[];
-}
+// interface Props {
+//   allFeedbacks: any[];
+// }
 
-const Main = ({ allFeedbacks }: Props) => {
+const Main = () => {
   const { category } = useCurrentNavbarCategory();
+
+  const { data: allFeedbacks, isLoading } = useAllFeedbacks();
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   let totalSuggestionCount;
 

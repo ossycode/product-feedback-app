@@ -2,9 +2,16 @@
 
 import { useState } from "react";
 import RoadmapCard from "./RoadmapCard";
+import useAllFeedbacks from "@/hooks/useAllFeedbacks";
+import Spinner from "./Spinner";
 
-const RoadmapDetails = ({ allFeedbacks }: any) => {
+const RoadmapDetails = () => {
+  const { data: allFeedbacks, isLoading, mutate } = useAllFeedbacks();
   const [activeTab, setActiveTab] = useState<number>(0);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   const plannedFeedbacks = allFeedbacks.filter(
     (feedback: any) => feedback.status === "Planned"

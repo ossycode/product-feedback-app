@@ -15,7 +15,7 @@ function useAllFeedbacks() {
     fetcher
   );
 
-  return { data, error, isLoading };
+  return { data, error, isLoading, mutate };
 }
 
 // ?sort=Least+Upvotes
