@@ -3,6 +3,7 @@ import Feedback from "@/lib/models/feedback.model";
 import Reply from "@/lib/models/reply.model";
 import User from "@/lib/models/user.model";
 import { connectToDB } from "@/lib/mongoose";
+import { calculateTotalComment } from "@/lib/utils";
 import { revalidatePath } from "next/cache";
 import { useSearchParams } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
@@ -149,6 +150,7 @@ export const POST = async (request: Request) => {
   // const body = await request.json();
 
   // const newFeedback = new Feedback(body);
+  console.log(title, description, upvotes, category, status, author);
 
   try {
     await connectToDB();
@@ -167,6 +169,14 @@ export const POST = async (request: Request) => {
       $push: { feedbacks: newFeedback._id },
     });
 
+    console.log(newFeedback);
+
+    console.log(newFeedback.thread);
+
+    newFeedback.thread.push(newFeedback._id);
+
+    await newFeedback.save();
+
     revalidatePath(path);
     return NextResponse.json(
       { message: "Feedback has been created" },
@@ -181,7 +191,12 @@ export const POST = async (request: Request) => {
 };
 
 function getSortbyProps(sortParam: string | null) {
+  // calculateTotalComment()
   let sortProp = {};
+  // arrayFieldLength: {
+  //   $size: "$arrayFieldName";
+  // }
+
   if (sortParam === "Most Upvotes") {
     sortProp = { upvotes: "desc" };
   }
@@ -189,10 +204,16 @@ function getSortbyProps(sortParam: string | null) {
     sortProp = { upvotes: "asc" };
   }
   if (sortParam === "Most Comments") {
-    sortProp = { comments: "desc" };
+    // arrayFieldLength: {
+    //   size: "comments";
+    // }
+    sortProp = { thread: "desc" };
   }
   if (sortParam === "Least Comments") {
-    sortProp = { comments: "asc" };
+    // arrayFieldLength: {
+    //   size: "";
+    // }
+    sortProp = { thread: "asc" };
   }
 
   return sortProp;

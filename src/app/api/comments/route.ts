@@ -31,6 +31,7 @@ export const POST = async (request: Request) => {
     });
 
     originalFeedback.comments.push(savedCommentFeedback._id);
+    originalFeedback.thread.push(savedCommentFeedback._id);
 
     await originalFeedback.save();
 

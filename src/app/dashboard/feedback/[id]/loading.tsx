@@ -1,9 +1,7 @@
+import Spinner from "@/components/ui/Spinner";
+
 const Loader = () => {
-  return (
-    <div className="wrapper">
-      <div className="loader"></div>
-    </div>
-  );
+  return <Spinner />;
 };
 
 export default Loader;

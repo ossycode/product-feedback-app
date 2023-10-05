@@ -54,7 +54,7 @@ const RoadmapCard = ({
   return (
     // sm:min-w-[32.7rem]
     <div
-      className={`min-w-[29rem] w-full md:min-w-[22.3rem] lg:min-w-[28rem] xl:min-w-[35rem] md:h-[25.1rem] xl:h-[27.2rem]   sm:h-[23.3rem] bg-clr-white  p-[2.4rem]  border-t-[0.6rem] border-top flex flex-col gap-[1.7rem]  ${borderToColor}`}
+      className={`min-w-[29rem] w-full md:min-w-[22.3rem] lg:min-w-[28rem] xl:min-w-[35rem] md:h-[25.1rem] lg:h-[27.2rem]   sm:h-[23.3rem] bg-clr-white  p-[2.4rem]  border-t-[0.6rem] border-top flex flex-col gap-[1.7rem]  ${borderToColor}`}
     >
       <ul role="list" className=" flex items-center gap-3">
         <svg

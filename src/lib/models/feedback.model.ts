@@ -22,6 +22,20 @@ const FeedbackSchema = new mongoose.Schema(
         ref: "Comment",
       },
     ],
+    thread: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Feedback",
+      },
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Reply",
+      },
+    ],
   },
   { timestamps: true }
 );

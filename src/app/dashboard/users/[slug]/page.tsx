@@ -9,17 +9,18 @@ import ProfileAvatar from "@/components/ui/ProfileAvatar";
 import ProfileDetails from "@/components/ui/ProfileDetails";
 import UserPage from "@/components/ui/UserPage";
 
-// export async function generateMetadata({
-//   params,
-// }: {
-//   params: { slug: string };
-// }) {
-//   const user = await getServerUser(params.slug);
-//   return {
-//     title: `${user.name}| User Profile`,
-//     description: `${user.name}| User Profile`,
-//   };
-// }
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const user = await getServerUser(params.slug);
+  const profileUser = user?.[0];
+  return {
+    title: `${profileUser.name} | User Profile`,
+    description: `${profileUser.name} | User Profile`,
+  };
+}
 
 const UserProfile = async () => {
   const session = await getServerSession(authOptions);

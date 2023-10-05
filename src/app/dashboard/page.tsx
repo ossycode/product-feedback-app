@@ -6,9 +6,15 @@ import Categories from "@/components/ui/Categories";
 import SortByDiv from "@/components/ui/SortByDiv";
 import useAllFeedbacks from "@/hooks/useAllFeedbacks";
 import { getFeedbacks } from "@/hooks/useFeedbacks";
+import { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { useSearchParams } from "next/navigation";
 import { use } from "react";
+
+export const metadata: Metadata = {
+  title: "Dashboard - Product Feedback App ",
+  description: "Product feedback app",
+};
 
 const Dashboard = () => {
   const { allFeedbacks } = use(getFeedbacks());

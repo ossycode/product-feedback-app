@@ -10,7 +10,7 @@ const fetcher = (...args: Parameters<typeof fetch>) =>
 
 function useAllFeedbacks() {
   const { sortBy } = useSortBy();
-  const { data, error, isLoading } = useSWR(
+  const { data, error, isLoading, mutate } = useSWR(
     `/api/feedbacks?sort=${sortBy}`,
     fetcher
   );

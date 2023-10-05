@@ -6,9 +6,12 @@ const fetcher = (...args: Parameters<typeof fetch>) =>
   fetch(...args).then((res) => res.json());
 
 function useFeedback(id: string) {
-  const { data, error, isLoading } = useSWR(`/api/feedbacks/${id}`, fetcher);
+  const { data, error, isLoading, mutate } = useSWR(
+    `/api/feedbacks/${id}`,
+    fetcher
+  );
 
-  return { data, error, isLoading };
+  return { data, error, isLoading, mutate };
 }
 
 export default useFeedback;

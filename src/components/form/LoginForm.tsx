@@ -3,7 +3,7 @@
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { startTransition, useEffect, useState } from "react";
 import Image from "next/image";
 import MiniSpinner from "../ui/MiniSpinner";
 
@@ -35,7 +35,8 @@ const LoginForm = () => {
         setError("Invalid Credentials");
         return;
       }
-      router.replace("dashboard");
+      startTransition(() => router.push("/dashboard"));
+      router.replace("/dashboard");
     } catch (error) {
       // console.log(error);
     } finally {

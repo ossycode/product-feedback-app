@@ -5,9 +5,15 @@ import useFeedback from "@/hooks/useFeedback";
 import { getFeedback } from "@/hooks/useFeedbacks";
 import { use } from "react";
 
-const EditFeedbackPage = async ({ params }: { params: { id: string } }) => {
-  // const { data, isLoading } = useFeedback(params.id);
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const feedback = await getFeedback(params.id);
+  return {
+    title: `Edit Feedback:: ${feedback.title}`,
+    description: feedback.description,
+  };
+}
 
+const EditFeedbackPage = async ({ params }: { params: { id: string } }) => {
   const feedback = await getFeedback(params.id);
 
   if (feedback === undefined) {

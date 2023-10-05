@@ -131,6 +131,7 @@ export const DELETE = async (
   await connectToDB();
   try {
     const { id } = params;
+    const { path } = await request.json();
     // console.log(id);
 
     // find main feedback to delete
@@ -151,14 +152,14 @@ export const DELETE = async (
 
     // Extract the authors id to update the user model
     const commentUniqueAuthorIds = new Set(
-      [
-        ...childComments.map((comment) => comment.author?._id?.toString()),
-      ].filter((id) => id !== undefined)
+      [childComments.map((comment) => comment.author?._id?.toString())].filter(
+        (id) => id !== undefined
+      )
     );
     const replyUniqueAuthorIds = new Set(
-      [
-        ...childRepliesArray.map((reply) => reply.author?._id?.toString()),
-      ].filter((id) => id !== undefined)
+      [childRepliesArray.map((reply) => reply.author?._id?.toString())].filter(
+        (id) => id !== undefined
+      )
     );
 
     const mainFeedbackAuthorId = mainFeedback?.author?._id.toString();
@@ -183,6 +184,8 @@ export const DELETE = async (
       { _id: mainFeedbackAuthorId },
       { $pull: { feedbacks: id } }
     );
+
+    revalidatePath(path);
 
     return NextResponse.json(
       { message: "Feedback deleted successfully" },

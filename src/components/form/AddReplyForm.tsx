@@ -1,20 +1,23 @@
 "use client";
 
+import useComment from "@/hooks/useComment";
 import useUserSession from "@/hooks/useUserSession";
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { startTransition, useState } from "react";
+import { LegacyRef, startTransition, useState } from "react";
 
-interface Props {
-  commentAuthor: string;
-  commentId: string;
-}
+// interface Props {
+//   commentAuthor: string;
+//   commentId: string;
+//   formRef: HTMLFormElement | null;
+// }
 
-const AddReplyForm = ({ commentAuthor, commentId }: Props) => {
+const AddReplyForm = ({ commentAuthor, commentId, formRef }: any) => {
   const [replyText, setReplyText] = useState<string>("");
   const params = useParams();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const pathname = usePathname();
   const router = useRouter();
+  const { mutate } = useComment(commentId);
 
   const user = useUserSession();
 
@@ -38,8 +41,11 @@ const AddReplyForm = ({ commentAuthor, commentId }: Props) => {
           replyingTo: commentAuthor,
         }),
       });
+      mutate();
       if (res.ok) {
         startTransition(() => router.refresh());
+        setIsSubmitting(false);
+        setReplyText("");
       }
     } catch (err: Error | any) {
       console.log(`${err.code}: Error update creation`);
@@ -51,8 +57,9 @@ const AddReplyForm = ({ commentAuthor, commentId }: Props) => {
 
   return (
     <form
-      className="flex items-start justify-between"
+      className="flex items-start justify-between "
       onSubmit={(e) => handleSubmit(e)}
+      ref={formRef}
     >
       <label
         htmlFor="reply"
@@ -60,7 +67,7 @@ const AddReplyForm = ({ commentAuthor, commentId }: Props) => {
       >
         <textarea
           id="reply"
-          className="signupform-input min-w-full  text-[1.3rem]"
+          className="signupform-input min-w-full  text-[1.3rem] md:text-body2"
           maxLength={250}
           onChange={(e) => setReplyText(e.target.value)}
           value={replyText}
@@ -68,10 +75,11 @@ const AddReplyForm = ({ commentAuthor, commentId }: Props) => {
       </label>
 
       <button
-        className="bg-light-purple-500 new-form-btn py-3 sm:px-3 text-heading5 leading-normal md:px-6 md:py-4  "
+        className="bg-light-purple-500 new-form-btn py-3 px-2 sm:px-3 text-heading5 leading-normal md:px-6 md:py-4  "
         disabled={isSubmitting}
       >
-        Post Reply
+        <span className="hidden sl:flex">Post Reply</span>
+        <span className="sl:hidden"> Reply</span>
       </button>
     </form>
   );

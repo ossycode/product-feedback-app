@@ -1,4 +1,5 @@
 import Comment from "@/lib/models/comment.model";
+import Feedback from "@/lib/models/feedback.model";
 import Reply from "@/lib/models/reply.model";
 import User from "@/lib/models/user.model";
 import { connectToDB } from "@/lib/mongoose";
@@ -31,8 +32,12 @@ export const POST = async (request: Request) => {
     });
 
     originalComment.replies.push(savedReplyToComment._id);
-
     await originalComment.save();
+
+    const originalFeedback = await Feedback.findById(originalComment.parentId);
+
+    originalFeedback.thread.push(savedReplyToComment._id);
+    await originalFeedback.save();
 
     revalidatePath(path);
     return NextResponse.json(

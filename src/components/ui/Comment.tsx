@@ -2,14 +2,16 @@ import Image from "next/image";
 import React, { useState } from "react";
 import AddReplyForm from "../form/AddReplyForm";
 import Link from "next/link";
+import ButtonReply from "./ButtonReply";
+import useUserSession from "@/hooks/useUserSession";
 
 interface Props {
   content: string;
   username: string;
   name: string;
   userImage: string;
-  commentId: string;
   replyingTo: string;
+  toggleForm: () => void;
 }
 
 const Comment = ({
@@ -17,16 +19,25 @@ const Comment = ({
   username,
   name,
   userImage,
-  commentId,
   replyingTo,
+  toggleForm,
 }: Props) => {
-  const [openReply, setOpenReply] = useState<boolean>(false);
+  const currentUser = useUserSession();
+
+  const isSameUser = currentUser?.username === username;
 
   return (
-    <div className="flex flex-col gap-[1.6rem] w-full md:gap-[1.2rem]">
+    <div className="flex flex-col gap-[1.6rem] w-full md:gap-[1.2rem] ">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-6 md:gap-12">
-          <Link href={""} className="relative h-16 w-16">
+          <Link
+            href={
+              isSameUser
+                ? `/dashboard/users/${username}`
+                : `/dashboard/profile/${username}`
+            }
+            className="relative h-16 w-16"
+          >
             <Image
               src={userImage}
               alt="user prorfile"
@@ -42,22 +53,28 @@ const Comment = ({
             </span>
           </p>
         </div>
-        <button
+        <ButtonReply toggleForm={toggleForm} />
+        {/* <button
           className="text-dark-blue border-none font-semibold text-[1.3rem]"
           onClick={() => setOpenReply((openReply) => !openReply)}
         >
           Reply
-        </button>
+        </button> */}
       </div>
       <p className="text-light-gray-200 text-[1.3rem] md:text-[1.5rem] md:pl-[6.8rem]">
-        <span className="text-light-purple-500 font-bold">@{replyingTo}</span>
+        <Link
+          className="text-light-purple-500 font-bold"
+          href={`/dashboard/profile/${replyingTo}`}
+        >
+          @{replyingTo}
+        </Link>
         {""} {content}
       </p>
-      <div className="md:pl-[6.6rem]">
+      {/* <div className="">
         {openReply && (
           <AddReplyForm commentId={commentId} commentAuthor={username} />
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

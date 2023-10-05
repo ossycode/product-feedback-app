@@ -12,6 +12,7 @@ import { usePathname, useRouter } from "next/navigation";
 import useUserSession from "@/hooks/useUserSession";
 import toast from "react-hot-toast";
 import MiniSpinner from "../ui/MiniSpinner";
+import { useSession } from "next-auth/react";
 
 const AddFeedbackForm = () => {
   const [currentCat, setCurrentCat] = useState<string>();
@@ -23,8 +24,13 @@ const AddFeedbackForm = () => {
   type FeedbackValidationSchemaType = z.infer<typeof FeedbackValidation>;
   const router = useRouter();
   const currentUser = useUserSession();
+  // const { data: session } = useSession();
   const pathname = usePathname();
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const status = "Suggestion";
+
+  // console.log(session);
+  // console.log(currentUser?.id);
 
   const {
     handleSubmit,
@@ -59,7 +65,7 @@ const AddFeedbackForm = () => {
           description: data.description,
           upvotes: 0,
           category: currentCat,
-          status: "Suggestion",
+          status: status,
           path: pathname,
           author: currentUser?.id,
         }),
@@ -165,8 +171,9 @@ const AddFeedbackForm = () => {
         </label>
 
         <div className="flex flex-col gap-6 mt-9 md:flex-row-reverse ">
+          {/* w-[15rem] */}
           <button
-            className="bg-light-purple-500 new-form-btn "
+            className="bg-light-purple-500 new-form-btn min-w-[15rem] "
             disabled={isLoading}
           >
             {isLoading ? <MiniSpinner /> : "Add Feedback"}

@@ -1,5 +1,7 @@
 "use client";
 
+import useComment from "@/hooks/useComment";
+import useFeedback from "@/hooks/useFeedback";
 import useUserSession from "@/hooks/useUserSession";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import { startTransition, useState } from "react";
@@ -11,6 +13,8 @@ const AddCommentForm = () => {
   const pathname = usePathname();
   const MAX_LENGTH = 250;
   const router = useRouter();
+  const { id } = params;
+  const { mutate, data } = useFeedback(params.id.toString());
 
   const user = useUserSession();
 
@@ -32,12 +36,15 @@ const AddCommentForm = () => {
           path: pathname,
         }),
       });
+      mutate();
       startTransition(() => router.refresh());
     } catch (err: Error | any) {
       console.log(`${err.code}: Error update creation`);
     } finally {
       setIsSubmitting(false);
       setCommentText("");
+      mutate();
+      startTransition(() => router.refresh());
     }
   }
 
@@ -51,7 +58,7 @@ const AddCommentForm = () => {
           Add Comment
           <textarea
             id="comment"
-            className="signupform-input	mt-6 min-w-full min-h-[12rem] text-[1.3rem]"
+            className="signupform-input	mt-6 min-w-full min-h-[12rem] text-[1.3rem] md:text-body2"
             placeholder="Type your comment here"
             onChange={(e) => setCommentText(e.target.value)}
             value={commentText}
