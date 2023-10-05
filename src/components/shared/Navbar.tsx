@@ -5,7 +5,20 @@ import Avatar from "../ui/Avatar";
 import LogoutBtn from "../ui/LogoutBtn";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import { getServerUser } from "@/hooks/useServerUser";
+// import { getServerUser } from "@/hooks/useServerUser";
+import { notFound } from "next/navigation";
+
+export async function getServerUser(username: string) {
+  const apiUrl = process.env.API_URL;
+
+  const res = await fetch(`${apiUrl}/api/users/${username}`, {
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    return notFound();
+  }
+  return res.json();
+}
 
 const Navbar = async () => {
   const session = await getServerSession(authOptions);
