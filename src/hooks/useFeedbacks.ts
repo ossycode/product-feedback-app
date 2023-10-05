@@ -1,5 +1,3 @@
-// import useSWR from "swr";
-
 import { cache } from "react";
 
 export const getFeedbacks = cache(async () => {

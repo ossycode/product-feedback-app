@@ -5,7 +5,7 @@ import { ToggleNavProvider } from "@/context/ToggleNavContext";
 import AuthProvider from "@/context/AuthProvider";
 import { NavbarCategoryProvider } from "@/context/CategoryContext";
 import { Toaster } from "react-hot-toast";
-import { SortByProvider } from "@/context/sortByContext";
+import { SortByProvider } from "@/context/SortByContext";
 
 const jost = Jost({ subsets: ["latin"] });
 

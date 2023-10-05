@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import useCustomRouter from "@/hooks/useCustomRouter";
-import { useSortBy } from "@/context/sortByContext";
+import { useSortBy } from "@/context/SortByContext";
 
 interface Props {
   totalSuggestion: number;

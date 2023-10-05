@@ -1,6 +1,6 @@
 "use client";
 
-import { useSortBy } from "@/context/sortByContext";
+import { useSortBy } from "@/context/SortByContext";
 import useSWR from "swr";
 
 const fetcher = (...args: Parameters<typeof fetch>) =>
