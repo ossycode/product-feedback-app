@@ -19,7 +19,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-7 lg:py-[9.4rem] bg-ghost-white-100  xl:px-[10.5rem] lg:px-[3rem] ">
       <Header />
-      <Navbar />
+      {/* <Navbar /> */}
 
       <div className=" relative min-h-screen bg-ghost-white-100  md:px-[3.9rem] lg:col-start-3 lg:col-end-8 lg:pt-6 lg:px-1  ">
         <MobileNavbar />
