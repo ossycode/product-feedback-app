@@ -4,40 +4,31 @@ import Spinner from "@/components/ui/Spinner";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import { notFound } from "next/navigation";
-// import { getServerUser } from "@/hooks/useServerUser";
+import { getServerUser } from "@/hooks/useServerUser";
 import ProfileAvatar from "@/components/ui/ProfileAvatar";
 import ProfileDetails from "@/components/ui/ProfileDetails";
 import UserPage from "@/components/ui/UserPage";
-
-async function getServerUser(username: string) {
-  const apiUrl = process.env.API_URL;
-
-  const res = await fetch(`${apiUrl}/api/users/${username}`, {
-    cache: "no-store",
-  });
-  if (!res.ok) {
-    return notFound();
-  }
-  return res.json();
-}
 
 export async function generateMetadata({
   params,
 }: {
   params: { slug: string };
 }) {
-  const user = await getServerUser(params.slug);
+  const user = await getServerUser(params?.slug);
   const profileUser = user?.[0];
+
   return {
     title: `${profileUser.name} | User Profile`,
     description: `${profileUser.name} | User Profile`,
   };
 }
 
-const UserProfile = async () => {
-  const session = await getServerSession(authOptions);
+const UserProfile = async ({ params }: { params: { slug: string } }) => {
+  // const session = await getServerSession(authOptions);
 
-  const user = await getServerUser(session?.user.username!);
+  const user = await getServerUser(params?.slug);
+
+  // const user = await getServerUser(session?.user.username!);
 
   const currentUser = user[0];
   //

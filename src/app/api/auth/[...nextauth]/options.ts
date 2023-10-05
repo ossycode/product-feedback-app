@@ -7,13 +7,8 @@ import User from "@/lib/models/user.model";
 
 export const authOptions: NextAuthOptions = {
   providers: [
-    GitHubProviders({
-      clientId: process.env.GITHUB_ID as string,
-      clientSecret: process.env.GITHUB_SECRET as string,
-    }),
     CredentialsProvider({
       name: "credentials",
-      // id: "credentials",
       credentials: {
         username: {},
         password: {},
@@ -45,11 +40,9 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session }): Promise<Session> {
-      // store the user id from MongoDB to session
       const sessionUser = await User.findOne({ email: session.user?.email });
       session.user.id = sessionUser._id.toString();
       session.user.username = sessionUser.username.toString();
-
       return session;
     },
   },
@@ -63,4 +56,4 @@ export const authOptions: NextAuthOptions = {
     maxAge: 3 * 60 * 60, // 3 hours
   },
   secret: process.env.NEXTAUTH_SECRET,
-};
+} satisfies NextAuthOptions;
