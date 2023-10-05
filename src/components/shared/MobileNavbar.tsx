@@ -5,15 +5,15 @@ import Categories from "../ui/Categories";
 import Roadmap from "../ui/Roadmap";
 import Avatar from "../ui/Avatar";
 import LogoutBtn from "../ui/LogoutBtn";
-import useUser from "@/hooks/useUser";
+// import useUser from "@/hooks/useUser";
 import { useEffect, useRef } from "react";
 
 const MobileNavbar = () => {
   const { isNavOpen, toggleNavbar } = useToggleNav();
-  const { user } = useUser();
+  // const { data } = useUser();
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const currentUser = user?.[0];
+  // const currentUser = data?.[0];
 
   return (
     <>
@@ -32,7 +32,7 @@ const MobileNavbar = () => {
             <Categories />
             <Roadmap />
 
-            <Avatar user={currentUser} />
+            <Avatar />
 
             <LogoutBtn />
           </div>
