@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 
 export async function getServerUser(username: string) {
-  const res = await fetch(`http://localhost:3000/api/users/${username}`, {
+  const apiUrl = process.env.API_URL;
+
+  const res = await fetch(`${apiUrl}/api/users/${username}`, {
     cache: "no-store",
   });
   if (!res.ok) {

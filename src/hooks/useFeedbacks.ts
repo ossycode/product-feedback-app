@@ -1,8 +1,10 @@
 import { cache } from "react";
 
+const apiUrl = process.env.API_URL;
+
 export const getFeedbacks = cache(async () => {
   // ?sort=${sortby}
-  const res = await fetch(`http://localhost:3000/api/feedbacks`, {
+  const res = await fetch(`${apiUrl}/api/feedbacks`, {
     cache: "no-store",
   });
   if (!res.ok) {
@@ -13,7 +15,7 @@ export const getFeedbacks = cache(async () => {
 });
 
 export const getFeedback = cache(async (id: string) => {
-  const res = await fetch(`http://localhost:3000/api/feedbacks/${id}`, {
+  const res = await fetch(`${apiUrl}/api/feedbacks/${id}`, {
     cache: "no-store",
   });
   if (!res.ok) {
