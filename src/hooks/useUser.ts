@@ -21,7 +21,7 @@ function useUser() {
     fetcher
   );
 
-  return { user: data, isLoading };
+  return { data, isLoading };
 }
 
 export default useUser;

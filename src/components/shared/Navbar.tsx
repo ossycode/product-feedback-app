@@ -11,11 +11,11 @@ import { useSession } from "next-auth/react";
 
 const Navbar = async () => {
   // const session = await getServerSession(authOptions);
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
-  const user = await getServerUser(session?.user.username!);
+  // const user = await getServerUser(session?.user.username!);
 
-  const currentUser = user[0];
+  // const currentUser = user[0];
 
   return (
     <nav className="hidden md:flex items-center justify-between gap-4 pt-[5.6rem] pb-[4rem] px-[3.9rem] bg-ghost-white-100 lg:flex-col lg:col-start-1 lg:col-end-3 lg:pb-0 lg:pt-6 lg:gap-10 lg:justify-normal lg:px-4">
@@ -30,7 +30,7 @@ const Navbar = async () => {
         </div>
 
         <div className="flex item-center justify-between">
-          <Avatar user={currentUser} />
+          <Avatar />
           <LogoutBtn />
         </div>
       </div>

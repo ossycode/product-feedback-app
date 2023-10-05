@@ -1,8 +1,22 @@
+"use client";
+
 import useUser from "@/hooks/useUser";
 import Image from "next/image";
 import Link from "next/link";
+import MiniSpinner from "./MiniSpinner";
 
-const Avatar = ({ user }: any) => {
+const Avatar = () => {
+  const { data, isLoading } = useUser();
+
+  if (isLoading) {
+    return (
+      <div className="self-center rounded-full  ">
+        <MiniSpinner />
+      </div>
+    );
+  }
+  const user = data[0];
+
   return (
     <Link href={`/dashboard/users/${user?.username}`} className="self-center ">
       <Image
