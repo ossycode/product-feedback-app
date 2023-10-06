@@ -41,7 +41,7 @@ const FeedbackCard = ({
           }),
         });
 
-        startTransition(() => router.refresh());
+        router.refresh();
       } catch (err: Error | any) {
         console.log(`${err.code}: ${err}`);
       }

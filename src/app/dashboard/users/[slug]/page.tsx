@@ -38,7 +38,7 @@ const UserProfile = async ({ params }: { params: { slug: string } }) => {
   //
   return (
     <div className="w-full px-8 py-14 md:p-24 xl:px-[20rem] bg-light-purple-100 ">
-      {/* <BackBtn /> */}
+      <BackBtn />
       {/* <div className=" bg-light-purple-100 flex flex-col  p-24  items-center gap-24 justify-center">
    
         <ProfileAvatar currentUser={currentUser} />

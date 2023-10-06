@@ -9,7 +9,7 @@ import { getServerUser } from "@/hooks/useServerUser";
 import { notFound } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-const Navbar = async () => {
+const Navbar = () => {
   // const session = await getServerSession(authOptions);
   // const { data: session } = useSession();
 

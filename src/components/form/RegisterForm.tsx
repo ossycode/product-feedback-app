@@ -37,7 +37,10 @@ const RegisterForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email: data.email, username: data.username }),
+        body: JSON.stringify({
+          email: data.email,
+          username: data.username.toLowerCase(),
+        }),
       });
 
       const { user } = await existuserResponse.json();
@@ -60,7 +63,7 @@ const RegisterForm = () => {
           name: data.fullName,
           email: data.email,
           password: data.password,
-          username: data.username,
+          username: data.username.toLowerCase(),
           avatar: imgResponse?.[0].url,
         }),
       });
@@ -75,7 +78,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className="py-24 px-48 flex items-center justify-around min-h-screen ">
+    <div className="py-24  px-8 sm:px-16  flex items-center justify-around min-h-screen ">
       <section className="flex flex-col gap-20">
         <h1 className="heading1">Please sign up to leave a feedback</h1>
 
@@ -88,7 +91,7 @@ const RegisterForm = () => {
               id="name"
               placeholder="Full name..."
               type="text"
-              className={`signupform-input ${
+              className={`signupform-input w-full ${
                 errors.fullName?.message && "border-red-600"
               }`}
               {...register("fullName")}
@@ -99,7 +102,7 @@ const RegisterForm = () => {
               id="username"
               placeholder="Username..."
               type="text"
-              className={`signupform-input ${
+              className={`signupform-input w-full  ${
                 errors.username?.message && "border-red-600"
               } `}
               {...register("username")}
@@ -111,7 +114,7 @@ const RegisterForm = () => {
               id="email"
               placeholder="Email..."
               type="email"
-              className={`signupform-input ${
+              className={`signupform-input w-full   ${
                 errors.email?.message && "border-red-600"
               } `}
               {...register("email")}
@@ -123,7 +126,7 @@ const RegisterForm = () => {
               id="password"
               placeholder="Password..."
               type="password"
-              className={`signupform-input ${
+              className={`signupform-input w-full  ${
                 errors.password?.message && "border-red-600"
               } `}
               {...register("password")}
@@ -138,7 +141,7 @@ const RegisterForm = () => {
               id="confirmPassword"
               placeholder="Confirm password.."
               type="password"
-              className={`signupform-input ${
+              className={`signupform-input w-full   ${
                 errors.confirmPassword?.message && "border-red-600"
               } `}
               {...register("confirmPassword")}
@@ -150,17 +153,18 @@ const RegisterForm = () => {
               id="avatar"
               type="file"
               accept="image/*"
-              className={`signupform-input`}
+              className={`signupform-input w-full  `}
               onChange={(e) => setImageFile(e.target?.files?.[0])}
               // {...register("avatar")}
             />
           </FormRow>
 
-          <button className=" bg-dark-grayish-400 py-4 px-4 font-bold  w-[25.5rem] text-ghost-white-100 text-[1.5rem] block">
+          {/* w-[25.5rem] */}
+          <button className=" bg-dark-grayish-400 py-4 px-4 font-bold  text-ghost-white-100 text-[1.5rem] block rounded-2xl md:w-full mt-8">
             Sign up
           </button>
         </form>
-        <p className="text-dark-grayish-400  text-[1.6rem] font-normal ">
+        <p className="text-dark-grayish-400  text-[1.6rem] font-normal mt-[-2rem] ">
           Have an account?{" "}
           <Link className="text-dark-blue font-semibold" href="./login">
             Sign-in
@@ -168,7 +172,7 @@ const RegisterForm = () => {
         </p>
       </section>
 
-      <div className="flex items-center justify-center h-full ">
+      <div className="max-md:hidden items-center justify-center h-full">
         <Image
           src="/assets/suggestions/illustration-empty.svg"
           alt="empty illustration"

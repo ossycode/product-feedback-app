@@ -21,8 +21,6 @@ async function Dashboard() {
 
   // const allFeedbacks = await fetchAllFeedbacks();
 
-  console.log("dashboard", allFeedbacks);
-
   // if (allFeedbacks === undefined) {
   //   return <Spinner />;
   // }

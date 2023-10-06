@@ -19,7 +19,7 @@ export const authOptions: NextAuthOptions = {
 
         try {
           await connectToDB();
-          const user = await User.findOne({ username });
+          const user = await User.findOne({ username: username.toLowerCase() });
 
           if (!user) {
             return null;

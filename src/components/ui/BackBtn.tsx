@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import BackBtnSVG from "./BckBtnSVG";
+import { startTransition } from "react";
 
 // interface Props {
 //   btnColor: string;
@@ -14,11 +15,15 @@ const BackBtn = ({
   arrowColor = "#4661E6",
 }) => {
   const router = useRouter();
+  const handleBack = () => {
+    router.back();
+    startTransition(() => router.refresh());
+  };
 
   return (
     <button
       className="flex items-center gap-6 rounded-2xl w-max hover:underline hover:underline-offset-2 hover:decoration-[#647196]"
-      onClick={() => router.back()}
+      onClick={handleBack}
     >
       <BackBtnSVG stroke={arrowColor} />
       <span className={`text-[1.3rem] lg:text-heading4 font-bold ${btnColor}`}>

@@ -1,18 +1,30 @@
+"use client";
+
+import useAllFeedbacks from "@/hooks/useAllFeedbacks";
 import { getFeedbacks } from "@/hooks/useFeedbacks";
 // import { getAllFeedbacks } from "@/lib/feedbacks";
 import Link from "next/link";
 import React, { use } from "react";
+import Spinner from "./Spinner";
+import MiniSpinner from "./MiniSpinner";
 
-const Roadmap = async () => {
+const Roadmap = () => {
   // const data = await getAllFeedbacks();
+  const { data, isLoading } = useAllFeedbacks();
+  // if (isLoading) {
+  //   return <Spinner />;
+  // }
+  // const { totalInProgressCount, totalPlannedCount, totalLiveCount } = data;
+
+  // const { totalInProgressCount, totalPlannedCount, totalLiveCount } = { data };
 
   // console.log(data);
 
   // { totalInProgressCount, totalPlannedCount,  } = {}
 
-  const totalLiveCount = 1;
-  const totalPlannedCount = 1;
-  const totalInProgressCount = 1;
+  // const totalLiveCount = 1;
+  // const totalPlannedCount = 1;
+  // const totalInProgressCount = 1;
 
   return (
     // p-[2.3rem]
@@ -31,15 +43,22 @@ const Roadmap = async () => {
       <ul className="mt-[2.4rem] flex flex-col gap-2 list-disc  pl-5  lg:px-8 ">
         <li className="text-light-gray-200 marker:text-light-orange-500 md:marker:text-[1.5rem] ">
           <span className="text-sortButtonText ">Planned</span>
-          <span className="roadmapNub">{totalPlannedCount}</span>
+          <span className="roadmapNub">
+            {isLoading ? <MiniSpinner /> : data?.totalPlannedCount}
+          </span>
         </li>
         <li className="text-light-gray-200 marker:text-light-purple-500 md:marker:text-[1.5rem]">
           <span className="text-sortButtonText">In-Progress</span>
-          <span className="roadmapNub">{totalInProgressCount}</span>
+          <span className="roadmapNub">
+            {isLoading ? <MiniSpinner /> : data?.totalInProgressCount}
+          </span>
         </li>
         <li className="text-light-gray-200 marker:text-light-blue-500 md:marker:text-[1.5rem]">
           <span className="text-sortButtonText ">Live</span>
-          <span className="roadmapNub">{totalLiveCount}</span>
+
+          <span className="roadmapNub">
+            {isLoading ? <MiniSpinner /> : data?.totalLiveCount}
+          </span>
         </li>
       </ul>
     </div>

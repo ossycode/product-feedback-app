@@ -7,14 +7,14 @@ import { useCurrentNavbarCategory } from "@/context/CategoryContext";
 import Spinner from "./Spinner";
 import { calculateTotalComment } from "@/lib/utils";
 
-const SuggestionsList = ({ allFeedbacks }: any) => {
+const SuggestionsList = () => {
   const { category } = useCurrentNavbarCategory();
 
-  // const { data, isLoading } = useAllFeedbacks();
+  const { data, isLoading } = useAllFeedbacks();
 
-  // if (isLoading) return <Spinner />;
+  if (isLoading) return <Spinner />;
 
-  // const { allFeedbacks } = data;
+  const { allFeedbacks } = data;
 
   let suggestedFeedback = [];
 

@@ -26,7 +26,7 @@ const LoginForm = () => {
       }
 
       const res = await signIn("credentials", {
-        username,
+        username: username.toLowerCase(),
         password,
         redirect: false,
       });
@@ -62,7 +62,9 @@ const LoginForm = () => {
             type="text"
             // className="min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem]
             //   font-normal  py-[1.3rem] px-[2.4rem] border active:border-solid	active:border-dark-blue"
-            className={`signupform-input ${error && "border-red-600"} `}
+            className={`signupform-input ${
+              error && "border-red-600"
+            } max-md:w-full`}
             onChange={(e) => setUserName(e.target.value)}
           />
 
@@ -78,7 +80,9 @@ const LoginForm = () => {
             type="password"
             // className="min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem]
             //    font-normal py-[1.3rem] px-[2.4rem] border active:border-solid	active:border-dark-blue"
-            className={`signupform-input ${error && "border-red-600"} `}
+            className={`signupform-input ${
+              error && "border-red-600"
+            } max-md:w-full`}
             onChange={(e) => setPassword(e.target.value)}
           />
           {error && (
@@ -100,7 +104,7 @@ const LoginForm = () => {
         </p>
       </div>
 
-      <div className="flex items-center justify-center h-full ">
+      <div className=" items-center justify-center h-full max-md:hidden md:flex  ">
         <Image
           src="/assets/suggestions/illustration-empty.svg"
           alt="empty illustration"

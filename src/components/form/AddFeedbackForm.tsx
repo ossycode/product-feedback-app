@@ -72,8 +72,10 @@ const AddFeedbackForm = () => {
       });
       if (res.ok) {
         toast.success("Feedback created successfully");
-        startTransition(() => router.push("/dashboard"));
-        startTransition(() => router.refresh());
+        startTransition(() =>
+          router.push("/dashboard?feedback created successfully")
+        );
+        router.refresh();
       } else {
         toast.error("Something went wrong!");
         console.log("Feedback creation failed");

@@ -22,11 +22,9 @@ const Main = ({ allFeedbacks }: any) => {
   //   return <Spinner />;
   // }
 
-  if (allFeedbacks === undefined) {
-    return;
-  }
-
-  console.log(allFeedbacks);
+  // if (allFeedbacks === undefined) {
+  //   return;
+  // }
 
   // const { data, isLoading } = useAllFeedbacks();
 
@@ -49,7 +47,7 @@ const Main = ({ allFeedbacks }: any) => {
     <main className=" ">
       <SortByDiv totalSuggestion={totalSuggestionCount} />
 
-      <SuggestionsList allFeedbacks={allFeedbacks} />
+      <SuggestionsList />
     </main>
   );
 };

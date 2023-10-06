@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     const { email, username } = await request.json();
 
     const user = await User.findOne({
-      $or: [{ email: email }, { username: username }],
+      $or: [{ email: email }, { username: username.toLowerCase() }],
     }).select("_id");
 
     console.log("User:", user);
