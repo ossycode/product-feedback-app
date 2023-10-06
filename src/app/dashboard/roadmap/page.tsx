@@ -2,7 +2,6 @@ import BackBtn from "@/components/ui/BackBtn";
 import RoadmapDetails from "@/components/ui/RoadmapDetails";
 import Spinner from "@/components/ui/Spinner";
 import { getFeedbacks } from "@/hooks/useFeedbacks";
-import { getAllFeedbacks } from "@/lib/feedbacks";
 import { Metadata } from "next";
 import Link from "next/link";
 
