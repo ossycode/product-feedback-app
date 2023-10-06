@@ -11,20 +11,20 @@ import useAllFeedbacks from "@/hooks/useAllFeedbacks";
 import SuggestionsList from "../ui/SuggestionsList";
 import Spinner from "../ui/Spinner";
 
-// interface Props {
-//   allFeedbacks: any[];
-// }
+interface Props {
+  allFeedbacks: any[];
+}
 
-const Main = () => {
+const Main = ({ allFeedbacks }: Props) => {
   const { category } = useCurrentNavbarCategory();
 
-  const { data, isLoading } = useAllFeedbacks();
+  // const { data, isLoading } = useAllFeedbacks();
 
-  if (isLoading) {
-    return <Spinner />;
-  }
+  // if (isLoading) {
+  //   return <Spinner />;
+  // }
 
-  const { allFeedbacks } = data;
+  // const { allFeedbacks } = data;
 
   let totalSuggestionCount;
 

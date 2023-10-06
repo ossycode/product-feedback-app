@@ -16,18 +16,6 @@ const SuggestionsList = () => {
 
   const { allFeedbacks } = data;
 
-  // let category1 = "All";
-
-  // if (isLoading) return
-  // const [currentSelectedCategory, setCurrentSelectedCategory] =
-  //   useState<string>("All");
-
-  // const getSelectedCategory = (currentCat: string): void => {
-  //   setCurrentSelectedCategory(currentCat);
-  // };
-
-  // let totalSuggestionCount;
-
   let suggestedFeedback = [];
 
   if (category === "All") {
