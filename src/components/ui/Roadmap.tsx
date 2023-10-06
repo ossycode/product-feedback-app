@@ -1,11 +1,18 @@
 import { getFeedbacks } from "@/hooks/useFeedbacks";
+// import { getAllFeedbacks } from "@/lib/feedbacks";
 import Link from "next/link";
 import React, { use } from "react";
 
-const Roadmap = () => {
-  const { totalInProgressCount, totalPlannedCount, totalLiveCount } = use(
-    getFeedbacks()
-  );
+const Roadmap = async () => {
+  // const data = await getAllFeedbacks();
+
+  // console.log(data);
+
+  // { totalInProgressCount, totalPlannedCount,  } = {}
+
+  const totalLiveCount = 1;
+  const totalPlannedCount = 1;
+  const totalInProgressCount = 1;
 
   return (
     // p-[2.3rem]

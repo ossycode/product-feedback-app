@@ -11,18 +11,24 @@ import useAllFeedbacks from "@/hooks/useAllFeedbacks";
 import SuggestionsList from "../ui/SuggestionsList";
 import Spinner from "../ui/Spinner";
 
-interface Props {
-  allFeedbacks: any[];
-}
+// interface Props {
+//   allFeedbacks: any[];
+// }
 
-const Main = ({ allFeedbacks }: Props) => {
+const Main = ({ allFeedbacks }: any) => {
   const { category } = useCurrentNavbarCategory();
 
-  // const { data, isLoading } = useAllFeedbacks();
-
-  // if (isLoading) {
+  // if (allFeedbacks === undefined) {
   //   return <Spinner />;
   // }
+
+  if (allFeedbacks === undefined) {
+    return;
+  }
+
+  console.log(allFeedbacks);
+
+  // const { data, isLoading } = useAllFeedbacks();
 
   // const { allFeedbacks } = data;
 
@@ -43,7 +49,7 @@ const Main = ({ allFeedbacks }: Props) => {
     <main className=" ">
       <SortByDiv totalSuggestion={totalSuggestionCount} />
 
-      <SuggestionsList />
+      <SuggestionsList allFeedbacks={allFeedbacks} />
     </main>
   );
 };

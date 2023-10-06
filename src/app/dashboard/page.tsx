@@ -4,7 +4,7 @@ import MobileNavbar from "@/components/shared/MobileNavbar";
 import Navbar from "@/components/shared/Navbar";
 import Spinner from "@/components/ui/Spinner";
 import { getFeedbacks } from "@/hooks/useFeedbacks";
-import { getAllFeedbacks } from "@/lib/feedbacks";
+import { fetchAllFeedbacks } from "@/lib/feedbacks";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,10 +13,15 @@ export const metadata: Metadata = {
 };
 
 async function Dashboard() {
+  const allFeedbacks = await JSON.parse(
+    JSON.stringify(await fetchAllFeedbacks())
+  );
+
   //  getFeedbacks();
 
-  const res = await getAllFeedbacks();
-  const allFeedbacks = await res.json();
+  // const allFeedbacks = await fetchAllFeedbacks();
+
+  console.log("dashboard", allFeedbacks);
 
   // if (allFeedbacks === undefined) {
   //   return <Spinner />;

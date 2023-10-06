@@ -26,15 +26,19 @@ export async function generateMetadata({
 const UserProfile = async ({ params }: { params: { slug: string } }) => {
   // const session = await getServerSession(authOptions);
 
+  console.log(params?.slug);
+
   const user = await getServerUser(params?.slug);
 
-  // const user = await getServerUser(session?.user.username!);
+  // // const user = await getServerUser(session?.user.username!);
 
   const currentUser = user[0];
+
+  // const currentUser = [];
   //
   return (
     <div className="w-full px-8 py-14 md:p-24 xl:px-[20rem] bg-light-purple-100 ">
-      <BackBtn />
+      {/* <BackBtn /> */}
       {/* <div className=" bg-light-purple-100 flex flex-col  p-24  items-center gap-24 justify-center">
    
         <ProfileAvatar currentUser={currentUser} />
