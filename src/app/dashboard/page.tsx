@@ -4,6 +4,7 @@ import MobileNavbar from "@/components/shared/MobileNavbar";
 import Navbar from "@/components/shared/Navbar";
 import Spinner from "@/components/ui/Spinner";
 import { getFeedbacks } from "@/hooks/useFeedbacks";
+import { getAllFeedbacks } from "@/lib/feedbacks";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,10 +13,14 @@ export const metadata: Metadata = {
 };
 
 async function Dashboard() {
-  const allFeedbacks = await getFeedbacks();
-  if (allFeedbacks === undefined) {
-    return <Spinner />;
-  }
+  //  getFeedbacks();
+
+  const res = await getAllFeedbacks();
+  const allFeedbacks = await res.json();
+
+  // if (allFeedbacks === undefined) {
+  //   return <Spinner />;
+  // }
 
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-7 lg:py-[9.4rem] bg-ghost-white-100  xl:px-[10.5rem] lg:px-[3rem] ">
