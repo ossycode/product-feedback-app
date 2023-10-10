@@ -7,21 +7,16 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import SortPopup from "../ui/sortPopup";
 import { categories } from "@/constants";
 import { RoadMapStatus } from "@/constants";
-import {
-  useRouter,
-  usePathname,
-  useSearchParams,
-  useParams,
-} from "next/navigation";
+import { useRouter, usePathname, useParams } from "next/navigation";
 import toast from "react-hot-toast";
-import useAuthor from "@/hooks/useAuthor";
+import { EditFeedback, deleteFeedback } from "@/lib/actions/feedback.actions";
 
 interface Props {
   title: string;
   description: string;
   category: string;
   status: string;
-  feedbackid: string;
+  feedbackId: string;
 }
 
 const EditFeedbackForm = ({
@@ -29,12 +24,14 @@ const EditFeedbackForm = ({
   description,
   category,
   status,
-  feedbackid,
+  feedbackId,
 }: Props) => {
   const [currentCat, setCurrentCat] = useState<string>();
   const [roadmapStatus, setRoadmapStatus] = useState<string>();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const pathname = usePathname();
+  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+
+  const path = usePathname();
   const params = useParams();
   const router = useRouter();
 
@@ -57,66 +54,43 @@ const EditFeedbackForm = ({
     formState: { errors },
   } = useForm();
 
-  if (!params.id) {
-    console.log("No Feedback Id");
-  }
-
   const onHandleSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      const res = await fetch(`/api/feedbacks/${params.id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: data.title,
-          description: data.description,
-          status: roadmapStatus,
-          category: currentCat,
-          path: pathname,
-        }),
+      setIsSubmitting(true);
+      await EditFeedback({
+        title: data.title,
+        description: data.description,
+        status: roadmapStatus,
+        category: currentCat,
+        path,
+        feedbackId,
       });
-      if (res.ok) {
-        toast.success("Feedback created successfully");
-        router.push(`/dashboard/feedback/${params.id}`);
 
-        startTransition(() => router.refresh());
-      } else {
-        toast.error("Something went wrong!");
-        console.log("Feedback update failed");
-      }
+      toast.success("Feedback editted successfully");
+      // router.push(`/dashboard/feedback/${params.id}`);
+      router.back();
+      setIsSubmitting(false);
     } catch (err: Error | any) {
       console.log(`${err.code}: Error update creation`);
     } finally {
-      // setIsLoading(false);
+      setIsSubmitting(false);
     }
   };
 
-  const handleDelete = async (
-    e: React.FormEvent<HTMLButtonElement>,
-    id: string
-  ) => {
+  const handleDelete = async (e: React.FormEvent<HTMLButtonElement>) => {
     try {
       e.preventDefault();
-      // setIsSubmitting(true);
+      setIsDeleting(true);
       alert("You want to delete?");
-      const res = await fetch(`/api/feedbacks/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          path: pathname,
-        }),
-      });
+      await deleteFeedback({ feedbackId, path });
 
-      startTransition(() => router.push("/dashboard"));
-      router.refresh();
+      router.push("/dashboard");
       // startTransition(() => router.refresh());
+      setIsDeleting(false);
     } catch (err: Error | any) {
       console.log(`${err.code}: Error deleting feedback`);
     } finally {
-      // setIsSubmitting(false);
+      setIsDeleting(false);
     }
   };
 
@@ -230,22 +204,22 @@ const EditFeedbackForm = ({
           <div className="flex flex-col gap-6 md:flex-row-reverse w-full ">
             <button
               className="bg-light-purple-500 new-form-btn w-full py-4 md:w-max md:py-5"
-              disabled={isSubmitting}
+              aria-disabled={isSubmitting || isDeleting}
             >
               {isSubmitting ? <MiniSpinner /> : "Save Changes"}
             </button>
             <button
               className="bg-dark-grayish-400 new-form-btn py-4 md:w-max md:py-5 "
               onClick={(e) => handleCancel(e)}
-              disabled={isSubmitting}
+              aria-disabled={isSubmitting || isDeleting}
             >
               Cancel
             </button>
           </div>
           <button
             className="bg-[#D73737] hover:bg-light-orange-500 new-form-btn py-4 w-full md:w-max md:py-5"
-            onClick={(e) => handleDelete(e, feedbackid)}
-            disabled={isSubmitting}
+            onClick={(e) => handleDelete(e)}
+            aria-disabled={isSubmitting || isDeleting}
           >
             Delete
           </button>

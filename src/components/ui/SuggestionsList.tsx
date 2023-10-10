@@ -1,55 +1,57 @@
 "use client";
 
-import useAllFeedbacks from "@/hooks/useAllFeedbacks";
 import FeedbackCard from "./FeedbackCard";
 import NoFeedbackCard from "./NoFeedbackCard";
 import { useCurrentNavbarCategory } from "@/context/CategoryContext";
-import Spinner from "./Spinner";
-import { calculateTotalComment } from "@/lib/utils";
 
-const SuggestionsList = () => {
+interface Props {
+  allSugestionFeedbacks: {
+    author: string;
+    category: string;
+    comments: [];
+    createdAt: string;
+    description: string;
+    status: string;
+    thread: [];
+    title: string;
+    updatedAt: string;
+    upvotes: number;
+    _id: string;
+  }[];
+}
+
+const SuggestionsList = ({ allSugestionFeedbacks }: Props) => {
   const { category } = useCurrentNavbarCategory();
 
-  const { data, isLoading } = useAllFeedbacks();
+  let suggestedFeedback = allSugestionFeedbacks;
 
-  if (isLoading) return <Spinner />;
-
-  const { allFeedbacks } = data;
-
-  let suggestedFeedback = [];
-
-  if (category === "All") {
-    suggestedFeedback = allFeedbacks.filter(
-      (feedback: any) => feedback.status === "Suggestion"
-    );
-  }
   if (category === "UI") {
-    suggestedFeedback = allFeedbacks.filter(
+    suggestedFeedback = allSugestionFeedbacks.filter(
       (feedback: any) =>
         feedback.status === "Suggestion" && feedback.category === "UI"
     );
   }
   if (category === "UX") {
-    suggestedFeedback = allFeedbacks.filter(
+    suggestedFeedback = allSugestionFeedbacks.filter(
       (feedback: any) =>
         feedback.status === "Suggestion" && feedback.category === "UX"
     );
   }
   if (category === "Enhancement") {
-    suggestedFeedback = allFeedbacks.filter(
+    suggestedFeedback = allSugestionFeedbacks.filter(
       (feedback: any) =>
         feedback.status === "Suggestion" && feedback.category === "Enhancement"
     );
   }
 
   if (category === "Bug") {
-    suggestedFeedback = allFeedbacks.filter(
+    suggestedFeedback = allSugestionFeedbacks.filter(
       (feedback: any) =>
         feedback.status === "Suggestion" && feedback.category === "Bug"
     );
   }
   if (category === "Feature") {
-    suggestedFeedback = allFeedbacks.filter(
+    suggestedFeedback = allSugestionFeedbacks.filter(
       (feedback: any) =>
         feedback.status === "Suggestion" && feedback.category === "Feature"
     );
@@ -64,19 +66,31 @@ const SuggestionsList = () => {
   }
 
   return (
-    <div className="main-body flex flex-col gap-[1.6rem] overflow-scroll sm:px-[2.4rem] px-4 pt-[2.4rem] md:px-0  ">
-      {suggestedFeedback.map((feedback: any) => (
-        <FeedbackCard
-          key={feedback._id}
-          id={feedback._id}
-          title={feedback.title}
-          description={feedback.description}
-          category={feedback.category}
-          upvotes={feedback.upvotes}
-          totalComments={calculateTotalComment(feedback.comments)}
-        />
-      ))}
-    </div>
+    <>
+      <div className="main-body flex flex-col gap-[1.6rem] overflow-scroll sm:px-[2.4rem] px-4 pt-[2.4rem] md:px-0  ">
+        {suggestedFeedback.map(
+          (feedback: {
+            category: string;
+            description: string;
+            status: string;
+            thread: [];
+            title: string;
+            upvotes: number;
+            _id: string;
+          }) => (
+            <FeedbackCard
+              key={feedback._id}
+              id={feedback._id}
+              title={feedback.title}
+              description={feedback.description}
+              category={feedback.category}
+              upvotes={feedback.upvotes}
+              totalComments={feedback.thread.length}
+            />
+          )
+        )}
+      </div>
+    </>
   );
 };
 

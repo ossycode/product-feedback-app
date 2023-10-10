@@ -1,15 +1,15 @@
 import AddReplyForm from "../form/AddReplyForm";
 import Comment from "./Comment";
 
-const Replies = ({ data, toggleForm }: any) => {
+const Replies = ({ comment, toggleForm }: any) => {
   return (
     <>
-      {data?.replies.length > 0 && (
+      {comment?.replies.length > 0 && (
         <div className="flex items-start gap-9  w-full md:gap-[2.4rem] row-start-3 col-start-1 col-span-full	pl-[2.4rem] mt-[1.6rem] md:pl-[4.4rem] ">
           {/* <div className="rounded-2xl bg-comment-divide w-0.5 h-[21.6rem] md:h-[27rem] "></div> */}
 
           <div className="flex items-start flex-col gap-[2.6rem] grow">
-            {data?.replies.map((element: any) => (
+            {comment?.replies.map((element: any) => (
               <Comment
                 key={element._id}
                 content={element.content}

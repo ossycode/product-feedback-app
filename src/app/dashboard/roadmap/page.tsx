@@ -1,7 +1,6 @@
 import BackBtn from "@/components/ui/BackBtn";
 import RoadmapDetails from "@/components/ui/RoadmapDetails";
-import Spinner from "@/components/ui/Spinner";
-import { getFeedbacks } from "@/hooks/useFeedbacks";
+import { fetchFeedbacks } from "@/lib/actions/feedback.actions";
 import { Metadata } from "next";
 import Link from "next/link";
 
@@ -11,11 +10,15 @@ export const metadata: Metadata = {
 };
 
 const RoadmapPage = async () => {
-  // const allFeedbacks = await getAllFeedbacks();
+  const {
+    allLiveFeedbacks,
+    allInProgressFeedbacks,
+    allPlannedFeedbacks,
+    totalInProgressCount,
+    totalPlannedCount,
+    totalLiveCount,
+  } = await JSON.parse(JSON.stringify(await fetchFeedbacks({})));
 
-  // if (allFeedbacks === undefined) {
-  //   return <Spinner />;
-  // }
   return (
     <div className="bg-ghost-white-100 w-full min-h-screen md:py-[5.6rem] md:px-16 md:flex md:flex-col md:gap-[3.2rem] lg:gap-[4.8rem]  lg:px-28 xl:py-[7.8rem] xl:px-[16.5rem]">
       <div className="bg-[#373F68] w-full py-10 sm:py-12 px-9 flex items-center justify-between md:rounded-2xl ">
@@ -31,7 +34,14 @@ const RoadmapPage = async () => {
         </Link>
       </div>
 
-      <RoadmapDetails />
+      <RoadmapDetails
+        allLiveFeedbacks={allLiveFeedbacks}
+        allInProgressFeedbacks={allInProgressFeedbacks}
+        allPlannedFeedbacks={allPlannedFeedbacks}
+        totalInProgressCount={totalInProgressCount}
+        totalPlannedCount={totalPlannedCount}
+        totalLiveCount={totalLiveCount}
+      />
     </div>
   );
 };

@@ -11,15 +11,3 @@ export async function getServerUser(username: string) {
   }
   return res.json();
 }
-
-// export const getFeedbacks = cache(async () => {
-//   // ?sort=${sortby}
-//   const res = await fetch(`http://localhost:3000/api/feedbacks`, {
-//     cache: "no-store",
-//   });
-//   if (!res.ok) {
-//     throw new Error("Failed to fetch data");
-//   }
-
-//   return res.json();
-// });

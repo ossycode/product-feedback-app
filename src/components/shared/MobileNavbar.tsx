@@ -5,15 +5,21 @@ import Categories from "../ui/Categories";
 import Roadmap from "../ui/Roadmap";
 import Avatar from "../ui/Avatar";
 import LogoutBtn from "../ui/LogoutBtn";
-// import useUser from "@/hooks/useUser";
 import { useEffect, useRef } from "react";
 
-const MobileNavbar = () => {
-  const { isNavOpen, toggleNavbar } = useToggleNav();
-  // const { data } = useUser();
-  const ref = useRef<HTMLDivElement | null>(null);
+interface Props {
+  totalInProgressCount: number;
+  totalPlannedCount: number;
+  totalLiveCount: number;
+}
 
-  // const currentUser = data?.[0];
+const MobileNavbar = ({
+  totalInProgressCount,
+  totalPlannedCount,
+  totalLiveCount,
+}: Props) => {
+  const { isNavOpen, toggleNavbar } = useToggleNav();
+  const ref = useRef<HTMLDivElement | null>(null);
 
   return (
     <>
@@ -30,7 +36,11 @@ const MobileNavbar = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <Categories />
-            <Roadmap />
+            <Roadmap
+              totalInProgressCount={totalInProgressCount}
+              totalPlannedCount={totalPlannedCount}
+              totalLiveCount={totalLiveCount}
+            />
 
             <Avatar />
 

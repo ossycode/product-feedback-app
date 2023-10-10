@@ -1,28 +1,34 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const useCustomRouter = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const pathname = usePathname();
   const query: any = {};
 
   interface Props {
-    sort: string;
+    sort?: string;
+    page?: number;
   }
   let sort = searchParams.get("sort");
+  let page = searchParams.get("page");
 
   if (sort) query.sort = sort;
 
-  const pushQuery = ({ sort }: Props) => {
+  if (page) query.page = parseInt(page);
+
+  const pushQuery = ({ sort, page }: Props) => {
     if (sort !== undefined) {
       sort === "Most Upvotes" ? delete query.sort : (query.sort = sort);
     }
 
-    const newQuery = new URLSearchParams(query).toString();
+    if (page !== undefined) {
+      page === 1 ? delete query.page : (query.page = page);
+    }
 
-    router.push(`${pathname}?${newQuery}`);
+    const newQuery = new URLSearchParams(query).toString();
+    router.push(`?${newQuery}`, { scroll: false });
   };
 
   return { pushQuery, query };

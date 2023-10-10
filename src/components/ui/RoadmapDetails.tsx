@@ -2,28 +2,16 @@
 
 import { useState } from "react";
 import RoadmapCard from "./RoadmapCard";
-import useAllFeedbacks from "@/hooks/useAllFeedbacks";
-import Spinner from "./Spinner";
 
-const RoadmapDetails = () => {
-  const { data, isLoading, mutate } = useAllFeedbacks();
+const RoadmapDetails = ({
+  allLiveFeedbacks,
+  allInProgressFeedbacks,
+  allPlannedFeedbacks,
+  totalInProgressCount,
+  totalPlannedCount,
+  totalLiveCount,
+}: any) => {
   const [activeTab, setActiveTab] = useState<number>(0);
-
-  if (isLoading) {
-    return <Spinner />;
-  }
-
-  const { allFeedbacks } = data;
-
-  const plannedFeedbacks = allFeedbacks.filter(
-    (feedback: any) => feedback.status === "Planned"
-  );
-  const liveFeedbacks = allFeedbacks.filter(
-    (feedback: any) => feedback.status === "Live"
-  );
-  const inProgressFeedbacks = allFeedbacks.filter(
-    (feedback: any) => feedback.status === "In-Progress"
-  );
 
   return (
     <>
@@ -37,7 +25,7 @@ const RoadmapDetails = () => {
             }`}
             onClick={() => setActiveTab(0)}
           >
-            Planned <span>({plannedFeedbacks.length})</span>
+            Planned <span>({totalPlannedCount})</span>
           </li>
           <li
             className={` border-b-4 min-h-[5.9rem] flex items-center gap-1 
@@ -49,7 +37,7 @@ const RoadmapDetails = () => {
             onClick={() => setActiveTab(1)}
           >
             In-Progress
-            <span>({inProgressFeedbacks.length})</span>
+            <span>({totalInProgressCount})</span>
           </li>
           <li
             className={`border-b-4 min-h-[5.9rem] flex items-center gap-1 
@@ -61,11 +49,10 @@ const RoadmapDetails = () => {
             `}
             onClick={() => setActiveTab(2)}
           >
-            Live <span> ({liveFeedbacks.length})</span>
+            Live <span> ({totalLiveCount})</span>
           </li>
         </ul>
       </div>
-      {/* md:flex gap-4 lg:gap-8 xl:gap-12 */}
       <div className="md:grid md:grid-cols-3 gap-x-4 lg:gap-x-8 xl:gap-x-12 ">
         <div
           //
@@ -78,13 +65,13 @@ const RoadmapDetails = () => {
         >
           <div className="w-full">
             <h1 className="text-heading3 text-dark-grayish-400 md:text-heading4 lg:text-heading3">
-              Planned ({plannedFeedbacks.length})
+              Planned ({totalPlannedCount})
             </h1>
             <p className="text-[1.3rem] text-light-gray-200 mt-1.5 md:text-[1.4rem] lg:text-sortButtonText">
               Ideas prioritized for research
             </p>
           </div>
-          {plannedFeedbacks.map((feedback: any) => (
+          {allPlannedFeedbacks.map((feedback: any) => (
             <RoadmapCard
               key={feedback._id}
               id={feedback._id}
@@ -95,7 +82,7 @@ const RoadmapDetails = () => {
               description={feedback.description}
               status={feedback.status}
               upvotes={feedback.upvotes}
-              comments={feedback.comments}
+              thread={feedback.thread}
             />
           ))}
         </div>
@@ -110,13 +97,13 @@ const RoadmapDetails = () => {
         >
           <div className="w-full">
             <h1 className="text-heading3 text-dark-grayish-400 md:text-heading4 lg:text-heading3">
-              In-Progress ({inProgressFeedbacks.length})
+              In-Progress ({totalInProgressCount})
             </h1>
             <p className="text-[1.3rem] text-light-gray-200 mt-1.5 md:text-[1.4rem] lg:text-sortButtonText">
               Features currently being developed
             </p>
           </div>
-          {inProgressFeedbacks.map((feedback: any) => (
+          {allInProgressFeedbacks.map((feedback: any) => (
             <RoadmapCard
               id={feedback._id}
               key={feedback._id}
@@ -127,7 +114,7 @@ const RoadmapDetails = () => {
               description={feedback.description}
               status={feedback.status}
               upvotes={feedback.upvotes}
-              comments={feedback.comments}
+              thread={feedback.thread}
             />
           ))}
         </div>
@@ -142,14 +129,14 @@ const RoadmapDetails = () => {
         >
           <div className="w-full">
             <h1 className="text-heading3 text-dark-grayish-400 md:text-heading4 lg:text-heading3">
-              Live ({liveFeedbacks.length})
+              Live ({totalLiveCount})
             </h1>
             <p className="text-[1.3rem] text-light-gray-200 mt-1.5 md:text-[1.4rem] lg:text-sortButtonText">
               Released features
             </p>
           </div>
 
-          {liveFeedbacks.map((feedback: any) => (
+          {allLiveFeedbacks.map((feedback: any) => (
             <RoadmapCard
               key={feedback._id}
               id={feedback._id}
@@ -160,7 +147,7 @@ const RoadmapDetails = () => {
               description={feedback.description}
               status={feedback.status}
               upvotes={feedback.upvotes}
-              comments={feedback.comments}
+              thread={feedback.thread}
             />
           ))}
         </div>

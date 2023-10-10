@@ -1,52 +1,44 @@
 "use client";
 
-import useComment from "@/hooks/useComment";
-import useFeedback from "@/hooks/useFeedback";
-import useUserSession from "@/hooks/useUserSession";
-import { useParams, usePathname, useRouter } from "next/navigation";
-import { startTransition, useState } from "react";
+import { PostCommentToFeedback } from "@/lib/actions/comment.actions";
+import { useParams, usePathname } from "next/navigation";
+import { useState } from "react";
+import { experimental_useFormStatus as useFormStatus } from "react-dom";
+import toast from "react-hot-toast";
 
 const AddCommentForm = () => {
   const params = useParams();
   const [commentText, setCommentText] = useState<string>("");
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const pathname = usePathname();
   const MAX_LENGTH = 250;
-  const router = useRouter();
-  const { id } = params;
-  const { mutate, data } = useFeedback(params.id.toString());
 
-  const user = useUserSession();
+  const { pending } = useFormStatus();
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     try {
       e.preventDefault();
-      setIsSubmitting(true);
-      if (commentText?.trim() === "") return;
-      if (commentText === undefined) return;
-      const res = await fetch(`/api/comments`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          content: commentText,
-          author: user?.id,
-          parentId: params.id,
-          path: pathname,
-        }),
+
+      if (commentText.trim() === "") {
+        setError(true);
+        return;
+      }
+
+      await PostCommentToFeedback({
+        content: commentText,
+        parentId: params.id.toString(),
+        path: pathname,
       });
-      mutate();
-      startTransition(() => router.refresh());
+      setCommentText("");
+      setError(false);
     } catch (err: Error | any) {
+      toast.error("Something went wrong");
       console.log(`${err.code}: Error update creation`);
     } finally {
-      setIsSubmitting(false);
       setCommentText("");
-      mutate();
-      startTransition(() => router.refresh());
+      setError(false);
     }
-  }
+  };
 
   return (
     <div className="p-[2.4rem] bg-clr-white rounded-2xl">
@@ -58,7 +50,9 @@ const AddCommentForm = () => {
           Add Comment
           <textarea
             id="comment"
-            className="signupform-input	mt-6 min-w-full min-h-[12rem] text-[1.3rem] md:text-body2"
+            className={`signupform-input	mt-6 min-w-full min-h-[12rem] text-[1.3rem] md:text-body2 ${
+              error && "border-red-600"
+            }`}
             placeholder="Type your comment here"
             onChange={(e) => setCommentText(e.target.value)}
             value={commentText}
@@ -72,7 +66,7 @@ const AddCommentForm = () => {
           </span>
           <button
             className="bg-light-purple-500 new-form-btn"
-            disabled={isSubmitting}
+            aria-disabled={pending}
           >
             Post Comment
           </button>

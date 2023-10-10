@@ -15,32 +15,18 @@ interface Props {
 const SortByDiv = ({ totalSuggestion }: Props) => {
   const { pushQuery, query } = useCustomRouter();
   const { sortBy, setSortBy } = useSortBy();
-
-  // const testdata = query.sort === undefined ? "Most UpVotes"
-
   const [filterOption, setFilterOption] = useState<string>(
     query.sort || "Most Upvotes"
   );
-
-  // value = {query.sort || 'createdAt'=
-  //     // // onChange={e => pushQuery({sort: e.target.value})}
-  //   )
 
   useEffect(() => {
     setSortBy(filterOption);
     pushQuery({ sort: filterOption });
   }, [pushQuery, setSortBy, filterOption, sortBy, query]);
 
-  // setSortBy(filterOption);
-  // pushQuery({ sort: sortBy });
-
   const getSelectedfilterOption = (currentCat: string): void => {
     setFilterOption(currentCat);
-    // pushQuery({ sort: currentCat });
   };
-  // useEffect(() => {
-  //   pushQuery({ sort: filterOption });
-  // }, []);
 
   return (
     <div

@@ -1,43 +1,24 @@
 "use client";
 
-import { calculateTotalComment } from "@/lib/utils";
-import FeedbackCard from "../ui/FeedbackCard";
-import NoFeedbackCard from "../ui/NoFeedbackCard";
-import { getFeedbacks } from "@/hooks/useFeedbacks";
-import { use, useState } from "react";
 import SortByDiv from "../ui/SortByDiv";
 import { useCurrentNavbarCategory } from "@/context/CategoryContext";
-import useAllFeedbacks from "@/hooks/useAllFeedbacks";
 import SuggestionsList from "../ui/SuggestionsList";
-import Spinner from "../ui/Spinner";
 
-// interface Props {
-//   allFeedbacks: any[];
-// }
-
-const Main = ({ allFeedbacks }: any) => {
+const Main = ({
+  allSugestionFeedbacks,
+  totalSuggestionCount,
+}: {
+  allSugestionFeedbacks: any[];
+  totalSuggestionCount: number;
+}) => {
   const { category } = useCurrentNavbarCategory();
 
-  // if (allFeedbacks === undefined) {
-  //   return <Spinner />;
-  // }
-
-  // if (allFeedbacks === undefined) {
-  //   return;
-  // }
-
-  // const { data, isLoading } = useAllFeedbacks();
-
-  // const { allFeedbacks } = data;
-
-  let totalSuggestionCount;
+  let derivedTotalSuggestionCount;
 
   if (category === "All") {
-    totalSuggestionCount = allFeedbacks.filter(
-      (feedback: any) => feedback.status === "Suggestion"
-    ).length;
+    derivedTotalSuggestionCount = totalSuggestionCount;
   } else {
-    totalSuggestionCount = allFeedbacks.filter(
+    derivedTotalSuggestionCount = allSugestionFeedbacks.filter(
       (feedback: any) =>
         feedback.status === "Suggestion" && feedback.category === category
     ).length;
@@ -45,9 +26,9 @@ const Main = ({ allFeedbacks }: any) => {
 
   return (
     <main className=" ">
-      <SortByDiv totalSuggestion={totalSuggestionCount} />
+      <SortByDiv totalSuggestion={derivedTotalSuggestionCount} />
 
-      <SuggestionsList />
+      <SuggestionsList allSugestionFeedbacks={allSugestionFeedbacks} />
     </main>
   );
 };

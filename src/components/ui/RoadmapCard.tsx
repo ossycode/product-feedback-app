@@ -1,6 +1,6 @@
 "use client";
 
-import useAllFeedbacks from "@/hooks/useAllFeedbacks";
+import { EditFeedback } from "@/lib/actions/feedback.actions";
 import { calculateTotalComment } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,8 +15,8 @@ interface Props {
   description: string;
   status: string;
   upvotes: number;
-  comments: any[];
-  id: number;
+  thread: any[];
+  id: string;
 }
 const RoadmapCard = ({
   svgColor,
@@ -26,36 +26,29 @@ const RoadmapCard = ({
   description,
   status,
   upvotes,
-  comments,
+  thread,
   id,
 }: Props) => {
-  const totalComments = calculateTotalComment(comments);
+  // const totalComments = calculateTotalComment(comments);
+  const totalComments = thread.length;
   const [totalVotes, setTotalVotes] = useState<number>(upvotes);
   const pathname = usePathname();
-  const { mutate } = useAllFeedbacks();
 
   useEffect(() => {
     async function handleUpvotes() {
       try {
-        await fetch(`/api/feedbacks/${id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            upvotes: totalVotes,
-            path: pathname,
-          }),
+        await EditFeedback({
+          path: pathname,
+          feedbackId: id,
+          upvotes: totalVotes,
         });
-        mutate();
       } catch (err: Error | any) {
         console.log(`${err.code}: ${err}`);
       }
     }
     handleUpvotes();
-  }, [id, pathname, upvotes, totalVotes, mutate]);
+  }, [id, pathname, upvotes, totalVotes]);
   return (
-    // sm:min-w-[32.7rem]
     <div
       className={`min-w-[29rem] w-full md:min-w-[22.3rem] lg:min-w-[28rem] xl:min-w-[35rem] md:h-[25.1rem] lg:h-[27.2rem]   sm:h-[23.3rem] bg-clr-white  p-[2.4rem]  border-t-[0.6rem] border-top flex flex-col gap-[1.7rem]  ${borderToColor}`}
     >

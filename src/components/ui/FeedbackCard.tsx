@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { startTransition, useCallback, useEffect, useState } from "react";
 import { useParams, usePathname, useRouter } from "next/navigation";
+import { EditFeedback } from "@/lib/actions/feedback.actions";
 
 interface Props {
   id: string;
@@ -23,40 +24,28 @@ const FeedbackCard = ({
   totalComments,
 }: Props) => {
   const [totalVotes, setTotalVotes] = useState<number>(upvotes);
-  const params = useParams();
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
     async function handleUpvotes() {
       try {
-        await fetch(`/api/feedbacks/${id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            upvotes: totalVotes,
-            path: pathname,
-          }),
+        await EditFeedback({
+          path: pathname,
+          feedbackId: id,
+          upvotes: totalVotes,
         });
-
-        router.refresh();
       } catch (err: Error | any) {
         console.log(`${err.code}: ${err}`);
       }
     }
     handleUpvotes();
-  }, [id, pathname, upvotes, totalVotes, router]);
-
-  // flex flex-col items-start
-
-  if (id === undefined) return;
+  }, [id, pathname, totalVotes]);
 
   return (
     <div className=" sm:min-w-[32.7rem] sm:min-h-[20rem] bg-clr-white rounded-2xl p-[2.4rem] grid grid-cols-2 gap-x-[15rem] gap-y-[2.8rem] md:flex   md:gap-0  md:min-h-[15.1rem] md:justify-between ">
       <div
-        className="flex flex-col items-start col-span-2 md:col-start-2 md:col-end-7 md:min-w-[70%]"
+        className="flex flex-col items-start col-span-2 md:col-start-2 md:col-end-7 md:w-[70%]  "
         // href={`/dashboard/feedback/${id}`}
       >
         <Link
@@ -65,10 +54,10 @@ const FeedbackCard = ({
         >
           {title}
         </Link>
-        <p className="text-[1.3rem] text-light-gray-200 md:text-body1 mt-[0.4rem]">
+        <p className="text-[1.3rem] text-light-gray-200 md:text-body1 mt-[0.4rem] w-full">
           {description}
         </p>
-        <p className="bg-light-purple-100 text-dark-blue p-2 text-[1.3rem] font-semibold pl-4 rounded-2xl mt-[1.2rem]">
+        <p className="bg-light-purple-100 text-dark-blue p-2 text-[1.3rem] font-semibold pl-4 rounded-2xl mt-[1.2rem] ">
           {category}
         </p>
       </div>

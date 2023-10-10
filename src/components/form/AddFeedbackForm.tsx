@@ -13,9 +13,13 @@ import useUserSession from "@/hooks/useUserSession";
 import toast from "react-hot-toast";
 import MiniSpinner from "../ui/MiniSpinner";
 import { useSession } from "next-auth/react";
+import { createFeedback } from "@/lib/actions/feedback.actions";
+import { experimental_useFormStatus as useFormStatus } from "react-dom";
 
 const AddFeedbackForm = () => {
   const [currentCat, setCurrentCat] = useState<string>();
+
+  const { pending } = useFormStatus();
 
   const getSelectedCategory = (currentCat: string): void => {
     setCurrentCat(currentCat);
@@ -24,13 +28,9 @@ const AddFeedbackForm = () => {
   type FeedbackValidationSchemaType = z.infer<typeof FeedbackValidation>;
   const router = useRouter();
   const currentUser = useUserSession();
-  // const { data: session } = useSession();
   const pathname = usePathname();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const status = "Suggestion";
-
-  // console.log(session);
-  // console.log(currentUser?.id);
 
   const {
     handleSubmit,
@@ -54,36 +54,21 @@ const AddFeedbackForm = () => {
     data
   ) => {
     try {
-      setIsLoading(true);
-      const res = await fetch("/api/feedbacks/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: data.title,
-          description: data.description,
-          upvotes: 0,
-          category: currentCat,
-          status: status,
-          path: pathname,
-          author: currentUser?.id,
-        }),
+      if (currentUser === undefined) return;
+      await createFeedback({
+        title: data.title,
+        description: data.description,
+        upvotes: 0,
+        category: currentCat!,
+        status: status,
+        path: pathname,
+        author: currentUser.id,
       });
-      if (res.ok) {
-        toast.success("Feedback created successfully");
-        startTransition(() =>
-          router.push("/dashboard?feedback created successfully")
-        );
-        router.refresh();
-      } else {
-        toast.error("Something went wrong!");
-        console.log("Feedback creation failed");
-      }
+
+      toast.success("Feedback created successfully");
+      router.push("/dashboard");
     } catch (err: Error | any) {
       console.log(`${err.code}: Error Feedback creation`);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -176,14 +161,14 @@ const AddFeedbackForm = () => {
           {/* w-[15rem] */}
           <button
             className="bg-light-purple-500 new-form-btn min-w-[15rem] "
-            disabled={isLoading}
+            aria-disabled={pending}
           >
-            {isLoading ? <MiniSpinner /> : "Add Feedback"}
+            {pending ? <MiniSpinner /> : "Add Feedback"}
           </button>
           <button
             className="bg-dark-grayish-400 new-form-btn  "
             onClick={(e) => handleCancel(e)}
-            disabled={isLoading}
+            aria-disabled={pending}
           >
             Cancel
           </button>
