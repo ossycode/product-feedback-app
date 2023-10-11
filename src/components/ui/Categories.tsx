@@ -2,6 +2,7 @@
 
 import { categoriesList } from "@/constants";
 import { useCurrentNavbarCategory } from "@/context/CategoryContext";
+import useCustomRouter from "@/hooks/useCustomRouter";
 import { useEffect, useState } from "react";
 
 interface Items {
@@ -25,6 +26,7 @@ const Categories = () => {
   // setCurentCategory(selected);
   useEffect(() => {
     setCategory(selected);
+    // pushQuery({ cat: selected.toLowerCase() });
   }, [selected, setCategory]);
 
   function handleSelect(item: Items) {

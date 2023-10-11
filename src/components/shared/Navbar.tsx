@@ -4,10 +4,17 @@ import Roadmap from "../ui/Roadmap";
 import Avatar from "../ui/Avatar";
 import LogoutBtn from "../ui/LogoutBtn";
 import { fetchFeedbacks } from "@/lib/actions/feedback.actions";
+import { GetSingleUserByUsername } from "@/lib/actions/user.actions";
 
 export async function Navbar() {
   const { totalInProgressCount, totalPlannedCount, totalLiveCount } =
     await JSON.parse(JSON.stringify(await fetchFeedbacks({})));
+
+  const user = await JSON.parse(
+    JSON.stringify(await GetSingleUserByUsername())
+  );
+
+  // console.log(user);
 
   return (
     <nav className="hidden md:flex items-center justify-between gap-4 pt-[5.6rem] pb-[4rem] px-[3.9rem] bg-ghost-white-100 lg:flex-col lg:col-start-1 lg:col-end-3 lg:pb-0 lg:pt-6 lg:gap-10 lg:justify-normal lg:px-4">
@@ -22,7 +29,7 @@ export async function Navbar() {
         </div>
 
         <div className="flex item-center justify-between">
-          <Avatar />
+          <Avatar user={user} />
           <LogoutBtn />
         </div>
       </div>

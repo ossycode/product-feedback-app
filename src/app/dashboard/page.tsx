@@ -17,14 +17,35 @@ async function Dashboard({
 }: {
   searchParams: { [key: string]: string | undefined };
 }) {
-  const { sort } = searchParams;
+  const { sort, cat } = searchParams;
 
   // console.log(urlSortProp);
   const check = searchParams.page ? +searchParams.page : 1;
 
   const urlSortProp = sort;
+  let selectedCategory;
+
+  if (cat === "all") {
+    selectedCategory = undefined;
+  }
+
+  if (cat === "ui") {
+    selectedCategory = "UI";
+  }
+  if (cat === "ux") {
+    selectedCategory = "UX";
+  }
+  if (cat === "feature") {
+    selectedCategory = "Feature";
+  }
+  if (cat === "bug") {
+    selectedCategory = "Bug";
+  }
+  if (cat === "enhancement") {
+    selectedCategory = "Enhancement";
+  }
+
   const {
-    allSugestionFeedbacks,
     newSuggestedFeedbacks,
     totalSuggestionCount,
     totalInProgressCount,
@@ -37,6 +58,7 @@ async function Dashboard({
         pageNumber: check,
         pageSize: 3,
         urlSortProp,
+        selectedCategory,
       })
     )
   );

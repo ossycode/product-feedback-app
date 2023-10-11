@@ -26,14 +26,15 @@ interface getAllParams {
   pageNumber?: number;
   pageSize?: number;
   urlSortProp?: string;
+  selectedCategory?: string;
 }
 
 interface editParams {
-  title?: string | undefined;
-  description?: string | undefined;
-  status?: string | undefined;
-  category?: string | undefined;
-  upvotes?: number | undefined;
+  title?: string;
+  description?: string;
+  status?: string;
+  category?: string;
+  upvotes?: number;
   path: string;
   feedbackId: string;
 }
@@ -41,13 +42,16 @@ interface editParams {
 // export async function sort
 export async function fetchFeedbacks({
   pageNumber = 1,
-  pageSize = 5,
+  pageSize = 3,
+  selectedCategory,
   urlSortProp,
 }: getAllParams) {
   //   const urlSortProp = url.searchParams.get("sort");
   //   // console.log(url.searchParams.get("sort"));
 
   await connectToDB();
+  let newSuggestedFeedbacks: any[] = [];
+  let totalSuggestionCount = 0;
 
   // Calculate the number of posts to skip based on the page number and page size
   const skipAmount = (pageNumber - 1) * pageSize;
@@ -87,76 +91,85 @@ export async function fetchFeedbacks({
       },
     ]);
 
-  const allSugestionFeedbacks = await Feedback.find({
-    status: "Suggestion",
-  })
-    .sort(sortProps)
-    .exec();
+  // const allSugestionFeedbacks = await Feedback.find({
+  //   status: "Suggestion",
+  // })
+  //   .sort(sortProps)
+  //   .exec();
 
-  const aggregationPipeline = [
+  const countPipeline: any[] = [
     {
       $match: {
         status: "Suggestion",
       },
     },
+    selectedCategory
+      ? {
+          $match: {
+            category: selectedCategory,
+          },
+        }
+      : null,
     {
-      $addFields: {
-        leastUpvotes: { $min: "$upvotes" },
-        mostUpvotes: { $max: "$upvotes" },
-        leastComments: { $min: { $size: "$thread" } },
-        mostComments: { $max: { $size: "$thread" } },
-      },
-    },
-    {
-      $sort: sortProps,
-    },
-    {
-      $skip: skipAmount,
-    },
-    {
-      $limit: pageSize,
+      $count: "count",
     },
   ];
 
-  let newSuggestedFeedbacks: any[] = [];
+  const filteredCountPipeline = countPipeline.filter((stage) => stage !== null);
 
-  Feedback.aggregate(aggregationPipeline)
+  Feedback.aggregate(filteredCountPipeline)
     .exec()
-    .then((data) => {
-      newSuggestedFeedbacks = data;
-    })
-    .catch((err) => {
-      console.error("Error fetching data:", err);
-    });
+    .then((countResult) => {
+      totalSuggestionCount = countResult.length > 0 ? countResult[0].count : 0;
 
-  // Feedback.aggregate(
-  //   [
-  //     {
-  //       $match: {
-  //         status: "Suggested",
-  //       },
-  //     },
-  //     {
-  //       $addFields: {
-  //         leastUpvotes: { $min: "$upvotes" },
-  //         mostUpvotes: { $max: "$upvotes" },
-  //         leastComments: { $min: { $size: "$thread" } },
-  //         mostComments: { $max: { $size: "$thread" } },
-  //       },
-  //     },
-  //     {
-  //       $sort: sortProps,
-  //     },
-  //   ],
-  //   function (err: any, result: any) {
-  //     if (err) {
-  //       console.log("sorting by:", sortProps);
-  //       console.log("error:");
-  //     }
-  //     console.log("sorting by:", sortProps);
-  //     console.log(result);
-  //   }
-  // );
+      const aggregationPipeline: any[] = [
+        {
+          $match: {
+            status: "Suggestion",
+          },
+        },
+        selectedCategory
+          ? {
+              $match: {
+                category: selectedCategory,
+              },
+            }
+          : null,
+        {
+          $addFields: {
+            leastUpvotes: { $min: "$upvotes" },
+            mostUpvotes: { $max: "$upvotes" },
+            leastComments: { $min: { $size: "$thread" } },
+            mostComments: { $max: { $size: "$thread" } },
+          },
+        },
+        {
+          $sort: sortProps,
+        },
+        {
+          $skip: skipAmount,
+        },
+        {
+          $limit: pageSize,
+        },
+      ];
+
+      const filteredAggregationPipeline: any[] = aggregationPipeline.filter(
+        (stage) => stage !== null
+      );
+
+      Feedback.aggregate(filteredAggregationPipeline)
+        .exec()
+        .then((data) => {
+          newSuggestedFeedbacks = data;
+        })
+        .catch((err) => {
+          console.error("Error fetching data:", err);
+        });
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 
   const allLiveFeedbacks = await Feedback.find({
     status: "Live",
@@ -170,9 +183,9 @@ export async function fetchFeedbacks({
     status: "In-Progress",
   });
 
-  const totalSuggestionCount = await Feedback.countDocuments({
-    status: "Suggestion",
-  });
+  // const totalSuggestionCount = await Feedback.countDocuments({
+  //   status: "Suggestion",
+  // });
 
   const totalLiveCount = await Feedback.countDocuments({
     status: "Live",
@@ -190,17 +203,16 @@ export async function fetchFeedbacks({
 
   const isNext =
     totalSuggestionCount > skipAmount + newSuggestedFeedbacks.length;
-  // if (path !== undefined) {
-  //   revalidateTag(path);
-  // }
+
   return {
     allFeedbacks,
     isNext,
+    // totalSuggestionCount,
     totalSuggestionCount,
     totalInProgressCount,
     totalPlannedCount,
     totalLiveCount,
-    allSugestionFeedbacks,
+    // allSugestionFeedbacks,
     allLiveFeedbacks,
     allInProgressFeedbacks,
     allPlannedFeedbacks,
@@ -387,23 +399,23 @@ export async function fetchSingleFeedbackbyId(feedbackId: string) {
 
 function getSortbyProps(searchParams: string | undefined) {
   // const sort = searchParams.sort || "Most Upvotes";
-  let sortParams = searchParams || "Most Upvotes";
+  let sortParams = searchParams || "most upvotes";
 
   let sortProp = {};
 
-  if (sortParams === "Most Upvotes") {
+  if (sortParams === "most upvotes") {
     sortProp = { mostUpvotes: -1 };
   }
 
-  if (sortParams === "Least Upvotes") {
+  if (sortParams === "least upvotes") {
     sortProp = { leastUpvotes: 1 };
   }
 
-  if (sortParams === "Most Comments") {
+  if (sortParams === "most comments") {
     sortProp = { mostComments: -1 };
   }
 
-  if (sortParams === "Least Comments") {
+  if (sortParams === "least comments") {
     sortProp = { leastComments: 1 };
   }
 

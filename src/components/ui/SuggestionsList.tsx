@@ -1,8 +1,10 @@
 "use client";
 
+import useCustomRouter from "@/hooks/useCustomRouter";
 import FeedbackCard from "./FeedbackCard";
 import NoFeedbackCard from "./NoFeedbackCard";
 import { useCurrentNavbarCategory } from "@/context/CategoryContext";
+import { useEffect } from "react";
 
 interface Props {
   allSugestionFeedbacks: {
@@ -22,42 +24,47 @@ interface Props {
 
 const SuggestionsList = ({ allSugestionFeedbacks }: Props) => {
   const { category } = useCurrentNavbarCategory();
+  const { pushQuery, query } = useCustomRouter();
 
-  let suggestedFeedback = allSugestionFeedbacks;
+  useEffect(() => {
+    pushQuery({ cat: category.toLowerCase() });
+  }, [category, pushQuery]);
 
-  if (category === "UI") {
-    suggestedFeedback = allSugestionFeedbacks.filter(
-      (feedback: any) =>
-        feedback.status === "Suggestion" && feedback.category === "UI"
-    );
-  }
-  if (category === "UX") {
-    suggestedFeedback = allSugestionFeedbacks.filter(
-      (feedback: any) =>
-        feedback.status === "Suggestion" && feedback.category === "UX"
-    );
-  }
-  if (category === "Enhancement") {
-    suggestedFeedback = allSugestionFeedbacks.filter(
-      (feedback: any) =>
-        feedback.status === "Suggestion" && feedback.category === "Enhancement"
-    );
-  }
+  // let suggestedFeedback = allSugestionFeedbacks;
 
-  if (category === "Bug") {
-    suggestedFeedback = allSugestionFeedbacks.filter(
-      (feedback: any) =>
-        feedback.status === "Suggestion" && feedback.category === "Bug"
-    );
-  }
-  if (category === "Feature") {
-    suggestedFeedback = allSugestionFeedbacks.filter(
-      (feedback: any) =>
-        feedback.status === "Suggestion" && feedback.category === "Feature"
-    );
-  }
+  // if (category === "UI") {
+  //   suggestedFeedback = allSugestionFeedbacks.filter(
+  //     (feedback: any) =>
+  //       feedback.status === "Suggestion" && feedback.category === "UI"
+  //   );
+  // }
+  // if (category === "UX") {
+  //   suggestedFeedback = allSugestionFeedbacks.filter(
+  //     (feedback: any) =>
+  //       feedback.status === "Suggestion" && feedback.category === "UX"
+  //   );
+  // }
+  // if (category === "Enhancement") {
+  //   suggestedFeedback = allSugestionFeedbacks.filter(
+  //     (feedback: any) =>
+  //       feedback.status === "Suggestion" && feedback.category === "Enhancement"
+  //   );
+  // }
 
-  if (suggestedFeedback?.length === 0) {
+  // if (category === "Bug") {
+  //   suggestedFeedback = allSugestionFeedbacks.filter(
+  //     (feedback: any) =>
+  //       feedback.status === "Suggestion" && feedback.category === "Bug"
+  //   );
+  // }
+  // if (category === "Feature") {
+  //   suggestedFeedback = allSugestionFeedbacks.filter(
+  //     (feedback: any) =>
+  //       feedback.status === "Suggestion" && feedback.category === "Feature"
+  //   );
+  // }
+
+  if (allSugestionFeedbacks?.length === 0) {
     return (
       <div className="bg-ghost-white-100 h-full mt-1 pt-8 pb-36 px-4 md:px-0">
         <NoFeedbackCard />
@@ -68,7 +75,7 @@ const SuggestionsList = ({ allSugestionFeedbacks }: Props) => {
   return (
     <>
       <div className="main-body flex flex-col gap-[1.6rem] overflow-scroll sm:px-[2.4rem] px-4 pt-[2.4rem] md:px-0  ">
-        {suggestedFeedback.map(
+        {allSugestionFeedbacks.map(
           (feedback: {
             category: string;
             description: string;

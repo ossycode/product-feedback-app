@@ -16,7 +16,7 @@ const SortByDiv = ({ totalSuggestion }: Props) => {
   const { pushQuery, query } = useCustomRouter();
   const { sortBy, setSortBy } = useSortBy();
   const [filterOption, setFilterOption] = useState<string>(
-    query.sort || "Most Upvotes"
+    query.sort || "most upvotes"
   );
 
   useEffect(() => {
@@ -25,7 +25,9 @@ const SortByDiv = ({ totalSuggestion }: Props) => {
   }, [pushQuery, setSortBy, filterOption, sortBy, query]);
 
   const getSelectedfilterOption = (currentCat: string): void => {
-    setFilterOption(currentCat);
+    if (currentCat) {
+      setFilterOption(currentCat.toLowerCase());
+    }
   };
 
   return (

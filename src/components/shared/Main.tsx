@@ -11,22 +11,9 @@ const Main = ({
   allSugestionFeedbacks: any[];
   totalSuggestionCount: number;
 }) => {
-  const { category } = useCurrentNavbarCategory();
-
-  let derivedTotalSuggestionCount;
-
-  if (category === "All") {
-    derivedTotalSuggestionCount = totalSuggestionCount;
-  } else {
-    derivedTotalSuggestionCount = allSugestionFeedbacks.filter(
-      (feedback: any) =>
-        feedback.status === "Suggestion" && feedback.category === category
-    ).length;
-  }
-
   return (
     <main className=" ">
-      <SortByDiv totalSuggestion={derivedTotalSuggestionCount} />
+      <SortByDiv totalSuggestion={totalSuggestionCount} />
 
       <SuggestionsList allSugestionFeedbacks={allSugestionFeedbacks} />
     </main>

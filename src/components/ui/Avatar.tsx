@@ -5,22 +5,26 @@ import Image from "next/image";
 import Link from "next/link";
 import MiniSpinner from "./MiniSpinner";
 
-const Avatar = () => {
-  const { data, isLoading } = useUser();
+const Avatar = ({ user }: any) => {
+  // const { data, isLoading } = useUser();
 
-  if (isLoading) {
-    return (
-      <div className="self-center rounded-full  ">
-        <MiniSpinner />
-      </div>
-    );
-  }
-  const user = data[0];
+  // if (isLoading) {
+  //   return (
+  //     <div className="self-center rounded-full  ">
+  //       <MiniSpinner />
+  //     </div>
+  //   );
+  // }
+  const currentUser = user[0];
+  // console.log(user);
 
   return (
-    <Link href={`/dashboard/users/${user?.username}`} className="self-center ">
+    <Link
+      href={`/dashboard/users/${currentUser?.username}`}
+      className="self-center "
+    >
       <Image
-        src={user?.avatar || "/assets/default-user.jpg"}
+        src={currentUser?.avatar || "/assets/default-user.jpg"}
         alt="profile image"
         width={50}
         height={50}

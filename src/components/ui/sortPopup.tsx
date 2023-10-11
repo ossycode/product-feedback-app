@@ -184,7 +184,7 @@ const SortPopup = ({
   handleSelected,
   defaultValue = null,
 }: Props) => {
-  const [title, setTitle] = useState<string>();
+  const [title, setTitle] = useState<string>(getTitle());
   const [listData, setListData] = useState<Array<Items>>();
   const [isListOpen, setIsListOpen] = useState<boolean>(false);
 
@@ -222,13 +222,13 @@ const SortPopup = ({
     });
   });
 
-  // function getTitle(): string {
-  //   let title: string = "";
-  //   listData.forEach((element) => {
-  //     if (element.selected === true) title = element.title;
-  //   });
-  //   return title;
-  // }
+  function getTitle(): string {
+    let title: string = "";
+    ArrayData.forEach((element) => {
+      if (element.selected === true) title = element.title;
+    });
+    return title;
+  }
 
   function handleListOpen(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
