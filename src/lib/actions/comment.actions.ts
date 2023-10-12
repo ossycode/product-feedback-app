@@ -92,7 +92,7 @@ export async function PostReplyToComment({
     const savedReplyToComment = await replyToComment.save();
 
     await User.findByIdAndUpdate(author, {
-      $push: { comments: savedReplyToComment._id },
+      $push: { replies: savedReplyToComment._id },
     });
 
     originalComment.replies.push(savedReplyToComment._id);
