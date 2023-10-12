@@ -11,6 +11,8 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import "@uploadthing/react/styles.css";
 import { useUploadThing } from "@/lib/uploadthing";
+import toast from "react-hot-toast";
+import MiniSpinner from "../ui/MiniSpinner";
 
 const RegisterForm = () => {
   type UserValidationSchemaType = z.infer<typeof UserValidation>;
@@ -19,11 +21,12 @@ const RegisterForm = () => {
   const [error, setError] = useState<string>();
   const [imageFile, setImageFile] = useState<File>();
   const { startUpload } = useUploadThing("profileImage");
+  // const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting, isValidating },
   } = useForm<UserValidationSchemaType>({
     resolver: zodResolver(UserValidation),
   });
@@ -47,7 +50,8 @@ const RegisterForm = () => {
 
       if (user) {
         setError("User already exist");
-        console.log("User already exist");
+        toast.error("User already exist");
+        // console.log("User already exist");
 
         return;
       }
@@ -68,6 +72,7 @@ const RegisterForm = () => {
         }),
       });
       if (res.ok) {
+        toast.success("Account has been created!");
         router.push("/login?success=Account has been created");
       } else {
         console.log("User registration failed");
@@ -160,13 +165,20 @@ const RegisterForm = () => {
           </FormRow>
 
           {/* w-[25.5rem] */}
-          <button className=" bg-dark-grayish-400 py-4 px-4 font-bold  text-ghost-white-100 text-[1.5rem] block rounded-2xl md:w-full mt-8">
-            Sign up
+          <button
+            className=" bg-dark-grayish-400 py-4 px-4 font-bold  text-ghost-white-100 text-[1.5rem] block rounded-2xl md:w-full mt-8"
+            disabled={isSubmitting || isValidating}
+          >
+            {isSubmitting || isValidating ? <MiniSpinner /> : "Sign up"}
           </button>
         </form>
         <p className="text-dark-grayish-400  text-[1.6rem] font-normal mt-[-2rem] ">
           Have an account?{" "}
-          <Link className="text-dark-blue font-semibold" href="./login">
+          <Link
+            className="text-dark-blue font-semibold"
+            href="./login"
+            aria-disabled={isSubmitting}
+          >
             Sign-in
           </Link>
         </p>

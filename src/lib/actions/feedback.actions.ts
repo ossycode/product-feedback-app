@@ -333,7 +333,7 @@ export async function deleteFeedback({ feedbackId, path }: SingleParams) {
       { $pull: { feedbacks: feedbackId } }
     );
 
-    // revalidatePath(path);
+    revalidatePath(path);
   } catch (err: any) {
     throw new Error(`Failed to delete feedback: ${err.message}`);
   }
