@@ -30,40 +30,6 @@ const SuggestionsList = ({ allSugestionFeedbacks }: Props) => {
     pushQuery({ cat: category.toLowerCase() });
   }, [category, pushQuery]);
 
-  // let suggestedFeedback = allSugestionFeedbacks;
-
-  // if (category === "UI") {
-  //   suggestedFeedback = allSugestionFeedbacks.filter(
-  //     (feedback: any) =>
-  //       feedback.status === "Suggestion" && feedback.category === "UI"
-  //   );
-  // }
-  // if (category === "UX") {
-  //   suggestedFeedback = allSugestionFeedbacks.filter(
-  //     (feedback: any) =>
-  //       feedback.status === "Suggestion" && feedback.category === "UX"
-  //   );
-  // }
-  // if (category === "Enhancement") {
-  //   suggestedFeedback = allSugestionFeedbacks.filter(
-  //     (feedback: any) =>
-  //       feedback.status === "Suggestion" && feedback.category === "Enhancement"
-  //   );
-  // }
-
-  // if (category === "Bug") {
-  //   suggestedFeedback = allSugestionFeedbacks.filter(
-  //     (feedback: any) =>
-  //       feedback.status === "Suggestion" && feedback.category === "Bug"
-  //   );
-  // }
-  // if (category === "Feature") {
-  //   suggestedFeedback = allSugestionFeedbacks.filter(
-  //     (feedback: any) =>
-  //       feedback.status === "Suggestion" && feedback.category === "Feature"
-  //   );
-  // }
-
   if (allSugestionFeedbacks?.length === 0) {
     return (
       <div className="bg-ghost-white-100 h-full mt-1 pt-8 pb-36 px-4 md:px-0">

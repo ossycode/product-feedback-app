@@ -38,7 +38,6 @@ interface editParams {
   path: string;
   feedbackId: string;
 }
-
 // export async function sort
 export async function fetchFeedbacks({
   pageNumber = 1,
@@ -49,175 +48,183 @@ export async function fetchFeedbacks({
   //   const urlSortProp = url.searchParams.get("sort");
   //   // console.log(url.searchParams.get("sort"));
 
-  await connectToDB();
-  let newSuggestedFeedbacks: any[] = [];
-  let totalSuggestionCount = 0;
+  try {
+    await connectToDB();
+    let newSuggestedFeedbacks: any[] = [];
+    let totalSuggestionCount = 0;
 
-  // Calculate the number of posts to skip based on the page number and page size
-  const skipAmount = (pageNumber - 1) * pageSize;
+    // Calculate the number of posts to skip based on the page number and page size
+    const skipAmount = (pageNumber - 1) * pageSize;
 
-  const sortProps = getSortbyProps(urlSortProp);
-  // const urlParams = useSearchParams();
+    const sortProps = getSortbyProps(urlSortProp);
+    // const urlParams = useSearchParams();
 
-  // find feedback that have not parent ( top-level feedback), a feedback that is not a comment/reply
-  const feedbacksQuery = Feedback.find({
-    parentId: { $in: [null, undefined] },
-    // status: "Suggestion",
-  })
-    .sort(sortProps)
-    .skip(skipAmount)
-    .limit(pageSize)
-    .populate([
-      {
-        path: "author",
-        model: User,
-      },
-      {
-        path: "comments",
-        model: Comment,
-
-        populate: {
-          path: "replies",
-          model: Reply,
-          select: "_id content replyingTo parentId",
-          populate: [
-            {
-              path: "author",
-              model: User,
-              select: "_id  id name avatar username",
-            },
-          ],
-        },
-      },
-    ]);
-
-  // const allSugestionFeedbacks = await Feedback.find({
-  //   status: "Suggestion",
-  // })
-  //   .sort(sortProps)
-  //   .exec();
-
-  const countPipeline: any[] = [
-    {
-      $match: {
-        status: "Suggestion",
-      },
-    },
-    selectedCategory
-      ? {
-          $match: {
-            category: selectedCategory,
-          },
-        }
-      : null,
-    {
-      $count: "count",
-    },
-  ];
-
-  const filteredCountPipeline = countPipeline.filter((stage) => stage !== null);
-
-  Feedback.aggregate(filteredCountPipeline)
-    .exec()
-    .then((countResult) => {
-      totalSuggestionCount = countResult.length > 0 ? countResult[0].count : 0;
-
-      const aggregationPipeline: any[] = [
-        {
-          $match: {
-            status: "Suggestion",
-          },
-        },
-        selectedCategory
-          ? {
-              $match: {
-                category: selectedCategory,
-              },
-            }
-          : null,
-        {
-          $addFields: {
-            leastUpvotes: { $min: "$upvotes" },
-            mostUpvotes: { $max: "$upvotes" },
-            leastComments: { $min: { $size: "$thread" } },
-            mostComments: { $max: { $size: "$thread" } },
-          },
-        },
-        {
-          $sort: sortProps,
-        },
-        {
-          $skip: skipAmount,
-        },
-        {
-          $limit: pageSize,
-        },
-      ];
-
-      const filteredAggregationPipeline: any[] = aggregationPipeline.filter(
-        (stage) => stage !== null
-      );
-
-      Feedback.aggregate(filteredAggregationPipeline)
-        .exec()
-        .then((data) => {
-          newSuggestedFeedbacks = data;
-        })
-        .catch((err) => {
-          console.error("Error fetching data:", err);
-        });
+    // find feedback that have not parent ( top-level feedback), a feedback that is not a comment/reply
+    const feedbacksQuery = Feedback.find({
+      parentId: { $in: [null, undefined] },
+      // status: "Suggestion",
     })
-    .catch((error) => {
-      console.error(error);
+      .sort(sortProps)
+      .skip(skipAmount)
+      .limit(pageSize)
+      .populate([
+        {
+          path: "author",
+          model: User,
+        },
+        {
+          path: "comments",
+          model: Comment,
+
+          populate: {
+            path: "replies",
+            model: Reply,
+            select: "_id content replyingTo parentId",
+            populate: [
+              {
+                path: "author",
+                model: User,
+                select: "_id  id name avatar username",
+              },
+            ],
+          },
+        },
+      ]);
+
+    // const allSugestionFeedbacks = await Feedback.find({
+    //   status: "Suggestion",
+    // })
+    //   .sort(sortProps)
+    //   .exec();
+
+    const countPipeline: any[] = [
+      {
+        $match: {
+          status: "Suggestion",
+        },
+      },
+      selectedCategory
+        ? {
+            $match: {
+              category: selectedCategory,
+            },
+          }
+        : null,
+      {
+        $count: "count",
+      },
+    ];
+
+    const filteredCountPipeline = countPipeline.filter(
+      (stage) => stage !== null
+    );
+
+    Feedback.aggregate(filteredCountPipeline)
+      .exec()
+      .then((countResult) => {
+        totalSuggestionCount =
+          countResult.length > 0 ? countResult[0].count : 0;
+
+        const aggregationPipeline: any[] = [
+          {
+            $match: {
+              status: "Suggestion",
+            },
+          },
+          selectedCategory
+            ? {
+                $match: {
+                  category: selectedCategory,
+                },
+              }
+            : null,
+          {
+            $addFields: {
+              leastUpvotes: { $min: "$upvotes" },
+              mostUpvotes: { $max: "$upvotes" },
+              leastComments: { $min: { $size: "$thread" } },
+              mostComments: { $max: { $size: "$thread" } },
+            },
+          },
+          {
+            $sort: sortProps,
+          },
+          {
+            $skip: skipAmount,
+          },
+          {
+            $limit: pageSize,
+          },
+        ];
+
+        const filteredAggregationPipeline: any[] = aggregationPipeline.filter(
+          (stage) => stage !== null
+        );
+
+        Feedback.aggregate(filteredAggregationPipeline)
+          .exec()
+          .then((data) => {
+            newSuggestedFeedbacks = data;
+          })
+          .catch((err) => {
+            console.error("Error fetching data:", err);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    const allLiveFeedbacks = await Feedback.find({
+      status: "Live",
     });
 
-  const allLiveFeedbacks = await Feedback.find({
-    status: "Live",
-  });
+    const allPlannedFeedbacks = await Feedback.find({
+      status: "Planned",
+    });
 
-  const allPlannedFeedbacks = await Feedback.find({
-    status: "Planned",
-  });
+    const allInProgressFeedbacks = await Feedback.find({
+      status: "In-Progress",
+    });
 
-  const allInProgressFeedbacks = await Feedback.find({
-    status: "In-Progress",
-  });
+    // const totalSuggestionCount = await Feedback.countDocuments({
+    //   status: "Suggestion",
+    // });
 
-  // const totalSuggestionCount = await Feedback.countDocuments({
-  //   status: "Suggestion",
-  // });
+    const totalLiveCount = await Feedback.countDocuments({
+      status: "Live",
+    });
 
-  const totalLiveCount = await Feedback.countDocuments({
-    status: "Live",
-  });
+    const totalPlannedCount = await Feedback.countDocuments({
+      status: "Planned",
+    });
 
-  const totalPlannedCount = await Feedback.countDocuments({
-    status: "Planned",
-  });
+    const totalInProgressCount = await Feedback.countDocuments({
+      status: "In-Progress",
+    });
 
-  const totalInProgressCount = await Feedback.countDocuments({
-    status: "In-Progress",
-  });
+    const allFeedbacks = await feedbacksQuery.exec();
 
-  const allFeedbacks = await feedbacksQuery.exec();
+    const isNext =
+      totalSuggestionCount > skipAmount + newSuggestedFeedbacks.length;
 
-  const isNext =
-    totalSuggestionCount > skipAmount + newSuggestedFeedbacks.length;
-
-  return {
-    allFeedbacks,
-    isNext,
-    // totalSuggestionCount,
-    totalSuggestionCount,
-    totalInProgressCount,
-    totalPlannedCount,
-    totalLiveCount,
-    // allSugestionFeedbacks,
-    allLiveFeedbacks,
-    allInProgressFeedbacks,
-    allPlannedFeedbacks,
-    newSuggestedFeedbacks,
-  };
+    return {
+      allFeedbacks,
+      isNext,
+      // totalSuggestionCount,
+      totalSuggestionCount,
+      totalInProgressCount,
+      totalPlannedCount,
+      totalLiveCount,
+      // allSugestionFeedbacks,
+      allLiveFeedbacks,
+      allInProgressFeedbacks,
+      allPlannedFeedbacks,
+      newSuggestedFeedbacks,
+    };
+  } catch (error) {
+    console.error("Error while fetching feedbacks:", error);
+    throw new Error("Unable to fetch feedbacks");
+  }
 }
 
 export async function createFeedback({
@@ -273,36 +280,51 @@ export async function deleteFeedback({ feedbackId, path }: SingleParams) {
     );
 
     // Extract the ids from each comment/reply object
-    const childCommentsIds = childComments.map((comment) => comment._id);
-    const childRepliesArrayIds = childRepliesArray.map((reply) => reply._id);
+    const childCommentsIds = [...childComments.map((comment) => comment._id)];
+
+    const childRepliesArrayIds = [
+      ...childRepliesArray.map((reply) => reply._id),
+    ];
 
     // Extract the authors id to update the user model
-    const commentUniqueAuthorIds = new Set(
-      [childComments.map((comment) => comment.author?._id)].filter(
-        (id) => id !== undefined
-      )
-    );
-    const replyUniqueAuthorIds = new Set(
-      [childRepliesArray.map((reply) => reply.author?._id)].filter(
-        (id) => id !== undefined
-      )
+    // const commentUniqueAuthorIds = new Set(
+    //   [childComments.map((comment) => comment.author?._id)].filter(
+    //     (id) => id !== undefined
+    //   )
+    // );
+    // const replyUniqueAuthorIds = new Set(
+    //   [
+    //     ...childRepliesArray.map((reply) => reply.author?._id.toString()),
+    //   ].filter((id) => id !== undefined)
+    // );
+
+    // All unique Ids
+    const uniqueAuthorsId = new Set(
+      [
+        ...childComments.map((comment) => comment.author?._id.toString()),
+        ...childRepliesArray.map((reply) => reply.author?._id.toString()),
+        mainFeedback?.author?._id.toString(),
+      ].filter((id) => id !== undefined)
     );
 
-    const mainFeedbackAuthorId = mainFeedback?.author?._id;
+    // console.log("commentUniqueAuthorIds:", commentUniqueAuthorIds);
+    // console.log("uniqueAuthorsId:", uniqueAuthorsId);
+
+    const mainFeedbackAuthorId = mainFeedback?.author?._id.toString();
 
     // Delete main feedback
     await Feedback.findByIdAndDelete(feedbackId);
-    // Recursively delete child comment/reply
+    // // Recursively delete child comment/reply
     await Comment.deleteMany({ _id: { $in: childCommentsIds } });
     await Reply.deleteMany({ _id: { $in: childRepliesArrayIds } });
 
-    //Update user model
+    // //Update user model
     await User.updateMany(
-      { _id: { $in: Array.from(commentUniqueAuthorIds) } },
+      { _id: { $in: Array.from(uniqueAuthorsId) } },
       { $pull: { comments: { $in: childCommentsIds } } }
     );
     await User.updateMany(
-      { _id: { $in: Array.from(replyUniqueAuthorIds) } },
+      { _id: { $in: Array.from(uniqueAuthorsId) } },
       { $pull: { replies: { $in: childRepliesArrayIds } } }
     );
 
@@ -311,7 +333,7 @@ export async function deleteFeedback({ feedbackId, path }: SingleParams) {
       { $pull: { feedbacks: feedbackId } }
     );
 
-    revalidatePath(path);
+    // revalidatePath(path);
   } catch (err: any) {
     throw new Error(`Failed to delete feedback: ${err.message}`);
   }
