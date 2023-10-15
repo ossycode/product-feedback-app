@@ -1,5 +1,4 @@
 import type { NextAuthOptions, Session } from "next-auth";
-import GitHubProviders from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { connectToDB } from "@/lib/mongoose";
 import bcrypt from "bcryptjs";
@@ -14,7 +13,7 @@ export const authOptions: NextAuthOptions = {
         password: {},
       },
 
-      async authorize(credentials, req) {
+      async authorize(credentials, _) {
         const { username, password } = credentials!;
 
         try {

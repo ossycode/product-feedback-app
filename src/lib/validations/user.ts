@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const UserValidation = z
   .object({
-    // avatar: z.string().url().nonempty(),
     fullName: z.string().min(3, { message: "Can't be empty" }).max(60),
     username: z.string().min(3, { message: "Can't be empty" }).max(30),
     email: z

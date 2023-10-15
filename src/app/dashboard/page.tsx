@@ -3,7 +3,6 @@ import Main from "@/components/shared/Main";
 import MobileNavbar from "@/components/shared/MobileNavbar";
 import Navbar from "@/components/shared/Navbar";
 import Pagination from "@/components/ui/Pagination";
-import { useSortBy } from "@/context/SortByContext";
 import { fetchFeedbacks } from "@/lib/actions/feedback.actions";
 import { Metadata } from "next";
 
@@ -19,7 +18,6 @@ async function Dashboard({
 }) {
   const { sort, cat } = searchParams;
 
-  // console.log(urlSortProp);
   const check = searchParams.page ? +searchParams.page : 1;
 
   const urlSortProp = sort;
@@ -77,7 +75,6 @@ async function Dashboard({
         <Main
           allSugestionFeedbacks={newSuggestedFeedbacks}
           totalSuggestionCount={totalSuggestionCount}
-          // fetchFeedbacks={fetchFeedbacks}
         />
         <Pagination
           pageNumber={searchParams?.page ? +searchParams.page : 1}

@@ -11,17 +11,7 @@ interface Props {
 }
 
 function Pagination({ pageNumber, isNext }: Props) {
-  const router = useRouter();
-  const path = usePathname();
-  //   const searchParams = useSearchParams();
-  const { pushQuery, query } = useCustomRouter();
-
-  //   const query: any = {};
-
-  //   //   let page = searchParams.get("page");
-  //   let page = parseInt(searchParams.get("page")!);
-
-  //   if (page) query.page = page;
+  const { pushQuery } = useCustomRouter();
 
   const handleNavigation = (type: string) => {
     let nextPageNumber = pageNumber;
@@ -31,12 +21,6 @@ function Pagination({ pageNumber, isNext }: Props) {
     } else if (type === "next") {
       nextPageNumber = pageNumber + 1;
     }
-
-    // if (nextPageNumber > 1) {
-    //   router.push(`/${path}?page=${nextPageNumber}`);
-    // } else {
-    //   router.push(`/${path}`);
-    // }
     pushQuery({ page: nextPageNumber });
   };
 

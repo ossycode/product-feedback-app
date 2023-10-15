@@ -5,8 +5,6 @@ interface Props {
 }
 
 const ButtonReply = ({ toggleForm }: Props) => {
-  //   const [openReply, setOpenReply] = useState<boolean>(false);
-
   const handleReplyForm = () => {};
 
   return (

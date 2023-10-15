@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { startTransition, useCallback, useEffect, useState } from "react";
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { EditFeedback } from "@/lib/actions/feedback.actions";
 
 interface Props {
@@ -25,7 +25,6 @@ const FeedbackCard = ({
 }: Props) => {
   const [totalVotes, setTotalVotes] = useState<number>(upvotes);
   const pathname = usePathname();
-  const router = useRouter();
 
   useEffect(() => {
     async function handleUpvotes() {
@@ -44,10 +43,7 @@ const FeedbackCard = ({
 
   return (
     <div className=" sm:min-w-[32.7rem] sm:min-h-[20rem] bg-clr-white rounded-2xl p-[2.4rem] grid grid-cols-2 gap-x-[15rem] gap-y-[2.8rem] md:flex   md:gap-0  md:min-h-[15.1rem] md:justify-between ">
-      <div
-        className="flex flex-col items-start col-span-2 md:col-start-2 md:col-end-7 md:w-[70%]  "
-        // href={`/dashboard/feedback/${id}`}
-      >
+      <div className="flex flex-col items-start col-span-2 md:col-start-2 md:col-end-7 md:w-[70%]  ">
         <Link
           className="text-dark-grayish-400 tracking-[-0.0181rem] font-bold text-[1.3rem] md:text-heading3 hover:text-dark-blue"
           href={`/dashboard/feedback/${id}`}

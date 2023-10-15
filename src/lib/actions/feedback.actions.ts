@@ -38,15 +38,13 @@ interface editParams {
   path: string;
   feedbackId: string;
 }
-// export async function sort
 export async function fetchFeedbacks({
   pageNumber = 1,
   pageSize = 3,
   selectedCategory,
   urlSortProp,
 }: getAllParams) {
-  //   const urlSortProp = url.searchParams.get("sort");
-  //   // console.log(url.searchParams.get("sort"));
+
 
   try {
     await connectToDB();
@@ -57,12 +55,10 @@ export async function fetchFeedbacks({
     const skipAmount = (pageNumber - 1) * pageSize;
 
     const sortProps = getSortbyProps(urlSortProp);
-    // const urlParams = useSearchParams();
 
     // find feedback that have not parent ( top-level feedback), a feedback that is not a comment/reply
     const feedbacksQuery = Feedback.find({
       parentId: { $in: [null, undefined] },
-      // status: "Suggestion",
     })
       .sort(sortProps)
       .skip(skipAmount)
@@ -91,11 +87,6 @@ export async function fetchFeedbacks({
         },
       ]);
 
-    // const allSugestionFeedbacks = await Feedback.find({
-    //   status: "Suggestion",
-    // })
-    //   .sort(sortProps)
-    //   .exec();
 
     const countPipeline: any[] = [
       {
@@ -186,10 +177,6 @@ export async function fetchFeedbacks({
       status: "In-Progress",
     });
 
-    // const totalSuggestionCount = await Feedback.countDocuments({
-    //   status: "Suggestion",
-    // });
-
     const totalLiveCount = await Feedback.countDocuments({
       status: "Live",
     });
@@ -210,12 +197,10 @@ export async function fetchFeedbacks({
     return {
       allFeedbacks,
       isNext,
-      // totalSuggestionCount,
       totalSuggestionCount,
       totalInProgressCount,
       totalPlannedCount,
       totalLiveCount,
-      // allSugestionFeedbacks,
       allLiveFeedbacks,
       allInProgressFeedbacks,
       allPlannedFeedbacks,
@@ -252,7 +237,6 @@ export async function createFeedback({
       $push: { feedbacks: newFeedback._id },
     });
 
-    // newFeedback.thread.push(newFeedback._id);
 
     await newFeedback.save();
 
@@ -286,18 +270,6 @@ export async function deleteFeedback({ feedbackId, path }: SingleParams) {
       ...childRepliesArray.map((reply) => reply._id),
     ];
 
-    // Extract the authors id to update the user model
-    // const commentUniqueAuthorIds = new Set(
-    //   [childComments.map((comment) => comment.author?._id)].filter(
-    //     (id) => id !== undefined
-    //   )
-    // );
-    // const replyUniqueAuthorIds = new Set(
-    //   [
-    //     ...childRepliesArray.map((reply) => reply.author?._id.toString()),
-    //   ].filter((id) => id !== undefined)
-    // );
-
     // All unique Ids
     const uniqueAuthorsId = new Set(
       [
@@ -307,9 +279,7 @@ export async function deleteFeedback({ feedbackId, path }: SingleParams) {
       ].filter((id) => id !== undefined)
     );
 
-    // console.log("commentUniqueAuthorIds:", commentUniqueAuthorIds);
-    // console.log("uniqueAuthorsId:", uniqueAuthorsId);
-
+  
     const mainFeedbackAuthorId = mainFeedback?.author?._id.toString();
 
     // Delete main feedback
@@ -417,10 +387,8 @@ export async function fetchSingleFeedbackbyId(feedbackId: string) {
   }
 }
 
-// { params }: { params: { id: string } }
 
 function getSortbyProps(searchParams: string | undefined) {
-  // const sort = searchParams.sort || "Most Upvotes";
   let sortParams = searchParams || "most upvotes";
 
   let sortProp = {};
@@ -441,18 +409,6 @@ function getSortbyProps(searchParams: string | undefined) {
     sortProp = { leastComments: 1 };
   }
 
-  // if (sortParams === "Most Upvotes") {
-  //   sortProp = { upvotes: "desc" };
-  // }
-  // if (sortParams === "Least Upvotes") {
-  //   sortProp = { upvotes: "asc" };
-  // }
-  // if (sortParams === "Most Comments") {
-  //   sortProp = { "thread.length": "desc" };
-  // }
-  // if (sortParams === "Least Comments") {
-  //   sortProp = { "thread.length": "asc" };
-  // }
 
   return sortProp;
 }

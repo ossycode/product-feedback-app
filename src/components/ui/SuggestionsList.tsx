@@ -24,7 +24,7 @@ interface Props {
 
 const SuggestionsList = ({ allSugestionFeedbacks }: Props) => {
   const { category } = useCurrentNavbarCategory();
-  const { pushQuery, query } = useCustomRouter();
+  const { pushQuery } = useCustomRouter();
 
   useEffect(() => {
     pushQuery({ cat: category.toLowerCase() });

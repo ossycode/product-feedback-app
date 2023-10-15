@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useCallback, useContext, useState } from "react";
-// import { useNavbarCategory } from "@/hooks/useCategory";
 
 export interface CatContextType {
   category: string;
@@ -18,12 +17,6 @@ export const NavbarCategoryContext =
 
 function NavbarCategoryProvider({ children }: any) {
   const [category, setCategory] = useState<string>("");
-
-  // const setCurentCategory = useCallback((currentCategory: string): void => {
-  //   setCategory(currentCategory);
-  // }, []);
-
-  // const { category, setCurentCategory } = useNavbarCategory();
 
   return (
     <NavbarCategoryContext.Provider value={{ category, setCategory }}>

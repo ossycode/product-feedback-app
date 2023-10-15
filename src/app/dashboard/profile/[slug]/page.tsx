@@ -1,8 +1,6 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
 import BackBtn from "@/components/ui/BackBtn";
 import { getServerUser } from "@/hooks/useServerUser";
 import { formatDateString } from "@/lib/utils";
-import { getServerSession } from "next-auth";
 import Image from "next/image";
 
 export async function generateMetadata({
@@ -24,12 +22,8 @@ const FewDetailProfilePage = async ({
 }: {
   params: { slug: string };
 }) => {
-  //   const session = await getServerSession(authOptions);
-
   const user = await getServerUser(params?.slug);
 
-  // const currentUser = user[0];
-  //
   const profileUser = user?.[0];
 
   const currentDateString = formatDateString(profileUser?.createdAt);
@@ -64,15 +58,6 @@ const FewDetailProfilePage = async ({
             {currentDateString}
           </span>
         </p>
-        {/* <div>
-          <h1 className="text-heading3 md:text-heading1 text-start">
-            {" "}
-            Activity
-          </h1>
-          <p className="text-[1.3rem] md:text-[1.4rem] font-normal">
-            Total Comments: <span className="text-heading4">20</span>
-          </p>
-        </div> */}
       </section>
     </div>
   );

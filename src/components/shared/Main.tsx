@@ -1,7 +1,6 @@
 "use client";
 
 import SortByDiv from "../ui/SortByDiv";
-import { useCurrentNavbarCategory } from "@/context/CategoryContext";
 import SuggestionsList from "../ui/SuggestionsList";
 
 const Main = ({

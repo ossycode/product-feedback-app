@@ -18,10 +18,8 @@ const RegisterForm = () => {
   type UserValidationSchemaType = z.infer<typeof UserValidation>;
 
   const router = useRouter();
-  const [error, setError] = useState<string>();
   const [imageFile, setImageFile] = useState<File>();
   const { startUpload } = useUploadThing("profileImage");
-  // const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const {
     handleSubmit,
@@ -49,10 +47,7 @@ const RegisterForm = () => {
       const { user } = await existuserResponse.json();
 
       if (user) {
-        setError("User already exist");
         toast.error("User already exist");
-        // console.log("User already exist");
-
         return;
       }
 
@@ -160,11 +155,9 @@ const RegisterForm = () => {
               accept="image/*"
               className={`signupform-input w-full  `}
               onChange={(e) => setImageFile(e.target?.files?.[0])}
-              // {...register("avatar")}
             />
           </FormRow>
 
-          {/* w-[25.5rem] */}
           <button
             className=" bg-dark-grayish-400 py-4 px-4 font-bold  text-ghost-white-100 text-[1.5rem] block rounded-2xl md:w-full mt-8"
             disabled={isSubmitting || isValidating}

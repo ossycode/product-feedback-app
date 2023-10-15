@@ -38,7 +38,6 @@ const LoginForm = () => {
       startTransition(() => router.push("/dashboard"));
       router.replace("/dashboard");
     } catch (error) {
-      // console.log(error);
     } finally {
       setIsLoading(false);
     }
@@ -60,8 +59,6 @@ const LoginForm = () => {
             id="username"
             placeholder="Username..."
             type="text"
-            // className="min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem]
-            //   font-normal  py-[1.3rem] px-[2.4rem] border active:border-solid	active:border-dark-blue"
             className={`signupform-input ${
               error && "border-red-600"
             } max-md:w-full`}
@@ -78,8 +75,6 @@ const LoginForm = () => {
             id="password"
             placeholder="Password..."
             type="password"
-            // className="min-w-[25.5rem] min-h-[4.8rem] rounded-lg bg-ghost-white-100 text-dark-grayish-400 text-[1.5rem]
-            //    font-normal py-[1.3rem] px-[2.4rem] border active:border-solid	active:border-dark-blue"
             className={`signupform-input ${
               error && "border-red-600"
             } max-md:w-full`}

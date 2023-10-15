@@ -29,7 +29,6 @@ const RoadmapCard = ({
   thread,
   id,
 }: Props) => {
-  // const totalComments = calculateTotalComment(comments);
   const totalComments = thread.length;
   const [totalVotes, setTotalVotes] = useState<number>(upvotes);
   const pathname = usePathname();

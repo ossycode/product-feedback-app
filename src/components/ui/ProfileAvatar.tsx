@@ -1,13 +1,9 @@
 "use client";
 
-import { authOptions } from "@/app/api/auth/[...nextauth]/options";
-import useUser from "@/hooks/useUser";
-import useUserSession from "@/hooks/useUserSession";
 import { useUploadThing } from "@/lib/uploadthing";
 import { formatDateString } from "@/lib/utils";
-import { getServerSession } from "next-auth";
 import Image from "next/image";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import MiniSpinner from "./MiniSpinner";
 import toast from "react-hot-toast";
 
@@ -77,7 +73,6 @@ const ProfileAvatar = ({ currentUser, classList }: Props) => {
         height={100}
         className="rounded-full aspect-[1] object-center	object-cover"
       />
-      {/* w-[25.5rem]  */}
       <div className="relative cursor-pointer ">
         <button
           className="bg-light-purple-500 w-[15rem] py-4 px-4  md:py-3.5 md:px-10 font-bold  text-ghost-white-100 text-[1.3rem] rounded-lg "

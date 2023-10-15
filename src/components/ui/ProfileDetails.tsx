@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, startTransition, useState } from "react";
+import { startTransition, useState } from "react";
 import MiniSpinner from "./MiniSpinner";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -31,7 +31,6 @@ const ProfileDetails = ({ currentUser, classList }: Props) => {
         }),
       });
       if (res.ok) {
-        // startTransition(() => router.push("/dashboard?success"));
         startTransition(() => router.refresh());
       }
       setIsUploading(false);

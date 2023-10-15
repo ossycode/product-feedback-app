@@ -194,7 +194,6 @@ const EditFeedbackForm = ({
           <span>
             {errors.description?.message && (
               <span className="text-[#D73737] text-[1.4rem]">
-                {/* {errors.description.message} */}
               </span>
             )}
           </span>

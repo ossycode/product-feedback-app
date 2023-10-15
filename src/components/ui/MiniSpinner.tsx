@@ -19,7 +19,6 @@ const MiniSpinner = () => {
           fill="currentFill"
         />
       </svg>
-      {/* <span>Creating...</span> */}
       <span className="sr-only">Loading...</span>
     </div>
   );

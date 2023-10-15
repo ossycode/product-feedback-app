@@ -120,7 +120,6 @@ const RoadmapDetails = ({
         </div>
 
         <div
-          // g
           className={`flex-col gap-10 md:flex md:py-0 md:px-0 md:items-start md:justify-normal  lg:gap-[3.2rem]  ${
             activeTab === 2
               ? "flex py-10 px-9 items-center justify-center"

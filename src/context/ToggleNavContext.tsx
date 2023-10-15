@@ -2,10 +2,6 @@
 
 import { createContext, useContext, useState } from "react";
 
-// interface IToggleNav {
-//    isNavOpen: boolean;
-//   toggleDarkMode: () => void;
-// }
 type NavContextType = {
   isNavOpen: boolean;
   toggleNavbar: () => void;

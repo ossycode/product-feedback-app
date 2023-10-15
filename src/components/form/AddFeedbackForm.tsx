@@ -3,7 +3,7 @@
 import Image from "next/image";
 import SortPopup from "../ui/sortPopup";
 import { categories } from "@/constants";
-import { startTransition, useState } from "react";
+import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { FeedbackValidation } from "@/lib/validations/feedback";
@@ -12,14 +12,10 @@ import { usePathname, useRouter } from "next/navigation";
 import useUserSession from "@/hooks/useUserSession";
 import toast from "react-hot-toast";
 import MiniSpinner from "../ui/MiniSpinner";
-import { useSession } from "next-auth/react";
 import { createFeedback } from "@/lib/actions/feedback.actions";
-import { experimental_useFormStatus as useFormStatus } from "react-dom";
 
 const AddFeedbackForm = () => {
   const [currentCat, setCurrentCat] = useState<string>();
-
-  const { pending } = useFormStatus();
 
   const getSelectedCategory = (currentCat: string): void => {
     setCurrentCat(currentCat);
@@ -29,18 +25,16 @@ const AddFeedbackForm = () => {
   const router = useRouter();
   const currentUser = useUserSession();
   const pathname = usePathname();
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const status = "Suggestion";
 
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting, isValidating },
   } = useForm<FeedbackValidationSchemaType>({
     resolver: zodResolver(FeedbackValidation),
     defaultValues: {
       title: "",
-      // accountId: userId,
       description: "",
     },
   });
@@ -158,17 +152,16 @@ const AddFeedbackForm = () => {
         </label>
 
         <div className="flex flex-col gap-6 mt-9 md:flex-row-reverse ">
-          {/* w-[15rem] */}
           <button
             className="bg-light-purple-500 new-form-btn min-w-[15rem] "
-            aria-disabled={pending}
+            aria-disabled={isSubmitting || isValidating}
           >
-            {pending ? <MiniSpinner /> : "Add Feedback"}
+            {isSubmitting || isValidating ? <MiniSpinner /> : "Add Feedback"}
           </button>
           <button
             className="bg-dark-grayish-400 new-form-btn  "
             onClick={(e) => handleCancel(e)}
-            aria-disabled={pending}
+            aria-disabled={isSubmitting || isValidating}
           >
             Cancel
           </button>

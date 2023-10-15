@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React, { useState } from "react";
-import AddReplyForm from "../form/AddReplyForm";
 import Link from "next/link";
 import ButtonReply from "./ButtonReply";
 import useUserSession from "@/hooks/useUserSession";
@@ -54,12 +53,6 @@ const Comment = ({
           </p>
         </div>
         <ButtonReply toggleForm={toggleForm} />
-        {/* <button
-          className="text-dark-blue border-none font-semibold text-[1.3rem]"
-          onClick={() => setOpenReply((openReply) => !openReply)}
-        >
-          Reply
-        </button> */}
       </div>
       <p className="text-light-gray-200 text-[1.3rem] md:text-[1.5rem] md:pl-[6.8rem]">
         <Link
@@ -70,11 +63,6 @@ const Comment = ({
         </Link>
         {""} {content}
       </p>
-      {/* <div className="">
-        {openReply && (
-          <AddReplyForm commentId={commentId} commentAuthor={username} />
-        )}
-      </div> */}
     </div>
   );
 };

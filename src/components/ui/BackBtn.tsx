@@ -1,14 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import BackBtnSVG from "./BckBtnSVG";
-import { startTransition } from "react";
-
-// interface Props {
-//   btnColor: string;
-//   arrowColor: string;
-// }
 
 const BackBtn = ({
   btnColor = "text-light-gray-200",
@@ -17,7 +10,6 @@ const BackBtn = ({
   const router = useRouter();
   const handleBack = () => {
     router.back();
-    startTransition(() => router.refresh());
   };
 
   return (
