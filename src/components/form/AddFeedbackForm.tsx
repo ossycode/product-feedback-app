@@ -154,14 +154,14 @@ const AddFeedbackForm = () => {
         <div className="flex flex-col gap-6 mt-9 md:flex-row-reverse ">
           <button
             className="bg-light-purple-500 new-form-btn min-w-[15rem] "
-            aria-disabled={isSubmitting || isValidating}
+            disabled={isSubmitting || isValidating}
           >
             {isSubmitting || isValidating ? <MiniSpinner /> : "Add Feedback"}
           </button>
           <button
             className="bg-dark-grayish-400 new-form-btn  "
             onClick={(e) => handleCancel(e)}
-            aria-disabled={isSubmitting || isValidating}
+            disabled={isSubmitting || isValidating}
           >
             Cancel
           </button>
