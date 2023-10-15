@@ -54,7 +54,7 @@ async function Dashboard({
     JSON.stringify(
       await fetchFeedbacks({
         pageNumber: check,
-        pageSize: 3,
+        pageSize: 5,
         urlSortProp,
         selectedCategory,
       })

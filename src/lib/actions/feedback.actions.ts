@@ -40,12 +40,10 @@ interface editParams {
 }
 export async function fetchFeedbacks({
   pageNumber = 1,
-  pageSize = 3,
+  pageSize = 5,
   selectedCategory,
   urlSortProp,
 }: getAllParams) {
-
-
   try {
     await connectToDB();
     let newSuggestedFeedbacks: any[] = [];
@@ -86,7 +84,6 @@ export async function fetchFeedbacks({
           },
         },
       ]);
-
 
     const countPipeline: any[] = [
       {
@@ -237,7 +234,6 @@ export async function createFeedback({
       $push: { feedbacks: newFeedback._id },
     });
 
-
     await newFeedback.save();
 
     revalidatePath(path);
@@ -279,7 +275,6 @@ export async function deleteFeedback({ feedbackId, path }: SingleParams) {
       ].filter((id) => id !== undefined)
     );
 
-  
     const mainFeedbackAuthorId = mainFeedback?.author?._id.toString();
 
     // Delete main feedback
@@ -387,7 +382,6 @@ export async function fetchSingleFeedbackbyId(feedbackId: string) {
   }
 }
 
-
 function getSortbyProps(searchParams: string | undefined) {
   let sortParams = searchParams || "most upvotes";
 
@@ -408,7 +402,6 @@ function getSortbyProps(searchParams: string | undefined) {
   if (sortParams === "least comments") {
     sortProp = { leastComments: 1 };
   }
-
 
   return sortProp;
 }
