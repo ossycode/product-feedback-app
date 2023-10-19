@@ -16,6 +16,7 @@ interface Props {
 
 const CommentCard = ({ comment }: Props) => {
   const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
+  const [replyTo, setReplyTo] = useState<string>();
   const formRef = useRef<HTMLFormElement | null>(null);
   const currentUser = useUserSession();
 
@@ -23,10 +24,11 @@ const CommentCard = ({ comment }: Props) => {
 
   const isSameUser = currentUser?.username === comment.author.username;
 
-  const toggleForm = () => {
+  const toggleForm = (replingTo: string) => {
     setIsFormOpen((prevState) => !prevState);
 
     if (!isFormOpen && formDivRef.current) {
+      setReplyTo(() => replingTo);
       formDivRef.current.scrollIntoView({ behavior: "smooth" });
       if (!isFormOpen && formRef.current) {
         formRef.current.focus();
@@ -59,7 +61,10 @@ const CommentCard = ({ comment }: Props) => {
         </span>
       </p>
 
-      <ButtonReply toggleForm={toggleForm} />
+      <ButtonReply
+        toggleForm={toggleForm}
+        commentUser={comment.author.username}
+      />
 
       <p className="  text-light-gray-200 text-[1.3rem] md:text-[1.5rem] mt-[1.6rem] md:mt-[1.8rem] md:pl-[7.2rem] row-start-2	 col-span-full">
         {comment.content}
@@ -84,9 +89,9 @@ const CommentCard = ({ comment }: Props) => {
       >
         {isFormOpen && (
           <AddReplyForm
-            commentAuthor={comment.author.username}
             commentId={comment._id}
             formRef={formRef}
+            replyTo={replyTo}
           />
         )}
       </div>

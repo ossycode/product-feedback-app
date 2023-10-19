@@ -1,10 +1,10 @@
 "use client";
 
 import { PostReplyToComment } from "@/lib/actions/comment.actions";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-const AddReplyForm = ({ commentAuthor, commentId, formRef }: any) => {
+const AddReplyForm = ({ commentId, formRef, replyTo }: any) => {
   const [replyText, setReplyText] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const pathname = usePathname();
@@ -21,7 +21,7 @@ const AddReplyForm = ({ commentAuthor, commentId, formRef }: any) => {
         content: replyText,
         parentId: commentId,
         path: pathname,
-        replyingTo: commentAuthor,
+        replyingTo: replyTo,
       });
       setIsSubmitting(false);
       setReplyText("");

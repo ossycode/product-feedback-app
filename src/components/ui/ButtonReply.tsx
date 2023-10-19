@@ -1,16 +1,20 @@
 "use client";
 
 interface Props {
-  toggleForm: () => void;
+  toggleForm: (commentUser: string) => void;
+  commentUser: string;
 }
 
-const ButtonReply = ({ toggleForm }: Props) => {
-  const handleReplyForm = () => {};
+const ButtonReply = ({ toggleForm, commentUser }: Props) => {
+  function handleClick() {
+    toggleForm(commentUser);
+  }
 
   return (
     <button
       className="text-dark-blue border-none font-semibold text-[1.3rem] hover:underline hover:underline-offset-2 hover:decoration-1 justify-self-end "
-      onClick={toggleForm}
+      data-id={commentUser}
+      onClick={() => handleClick()}
     >
       Reply
     </button>

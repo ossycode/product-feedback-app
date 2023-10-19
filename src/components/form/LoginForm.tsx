@@ -20,6 +20,7 @@ const LoginForm = () => {
 
     try {
       setIsLoading(true);
+      setError("");
       if (username === undefined || password === undefined) {
         setError("Username and password are required");
         return;

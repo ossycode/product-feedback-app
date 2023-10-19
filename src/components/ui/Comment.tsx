@@ -52,7 +52,7 @@ const Comment = ({
             </span>
           </p>
         </div>
-        <ButtonReply toggleForm={toggleForm} />
+        <ButtonReply toggleForm={toggleForm} commentUser={username} />
       </div>
       <p className="text-light-gray-200 text-[1.3rem] md:text-[1.5rem] md:pl-[6.8rem]">
         <Link
