@@ -4,6 +4,7 @@ import MobileNavbar from "@/components/shared/MobileNavbar";
 import Navbar from "@/components/shared/Navbar";
 import Pagination from "@/components/ui/Pagination";
 import { fetchFeedbacks } from "@/lib/actions/feedback.actions";
+import { GetSingleUserByUsername } from "@/lib/actions/user.actions";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -60,6 +61,9 @@ async function Dashboard({
       })
     )
   );
+  const user = await JSON.parse(
+    JSON.stringify(await GetSingleUserByUsername())
+  );
 
   return (
     <div className="min-h-screen lg:grid lg:grid-cols-7 lg:py-[9.4rem] bg-ghost-white-100  xl:px-[10.5rem] lg:px-[3rem] ">
@@ -71,6 +75,7 @@ async function Dashboard({
           totalInProgressCount={totalInProgressCount}
           totalPlannedCount={totalPlannedCount}
           totalLiveCount={totalLiveCount}
+          user={user}
         />
         <Main
           allSugestionFeedbacks={newSuggestedFeedbacks}

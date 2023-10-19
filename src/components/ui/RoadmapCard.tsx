@@ -49,7 +49,7 @@ const RoadmapCard = ({
   }, [id, pathname, upvotes, totalVotes]);
   return (
     <div
-      className={`min-w-[29rem] w-full md:min-w-[22.3rem] lg:min-w-[28rem] xl:min-w-[35rem] md:h-[25.1rem] lg:h-[27.2rem]   sm:h-[23.3rem] bg-clr-white  p-[2.4rem]  border-t-[0.6rem] border-top flex flex-col gap-[1.7rem]  ${borderToColor}`}
+      className={`min-w-[29rem] w-full md:min-w-[22.3rem] lg:min-w-[28rem] xl:min-w-[35rem] md:h-[25.1rem] lg:h-[27.2rem] sm:h-[23.3rem] bg-clr-white px-8  py-[2.4rem]  border-t-[0.6rem] border-top flex flex-col gap-[1.7rem]  ${borderToColor}`}
     >
       <ul role="list" className=" flex items-center gap-3">
         <svg
@@ -70,7 +70,7 @@ const RoadmapCard = ({
         className="flex flex-col items-start "
         href={`/dashboard/feedback/${id}`}
       >
-        <h1 className="text-dark-grayish-400 tracking-[-0.0181rem] font-bold text-[1.3rem] md:text-heading5 lg:text-heading3 hover:text-dark-blue">
+        <h1 className="text-dark-grayish-400 tracking-[-0.0181rem] font-bold text-[1.3rem] md:text-heading5 lg:text-heading3 hover:text-dark-blue w-max">
           {title}
         </h1>
         <p className="text-[1.3rem] text-light-gray-200 mt-[0.4rem] md:mt-4 lg:text-sortButtonText">

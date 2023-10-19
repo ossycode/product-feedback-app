@@ -12,7 +12,7 @@ const Roadmap = ({
   return (
     <div className="bg-clr-white min-w-[22.3rem] min-h-[17.8rem] p-4 rounded-2xl lg:w-[25.5rem] lg:h-[17rem] ">
       <div className="flex items-center justify-between lg:px-6">
-        <h1 className="text-heading3 text-dark-grayish-400">Roadmap</h1>
+        <h1 className="text-heading3  text-dark-grayish-400">Roadmap</h1>
         <Link
           href={"/dashboard/roadmap"}
           className="text-dark-blue text-body3 underline "

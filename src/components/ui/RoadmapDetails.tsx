@@ -100,7 +100,10 @@ const RoadmapDetails = ({
               In-Progress ({totalInProgressCount})
             </h1>
             <p className="text-[1.3rem] text-light-gray-200 mt-1.5 md:text-[1.4rem] lg:text-sortButtonText">
-              Features currently being developed
+              <span className="md:hidden">
+                Features currently being developed
+              </span>
+              <span className="hidden md:block">Currently being developed</span>
             </p>
           </div>
           {allInProgressFeedbacks.map((feedback: any) => (

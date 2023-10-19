@@ -11,12 +11,14 @@ interface Props {
   totalInProgressCount: number;
   totalPlannedCount: number;
   totalLiveCount: number;
+  user: any[];
 }
 
 const MobileNavbar = ({
   totalInProgressCount,
   totalPlannedCount,
   totalLiveCount,
+  user,
 }: Props) => {
   const { isNavOpen, toggleNavbar } = useToggleNav();
   const ref = useRef<HTMLDivElement | null>(null);
@@ -42,7 +44,7 @@ const MobileNavbar = ({
               totalLiveCount={totalLiveCount}
             />
 
-            <Avatar />
+            <Avatar user={user} />
 
             <LogoutBtn />
           </div>
