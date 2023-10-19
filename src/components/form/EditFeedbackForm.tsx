@@ -193,8 +193,7 @@ const EditFeedbackForm = ({
           />
           <span>
             {errors.description?.message && (
-              <span className="text-[#D73737] text-[1.4rem]">
-              </span>
+              <span className="text-[#D73737] text-[1.4rem]"></span>
             )}
           </span>
         </label>
@@ -202,7 +201,7 @@ const EditFeedbackForm = ({
         <div className="flex flex-col items-center  justify-between gap-[1.6rem] md:flex-row-reverse">
           <div className="flex flex-col gap-6 md:flex-row-reverse w-full ">
             <button
-              className="bg-light-purple-500 new-form-btn w-full py-4 md:w-max md:py-5"
+              className="bg-light-purple-500 new-form-btn w-full py-4 md:w-max md:py-5 min-w-[15rem] "
               aria-disabled={isSubmitting || isDeleting}
             >
               {isSubmitting ? <MiniSpinner /> : "Save Changes"}
